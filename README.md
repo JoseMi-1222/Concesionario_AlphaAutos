@@ -3,7 +3,6 @@
 
 # Proyecto AlphaAutos
 
-
 ## Descripción general
 
 AlphaAutos es una aplicación Django para la gestión de un concesionario de automóviles.  

@@ -1,0 +1,11 @@
+#myvenv
+myvenv/
+
+#cache
+__pycache__
+
+# virtualenv
+.venv
+venv/
+ENV/
+.vscode

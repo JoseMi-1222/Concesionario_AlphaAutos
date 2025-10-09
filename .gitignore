@@ -12,5 +12,3 @@ ENV/
 
 #Base de datos
 db.sqlite3
-
-#

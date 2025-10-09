@@ -9,3 +9,6 @@ __pycache__
 venv/
 ENV/
 .vscode
+
+#Base de datos
+db.sqlite3

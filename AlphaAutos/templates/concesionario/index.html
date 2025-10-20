@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <title>AlphaAutos - Inicio</title>
+</head>
+<body>
+    <h1>Bienvenido a AlphaAutos</h1>
+    <p>Seleccione una opción:</p>
+    <ul>
+        <li><a href="{% url 'AlphaAutos:coche_list' %}">Listado de Coches</a></li>
+        <li><a href="{% url 'AlphaAutos:cliente_list' %}">Listado de Clientes</a></li>
+        <li><a href="{% url 'AlphaAutos:coches_sin_ventas' %}">Coches sin Ventas</a></li>
+        <li><a href="{% url 'AlphaAutos:ventas_aggregate' %}">Resumen de Ventas</a></li>
+    </ul>
+</body>
+</html>
+

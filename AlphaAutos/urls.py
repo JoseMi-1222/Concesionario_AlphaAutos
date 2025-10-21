@@ -7,4 +7,6 @@ urlpatterns = [
     # Página inicial (Index)
     path('', views.index, name='index'),
     path('coches/', views.coche_list, name='coche_list'),
+    path('coche/<int:id_coche>/', views.coche_detail, name='coche_detail'),
+
 ]

@@ -84,4 +84,26 @@ def coches_por_fecha(request, anio, mes):
     }
     return render(request, 'concesionario/coches_por_fecha.html', contexto)
 
+# -----------------------------------------------------------------
+# VISTA: Filtrar coches por tipo de transmisión (filtro con OR)
+# -----------------------------------------------------------------
+def coches_transmision(request, tipo):
+    """
+    Muestra los coches con transmisión del tipo indicado o manual.
+    Se usa Q() para aplicar un filtro con OR.
+
+    SQL equivalente aproximada:
+    SELECT * FROM AlphaAutos_coche
+    WHERE transmision = tipo OR transmision = 'MT'
+    ORDER BY marca_id;
+    """
+    coches = Coche.objects.filter(
+        Q(transmision=tipo) | Q(transmision='MT')
+    ).select_related('marca', 'concesionario').order_by('marca__nombre')
+
+    contexto = {
+        'coches': coches,
+        'tipo': tipo,
+    }
+    return render(request, 'concesionario/coches_transmision.html', contexto)
 

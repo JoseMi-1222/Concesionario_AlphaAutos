@@ -1,0 +1,12 @@
+<!-- resumen_ventas.html -->
+{% extends "concesionario/base.html" %}
+
+{% block content %}
+<h1>Resumen de Ventas</h1>
+
+<ul>
+    <li>Precio promedio: {{ resumen.precio_promedio|floatformat:2 }}</li>
+    <li>Precio máximo: {{ resumen.precio_maximo|floatformat:2 }}</li>
+    <li>Precio mínimo: {{ resumen.precio_minimo|floatformat:2 }}</li>
+</ul>
+{% endblock %}

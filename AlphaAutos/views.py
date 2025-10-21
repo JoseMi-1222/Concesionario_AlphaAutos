@@ -208,3 +208,42 @@ def coches_sin_ventas(request):
 
     contexto = {'coches': coches}
     return render(request, 'concesionario/coches_sin_ventas.html', contexto)
+
+# -------------------------------------------------------------------
+# VISTA: Mostrar un concesionario y sus relaciones (empleados, coches)
+# -------------------------------------------------------------------
+def concesionario_detail(request, id_concesionario):
+    """
+    Muestra los datos de un concesionario junto con sus empleados y coches.
+    Usa relaciones reversas (empleado_set y coche_set) y prefetch_related.
+
+    SQL equivalente aproximada:
+    SELECT * FROM AlphaAutos_concesionario WHERE id = id_concesionario;
+    SELECT * FROM AlphaAutos_empleado WHERE concesionario_id = id_concesionario;
+    SELECT * FROM AlphaAutos_coche WHERE concesionario_id = id_concesionario;
+    """
+    concesionario = Concesionario.objects.prefetch_related('empleado_set', 'coche_set').get(id=id_concesionario)
+    empleados = concesionario.empleado_set.all()
+    coches = concesionario.coche_set.select_related('marca').all()
+
+    contexto = {
+        'concesionario': concesionario,
+        'empleados': empleados,
+        'coches': coches,
+    }
+    return render(request, 'concesionario/concesionario_detail.html', contexto)
+
+# -------------------------------------------------------------------
+# VISTA: Calcula el promedio, máximo y mínimo de los precios de ventas.
+# -------------------------------------------------------------------
+def resumen_ventas(request):
+    resumen = Venta.objects.aggregate(
+        precio_promedio=Avg('precio_final'),
+        precio_maximo=Max('precio_final'),
+        precio_minimo=Min('precio_final')
+    )
+
+    contexto = {
+        'resumen': resumen
+    }
+    return render(request, 'concesionario/resumen_ventas.html', contexto)

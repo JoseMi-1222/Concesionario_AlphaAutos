@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Coche
+from .models import *
 from django.shortcuts import get_object_or_404
 from django.db.models import F, Q
 from django.utils import timezone
@@ -107,3 +107,60 @@ def coches_transmision(request, tipo):
     }
     return render(request, 'concesionario/coches_transmision.html', contexto)
 
+# -------------------------------------------------------------------
+# VISTA: Coches de un concesionario cuyo modelo contiene un texto
+# -------------------------------------------------------------------
+def coches_concesionario_texto(request, id_concesionario, texto):
+    """
+    Muestra los coches de un concesionario cuyo modelo contenga el texto indicado.
+    Se usa un filtro con AND (concesionario y texto en modelo).
+
+    SQL equivalente aproximada:
+    SELECT c.id, c.modelo, c.precio, m.nombre AS marca, con.nombre AS concesionario
+    FROM AlphaAutos_coche c
+    INNER JOIN AlphaAutos_marca m ON c.marca_id = m.id
+    INNER JOIN AlphaAutos_concesionario con ON c.concesionario_id = con.id
+    WHERE con.id = id_concesionario AND c.modelo LIKE '%texto%';
+    """
+    coches = Coche.objects.filter(
+        concesionario_id=id_concesionario,
+        modelo__icontains=texto  # AND implícito
+    ).select_related('marca', 'concesionario').order_by('marca__nombre')
+
+    concesionario = Concesionario.objects.get(id=id_concesionario)
+
+    contexto = {
+        'coches': coches,
+        'texto': texto,
+        'concesionario': concesionario,
+    }
+    return render(request, 'concesionario/coches_concesionario_texto.html', contexto)
+
+# -------------------------------------------------------------------
+# VISTA: Coches de un concesionario cuyo modelo contiene un texto
+# -------------------------------------------------------------------
+def coches_concesionario_texto(request, id_concesionario, texto):
+    """
+    Muestra los coches de un concesionario cuyo modelo contenga el texto indicado.
+    Se usa un filtro con AND (concesionario y texto en modelo).
+
+    SQL equivalente aproximada:
+    SELECT c.id, c.modelo, c.precio, m.nombre AS marca, con.nombre AS concesionario
+    FROM AlphaAutos_coche c
+    INNER JOIN AlphaAutos_marca m ON c.marca_id = m.id
+    INNER JOIN AlphaAutos_concesionario con ON c.concesionario_id = con.id
+    WHERE con.id = id_concesionario AND c.modelo LIKE '%texto%';
+    """
+    coches = Coche.objects.filter(
+        concesionario_id=id_concesionario,
+        modelo__icontains=texto  # AND implícito
+    ).select_related('marca', 'concesionario').order_by('marca__nombre')
+
+    concesionario = Concesionario.objects.get(id=id_concesionario)
+
+    contexto = {
+        'coches': coches,
+        'texto': texto,
+        'concesionario': concesionario,
+    }
+    return render(request, 'concesionario/coches_concesionario_texto.html', contexto)

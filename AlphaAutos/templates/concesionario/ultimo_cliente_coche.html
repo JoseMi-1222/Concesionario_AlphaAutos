@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <title>Último cliente que compró el coche</title>
+</head>
+<body>
+    <h1>Último cliente que compró el coche</h1>
+
+    {% if venta %}
+        <p><strong>Coche:</strong> {{ venta.coche.marca.nombre }} {{ venta.coche.modelo }}</p>
+        <p><strong>Cliente:</strong> {{ venta.cliente.nombre }}</p>
+        <p><strong>Fecha de venta:</strong> {{ venta.fecha_venta }}</p>
+        <p><strong>Precio final:</strong> {{ venta.precio_final }} €</p>
+        <p><strong>Método de pago:</strong> {{ venta.metodo_pago }}</p>
+    {% else %}
+        <p>Este coche no ha sido vendido todavía.</p>
+    {% endif %}
+
+    <p><a href="{% url 'AlphaAutos:index' %}">Volver al inicio</a></p>
+</body>
+</html>

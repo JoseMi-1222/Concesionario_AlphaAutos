@@ -164,3 +164,28 @@ def coches_concesionario_texto(request, id_concesionario, texto):
         'concesionario': concesionario,
     }
     return render(request, 'concesionario/coches_concesionario_texto.html', contexto)
+
+# -------------------------------------------------------------------
+# VISTA: Mostrar el último cliente que compró un coche (tabla intermedia)
+# -------------------------------------------------------------------
+def ultimo_cliente_coche(request, id_coche):
+    """
+    Obtiene el último cliente que compró el coche indicado.
+    Se accede a través de la tabla intermedia 'Venta' (N:M).
+
+    SQL equivalente aproximada:
+    SELECT cliente_id
+    FROM AlphaAutos_venta
+    WHERE coche_id = id_coche
+    ORDER BY fecha_venta DESC
+    LIMIT 1;
+    """
+    # Usamos select_related para optimizar (accede a cliente y coche)
+    ultima_venta = Venta.objects.select_related('cliente', 'coche').filter(
+        coche_id=id_coche
+    ).order_by('-fecha_venta').first()  # LIMIT 1
+
+    contexto = {
+        'venta': ultima_venta
+    }
+    return render(request, 'concesionario/ultimo_cliente_coche.html', contexto)

@@ -11,6 +11,7 @@ urlpatterns = [
     path('coches/<int:anio>/<int:mes>/', views.coches_por_fecha, name='coches_por_fecha'),
     path('coches/transmision/<str:tipo>/', views.coches_transmision, name='coches_transmision'),
     path('concesionario/<int:id_concesionario>/coches/<str:texto>/', views.coches_concesionario_texto, name='coches_concesionario_texto'),
-      
+    path('coche/<int:id_coche>/ultimo_cliente/', views.ultimo_cliente_coche, name='ultimo_cliente_coche'),
+       
 
 ]

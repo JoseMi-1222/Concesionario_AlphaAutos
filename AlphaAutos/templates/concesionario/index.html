@@ -5,14 +5,30 @@
     <title>AlphaAutos - Inicio</title>
 </head>
 <body>
-    <h1>Bienvenido a AlphaAutos</h1>
-    <p>Seleccione una opción:</p>
+    <h1>🚗 Bienvenido a AlphaAutos</h1>
+    <p>Seleccione una opción para navegar:</p>
+
     <ul>
+        <!-- Coches -->
         <li><a href="{% url 'AlphaAutos:coche_list' %}">Listado de Coches</a></li>
-        <li><a href="{% url 'AlphaAutos:cliente_list' %}">Listado de Clientes</a></li>
+        <li><a href="{% url 'AlphaAutos:coches_por_fecha' anio=2024 mes=5 %}">Coches por Año/Mes (Ejemplo)</a></li>
+        <li><a href="{% url 'AlphaAutos:coches_transmision' tipo='AT' %}">Coches por Transmisión</a></li>
+        <li><a href="{% url 'AlphaAutos:coches_concesionario_texto' id_concesionario=1 texto='Fiesta' %}">Buscar Coches en un Concesionario</a></li>
         <li><a href="{% url 'AlphaAutos:coches_sin_ventas' %}">Coches sin Ventas</a></li>
-        <li><a href="{% url 'AlphaAutos:ventas_aggregate' %}">Resumen de Ventas</a></li>
+
+        <!-- Clientes -->
+        <li><a href="{% url 'AlphaAutos:cliente_list' %}">Listado de Clientes</a></li>
+
+        <!-- Concesionarios -->
+        <li><a href="{% url 'AlphaAutos:concesionario_list' %}">Listado de Concesionarios</a></li>
+
+        <!-- Ventas / Agregados -->
+        <li><a href="{% url 'AlphaAutos:ventas_aggregate' %}">Resumen de Ventas (Aggregate)</a></li>
+
+        <!-- Marcas -->
+        <li><a href="{% url 'AlphaAutos:marca_desc_nombre' %}">Marcas con Descripción que contiene su nombre</a></li>
     </ul>
 </body>
 </html>
+
 

@@ -1,4 +1,9 @@
 from django.shortcuts import render
+from .models import Coche
+from django.shortcuts import get_object_or_404
+from django.db.models import F, Q
+from django.utils import timezone
+
 
 # -------------------------------
 # VISTA: Página inicial (Index)
@@ -11,8 +16,6 @@ def index(request):
     -- No aplica: sólo renderiza la plantilla index.html
     """
     return render(request, "concesionario/index.html")
-
-from .models import Coche
 
 # --------------------------------------------------
 # VISTA: Listar todos los coches con sus relaciones
@@ -32,9 +35,6 @@ def coche_list(request):
     coches = Coche.objects.select_related('marca', 'concesionario').order_by('marca__nombre')
     contexto = {'coches': coches}
     return render(request, 'concesionario/coche_list.html', contexto)
-
-from django.shortcuts import get_object_or_404
-from .models import Coche
 
 # ------------------------------------------------------------
 # VISTA: Mostrar un coche concreto mediante su id (int)
@@ -58,4 +58,30 @@ def coche_detail(request, id_coche):
     )
     contexto = {'coche': coche}
     return render(request, 'concesionario/coche_detail.html', contexto)
+
+# ----------------------------------------------------------------
+# VISTA: Listar coches fabricados en un año y mes concretos
+# ----------------------------------------------------------------
+def coches_por_fecha(request, anio, mes):
+    """
+    Muestra los coches cuya fecha de fabricación coincide con el año y mes indicados.
+
+    SQL equivalente aproximada:
+    SELECT * FROM AlphaAutos_coche
+    WHERE EXTRACT(YEAR FROM fecha_fabricacion) = anio
+      AND EXTRACT(MONTH FROM fecha_fabricacion) = mes
+    ORDER BY fecha_fabricacion DESC;
+    """
+    coches = Coche.objects.filter(
+        fecha_fabricacion__year=anio,
+        fecha_fabricacion__month=mes
+    ).select_related('marca', 'concesionario').order_by('-fecha_fabricacion')
+
+    contexto = {
+        'coches': coches,
+        'anio': anio,
+        'mes': mes,
+    }
+    return render(request, 'concesionario/coches_por_fecha.html', contexto)
+
 

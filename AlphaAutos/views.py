@@ -2,7 +2,7 @@ from django.shortcuts import render
 from .models import *
 from django.shortcuts import get_object_or_404
 from django.db.models import F, Q
-from django.utils import timezone
+from django.db.models import Avg, Max, Min
 
 
 # -------------------------------
@@ -238,12 +238,8 @@ def concesionario_detail(request, id_concesionario):
 # -------------------------------------------------------------------
 def resumen_ventas(request):
     resumen = Venta.objects.aggregate(
-        precio_promedio=Avg('precio_final'),
-        precio_maximo=Max('precio_final'),
-        precio_minimo=Min('precio_final')
+        promedio=Avg('precio_final'),
+        maximo=Max('precio_final'),
+        minimo=Min('precio_final')
     )
-
-    contexto = {
-        'resumen': resumen
-    }
-    return render(request, 'concesionario/resumen_ventas.html', contexto)
+    return render(request, 'concesionario/resumen_ventas.html', {'resumen': resumen})

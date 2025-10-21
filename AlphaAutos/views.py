@@ -189,3 +189,22 @@ def ultimo_cliente_coche(request, id_coche):
         'venta': ultima_venta
     }
     return render(request, 'concesionario/ultimo_cliente_coche.html', contexto)
+
+# --------------------------------------------------------------------
+# VISTA: Mostrar coches que no tienen ventas (isnull=True)
+# --------------------------------------------------------------------
+def coches_sin_ventas(request):
+    """
+    Muestra los coches que no tienen ventas asociadas (sin relación en la tabla intermedia 'Venta').
+    Se usa un filtro con isnull=True sobre la relación reversa 'venta'.
+
+    SQL equivalente aproximada:
+    SELECT c.id, c.modelo, c.precio
+    FROM AlphaAutos_coche c
+    LEFT JOIN AlphaAutos_venta v ON c.id = v.coche_id
+    WHERE v.id IS NULL;
+    """
+    coches = Coche.objects.filter(venta__isnull=True).select_related('marca', 'concesionario').order_by('marca__nombre')
+
+    contexto = {'coches': coches}
+    return render(request, 'concesionario/coches_sin_ventas.html', contexto)

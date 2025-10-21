@@ -1,5 +1,5 @@
 # Concesionario_Django
-# Proyecto de un Concesionario en Django hecho por José Miguel Arras Gavira para la asignatura Desarrollo Web en Entorno Servidor.
+Proyecto de un Concesionario en Django hecho por José Miguel Arras Gavira para la asignatura Desarrollo Web en Entorno Servidor.
 
 # Proyecto AlphaAutos
 
@@ -9,7 +9,7 @@ AlphaAutos es una aplicación Django para la gestión de un concesionario de aut
 El sistema permite registrar concesionarios, empleados, clientes, coches, marcas, seguros, aseguradoras y mantenimientos.  
 Se basa en un modelo entidad-relación de un concesionario real.
 
-Se han definido 10 modelos con los siguientes requisitos:
+Se han definido 11 modelos con los siguientes requisitos:
 - 3 relaciones OneToOne
 - 3 relaciones ManyToOne
 - 3 relaciones ManyToMany (una con tabla intermedia con atributos extra)
@@ -24,197 +24,189 @@ Se han definido 10 modelos con los siguientes requisitos:
 Representa el concesionario principal.
 
 **Atributos:**
-- `nombre`: `CharField(max_length=100)` → Nombre del concesionario. El parámetro `max_length` limita la longitud del texto.
-- `direccion`: `TextField()` → Dirección completa sin límite de caracteres.
-- `telefono`: `CharField(max_length=20)` → Número de teléfono de contacto.
-- `ciudad`: `CharField(max_length=50)` → Ciudad donde se ubica el concesionario.
+- `nombre`: `CharField(max_length=100)`  
+- `direccion`: `TextField()`  
+- `telefono`: `CharField(max_length=20)`  
+- `ciudad`: `CharField(max_length=50)`  
 
 **Relaciones:**
-- Relación 1:N con `Empleado` (un concesionario puede tener varios empleados).
+- 1:N con `Empleado`  
 
 ---
 
 ### 2. Empleado
-Representa a los trabajadores del concesionario.
-
 **Atributos:**
-- `concesionario`: `ForeignKey(Concesionario, on_delete=models.CASCADE)` → Relación con el concesionario.  
-  El parámetro `on_delete=models.CASCADE` indica que si se elimina el concesionario, también se eliminarán sus empleados.
-- `nombre`: `CharField(max_length=100)` → Nombre del empleado.
-- `puesto`: `CharField(max_length=100)` → Cargo o rol dentro del concesionario.
-- `salario`: `DecimalField(max_digits=8, decimal_places=2)` → Sueldo del empleado.  
-  `max_digits` define el número total de dígitos y `decimal_places` los decimales.
-- `fecha_contratacion`: `DateField()` → Fecha en la que fue contratado.
+- `concesionario`: `ForeignKey(Concesionario, on_delete=models.CASCADE)`  
+- `nombre`: `CharField(max_length=100)`  
+- `puesto`: `CharField(max_length=100)`  
+- `salario`: `DecimalField(max_digits=8, decimal_places=2)`  
+- `fecha_contratacion`: `DateField()`  
 
 **Relaciones:**
-- ManyToOne con `Concesionario`.
-- OneToOne con `UsuarioEmpleado`.
+- ManyToOne con `Concesionario`  
+- OneToOne con `UsuarioEmpleado`  
 
 ---
 
 ### 3. UsuarioEmpleado
-Datos adicionales del empleado (perfil interno).
-
 **Atributos:**
-- `empleado`: `OneToOneField(Empleado, on_delete=models.CASCADE)` → Relación uno a uno con un empleado.
-- `direccion`: `TextField()` → Dirección del empleado.
-- `telefono`: `CharField(max_length=20)` → Teléfono del empleado.
-- `experiencia`: `IntegerField(default=0)` → Años de experiencia. El parámetro `default` establece un valor inicial.
+- `empleado`: `OneToOneField(Empleado, on_delete=models.CASCADE)`  
+- `direccion`: `TextField()`  
+- `telefono`: `CharField(max_length=20)`  
+- `experiencia`: `IntegerField(default=0)`  
 
 **Relaciones:**
-- OneToOne con `Empleado`.
+- OneToOne con `Empleado`  
 
 ---
 
 ### 4. Marca
-Representa la marca de los vehículos.
-
 **Atributos:**
-- `nombre`: `CharField(max_length=50)` → Nombre de la marca.
-- `pais_origen`: `CharField(max_length=50)` → País donde se fundó la marca.
-- `año_fundacion`: `IntegerField(null=True)` → Año de fundación. `null=True` permite valores vacíos.
-- `descripcion`: `TextField(blank=True)` → Descripción general. `blank=True` permite dejar el campo vacío en formularios.
+- `nombre`: `CharField(max_length=50)`  
+- `pais_origen`: `CharField(max_length=50)`  
+- `año_fundacion`: `IntegerField(null=True)`  
+- `descripcion`: `TextField(blank=True)`  
 
 **Relaciones:**
-- OneToMany con `Coche`.
+- 1:N con `Coche`  
 
 ---
 
 ### 5. Coche
-Modelo de automóvil disponible en el concesionario.
-
 **Atributos:**
-- `marca`: `ForeignKey(Marca, on_delete=models.CASCADE)` → Marca a la que pertenece.
-- `concesionario`: `ForeignKey(Concesionario, on_delete=models.CASCADE)` → Concesionario donde se vende.
-- `modelo`: `CharField(max_length=100)` → Modelo del coche.
-- `precio`: `DecimalField(max_digits=10, decimal_places=2)` → Precio del coche.
-- `transmision`: `CharField(choices=TRANSMISIONES, default='MT', max_length=2)` → Tipo de transmisión.  
-  El parámetro `choices` define las opciones válidas y `default` el valor por defecto.
-- `fecha_fabricacion`: `DateField()` → Fecha de fabricación.
+- `marca`: `ForeignKey(Marca, on_delete=models.CASCADE)`  
+- `concesionario`: `ForeignKey(Concesionario, on_delete=models.CASCADE)`  
+- `modelo`: `CharField(max_length=100)`  
+- `precio`: `DecimalField(max_digits=10, decimal_places=2)`  
+- `transmision`: `CharField(choices=TRANSMISIONES, default='MT', max_length=2)`  
+- `fecha_fabricacion`: `DateField()`  
 
 **Relaciones:**
-- ManyToOne con `Marca`.
-- ManyToOne con `Concesionario`.
-- ManyToMany con `Cliente` (a través de `Venta`).
-- ManyToMany con `Mantenimiento`.
-- OneToOne con `Seguro`.
+- ManyToOne con `Marca` y `Concesionario`  
+- ManyToMany con `Cliente` (a través de `Venta`)  
+- ManyToMany con `Mantenimiento`  
+- OneToOne con `Seguro`  
 
 ---
 
 ### 6. Cliente
-Representa a los clientes del concesionario.
-
 **Atributos:**
-- `nombre`: `CharField(max_length=100)` → Nombre completo.
-- `email`: `EmailField(unique=True)` → Correo electrónico único. `unique=True` impide duplicados.
-- `telefono`: `CharField(max_length=20)` → Teléfono de contacto.
-- `fecha_registro`: `DateTimeField(default=timezone.now)` → Fecha y hora de registro. `default` usa la hora actual.
+- `nombre`: `CharField(max_length=100)`  
+- `email`: `EmailField(unique=True)`  
+- `telefono`: `CharField(max_length=20)`  
+- `fecha_registro`: `DateTimeField(default=timezone.now)`  
 
 **Relaciones:**
-- OneToOne con `DatosCliente`.
-- ManyToMany con `Coche` (a través de `Venta`).
+- OneToOne con `DatosCliente`  
+- ManyToMany con `Coche` (a través de `Venta`)  
 
 ---
 
 ### 7. DatosCliente
-Datos personales adicionales del cliente.
-
 **Atributos:**
-- `cliente`: `OneToOneField(Cliente, on_delete=models.CASCADE)` → Relación uno a uno con `Cliente`.
-- `direccion`: `TextField()` → Dirección postal.
-- `dni`: `CharField(max_length=15, unique=True)` → Documento nacional de identidad. `unique=True` evita duplicados.
-- `puntos_fidelidad`: `FloatField(default=0.0)` → Puntos acumulados por compras.
+- `cliente`: `OneToOneField(Cliente, on_delete=models.CASCADE)`  
+- `direccion`: `TextField()`  
+- `dni`: `CharField(max_length=15, unique=True)`  
+- `puntos_fidelidad`: `FloatField(default=0.0)`  
 
 **Relaciones:**
-- OneToOne con `Cliente`.
+- OneToOne con `Cliente`  
 
 ---
 
 ### 8. Venta
-Tabla intermedia que representa una venta entre Cliente y Coche con información adicional.
-
 **Atributos:**
-- `cliente`: `ForeignKey(Cliente, on_delete=models.CASCADE)` → Cliente que realiza la compra.
-- `coche`: `ForeignKey(Coche, on_delete=models.CASCADE)` → Coche vendido.
-- `fecha_venta`: `DateField(default=timezone.now)` → Fecha en la que se realiza la venta.
-- `precio_final`: `DecimalField(max_digits=10, decimal_places=2)` → Precio final del coche.
-- `metodo_pago`: `CharField(max_length=50)` → Método de pago utilizado.
+- `cliente`: `ForeignKey(Cliente, on_delete=models.CASCADE)`  
+- `coche`: `ForeignKey(Coche, on_delete=models.CASCADE)`  
+- `fecha_venta`: `DateField(default=timezone.now)`  
+- `precio_final`: `DecimalField(max_digits=10, decimal_places=2)`  
+- `metodo_pago`: `CharField(max_length=50)`  
 
 **Relaciones:**
-- ManyToMany entre `Cliente` y `Coche` (con tabla intermedia).
+- ManyToMany entre `Cliente` y `Coche` con tabla intermedia  
 
 ---
 
 ### 9. Seguro
-Asociado a un coche y a varias aseguradoras.
-
 **Atributos:**
-- `coche`: `OneToOneField(Coche, on_delete=models.CASCADE)` → Coche asegurado.
-- `tipo_seguro`: `CharField(max_length=50)` → Tipo de seguro (básico, completo, etc.).
-- `precio_mensual`: `DecimalField(max_digits=7, decimal_places=2)` → Precio mensual del seguro.
-- `duracion`: `IntegerField(help_text="Duración en meses")` → Duración del seguro en meses.  
-  `help_text` muestra una descripción en el panel de administración.
+- `coche`: `OneToOneField(Coche, on_delete=models.CASCADE)`  
+- `tipo_seguro`: `CharField(max_length=50)`  
+- `precio_mensual`: `DecimalField(max_digits=7, decimal_places=2)`  
+- `duracion`: `IntegerField(help_text="Duración en meses")`  
 
 **Relaciones:**
-- OneToOne con `Coche`.
-- ManyToMany con `Aseguradora`.
+- OneToOne con `Coche`  
+- ManyToMany con `Aseguradora`  
 
 ---
 
 ### 10. Aseguradora
-Compañías de seguros asociadas a los coches.
-
 **Atributos:**
-- `nombre`: `CharField(max_length=100)` → Nombre de la aseguradora.
-- `pais`: `CharField(max_length=50)` → País donde opera.
-- `telefono`: `CharField(max_length=20)` → Teléfono de contacto.
-- `web`: `URLField(blank=True)` → Página web. `blank=True` permite dejarlo vacío.
-- `seguros`: `ManyToManyField(Seguro)` → Seguros que ofrece la compañía.
+- `nombre`: `CharField(max_length=100)`  
+- `pais`: `CharField(max_length=50)`  
+- `telefono`: `CharField(max_length=20)`  
+- `web`: `URLField(blank=True)`  
+- `seguros`: `ManyToManyField(Seguro)`  
 
 **Relaciones:**
-- ManyToMany con `Seguro`.
+- ManyToMany con `Seguro`  
 
 ---
 
 ### 11. Mantenimiento
-Registro de revisiones o reparaciones de coches.
-
 **Atributos:**
-- `coches`: `ManyToManyField(Coche)` → Coches implicados en el mantenimiento.
-- `fecha_revision`: `DateField()` → Fecha de la revisión.
-- `kilometros`: `IntegerField()` → Kilómetros recorridos al momento de la revisión.
-- `comentarios`: `TextField()` → Observaciones o detalles de la revisión.
-- `coste`: `DecimalField(max_digits=8, decimal_places=2)` → Costo total del mantenimiento.
+- `coches`: `ManyToManyField(Coche)`  
+- `fecha_revision`: `DateField()`  
+- `kilometros`: `IntegerField()`  
+- `comentarios`: `TextField()`  
+- `coste`: `DecimalField(max_digits=8, decimal_places=2)`  
 
 **Relaciones:**
-- ManyToMany con `Coche`.
+- ManyToMany con `Coche`  
 
 ---
 
 ## Tipos de campo y parámetros usados
 
 **Tipos de campo:**
-1. CharField
-2. TextField
-3. EmailField
-4. IntegerField
-5. FloatField
-6. DecimalField
-7. DateField
-8. DateTimeField
-9. URLField
-10. ForeignKey
-11. OneToOneField
-12. ManyToManyField
+1. CharField  
+2. TextField  
+3. EmailField  
+4. IntegerField  
+5. FloatField  
+6. DecimalField  
+7. DateField  
+8. DateTimeField  
+9. URLField  
+10. ForeignKey  
+11. OneToOneField  
+12. ManyToManyField  
 
 **Parámetros comunes:**
-- `max_length`: limita la longitud del texto.
-- `unique`: impide valores duplicados.
-- `default`: establece un valor por defecto.
-- `null`: permite valores nulos en la base de datos.
-- `blank`: permite dejar el campo vacío en formularios.
-- `choices`: define un conjunto de valores válidos.
-- `help_text`: muestra información adicional en el panel de administración.
-- `on_delete`: define el comportamiento al eliminar el objeto relacionado (por ejemplo, `models.CASCADE`).
+- `max_length`  
+- `unique`  
+- `default`  
+- `null`  
+- `blank`  
+- `choices`  
+- `help_text`  
+- `on_delete`  
+
+---
+
+## URLs y vistas disponibles
+
+| URL | Vista | Descripción |
+|-----|------|-------------|
+| `/` | `index` | Página de inicio con enlaces a todas las secciones. |
+| `/coches/` | `coche_list` | Lista todos los coches con su marca y concesionario. |
+| `/coche/<id_coche>/` | `coche_detail` | Muestra detalle de un coche concreto. |
+| `/coches/<anio>/<mes>/` | `coches_por_fecha` | Lista coches fabricados en un año y mes concretos. |
+| `/coches/transmision/<tipo>/` | `coches_transmision` | Filtra coches por tipo de transmisión. |
+| `/concesionario/<id_concesionario>/coches/<texto>/` | `coches_concesionario_texto` | Muestra coches de un concesionario cuyo modelo contiene un texto. |
+| `/coche/<id_coche>/ultimo_cliente/` | `ultimo_cliente_coche` | Muestra el último cliente que compró un coche. |
+| `/coches/sin_ventas/` | `coches_sin_ventas` | Lista coches que no tienen ventas asociadas. |
+| `/concesionario/<id_concesionario>/detalle/` | `concesionario_detail` | Muestra el concesionario con sus empleados y coches. |
+| `/ventas/resumen/` | `resumen_ventas` | Calcula y muestra promedio, máximo y mínimo de precios de ventas. |
 
 ---

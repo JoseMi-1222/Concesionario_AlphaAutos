@@ -183,30 +183,13 @@ Representa el concesionario principal.
 12. ManyToManyField  
 
 **Parámetros comunes:**
-- `max_length`  
-- `unique`  
-- `default`  
-- `null`  
-- `blank`  
-- `choices`  
-- `help_text`  
-- `on_delete`  
-
----
-
-## URLs y vistas disponibles
-
-| URL | Vista | Descripción |
-|-----|------|-------------|
-| `/` | `index` | Página de inicio con enlaces a todas las secciones. |
-| `/coches/` | `coche_list` | Lista todos los coches con su marca y concesionario. |
-| `/coche/<id_coche>/` | `coche_detail` | Muestra detalle de un coche concreto. |
-| `/coches/<anio>/<mes>/` | `coches_por_fecha` | Lista coches fabricados en un año y mes concretos. |
-| `/coches/transmision/<tipo>/` | `coches_transmision` | Filtra coches por tipo de transmisión. |
-| `/concesionario/<id_concesionario>/coches/<texto>/` | `coches_concesionario_texto` | Muestra coches de un concesionario cuyo modelo contiene un texto. |
-| `/coche/<id_coche>/ultimo_cliente/` | `ultimo_cliente_coche` | Muestra el último cliente que compró un coche. |
-| `/coches/sin_ventas/` | `coches_sin_ventas` | Lista coches que no tienen ventas asociadas. |
-| `/concesionario/<id_concesionario>/detalle/` | `concesionario_detail` | Muestra el concesionario con sus empleados y coches. |
-| `/ventas/resumen/` | `resumen_ventas` | Calcula y muestra promedio, máximo y mínimo de precios de ventas. |
+- `max_length`: limita la longitud del texto.
+- `unique`: impide valores duplicados.
+- `default`: establece un valor por defecto.
+- `null`: permite valores nulos en la base de datos.
+- `blank`: permite dejar el campo vacío en formularios.
+- `choices`: define un conjunto de valores válidos.
+- `help_text`: muestra información adicional en el panel de administración.
+- `on_delete`: define el comportamiento al eliminar el objeto relacionado (por ejemplo, `models.CASCADE`).
 
 ---

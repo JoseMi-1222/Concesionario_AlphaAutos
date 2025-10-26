@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <title>Coches por tipo de transmisión</title>
+</head>
+<body>
+    <h1>Coches con transmisión {{ tipo }} o manual</h1>
+
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Marca</th>
+            <th>Modelo</th>
+            <th>Transmisión</th>
+            <th>Concesionario</th>
+        </tr>
+        {% for coche in coches %}
+        <tr>
+            <td>{{ coche.id }}</td>
+            <td>{{ coche.marca.nombre }}</td>
+            <td>{{ coche.modelo }}</td>
+            <td>{{ coche.get_transmision_display }}</td>
+            <td>{{ coche.concesionario.nombre }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="5">No hay coches con ese tipo de transmisión.</td></tr>
+        {% endfor %}
+    </table>
+
+    <p><a href="{% url 'AlphaAutos:index' %}">Volver al inicio</a></p>
+</body>
+</html>

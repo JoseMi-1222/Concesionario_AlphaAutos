@@ -3,7 +3,23 @@ from .models import *
 from django.shortcuts import get_object_or_404
 from django.db.models import F, Q
 from django.db.models import Avg, Max, Min
+from django.views.defaults import page_not_found
 
+# -------------------------------
+# VISTA: Errores
+# -------------------------------
+
+def mi_error_404(request, exception=None):
+    return render(request, "errores/404.html",None,None,404) 
+
+def mi_error_500(request):
+    return render(request, "errores/500.html",None,None,500)
+
+def mi_error_403(request, exception=None):
+    return render(request, "errores/403.html",None,None,403)
+
+def mi_error_400(request, exception=None):
+    return render(request, "errores/400.html",None,None,400) 
 
 # -------------------------------
 # VISTA: Página inicial (Index)

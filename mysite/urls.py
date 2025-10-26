@@ -21,4 +21,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('AlphaAutos.urls')),
 ]
-
+handler404 = 'AlphaAutos.views.mi_error_404'
+handler400 = 'AlphaAutos.views.mi_error_400'
+handler500 = 'AlphaAutos.views.mi_error_500'
+handler403 = 'AlphaAutos.views.mi_error_403'

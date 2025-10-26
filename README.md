@@ -193,3 +193,31 @@ Representa el concesionario principal.
 - `on_delete`: define el comportamiento al eliminar el objeto relacionado (por ejemplo, `models.CASCADE`).
 
 ---
+
+## URLs y vistas disponibles
+
+| URL | Vista | Descripción |
+|-----|------|-------------|
+| `/` | `index` | Página de inicio con enlaces a todas las secciones. |
+| `/coches/` | `coche_list` | Lista todos los coches con su marca y concesionario. |
+| `/coche/<id_coche>/` | `coche_detail` | Muestra detalle de un coche concreto. |
+| `/coches/<anio>/<mes>/` | `coches_por_fecha` | Lista coches fabricados en un año y mes concretos. |
+| `/coches/transmision/<tipo>/` | `coches_transmision` | Filtra coches por tipo de transmisión. |
+| `/concesionario/<id_concesionario>/coches/<texto>/` | `coches_concesionario_texto` | Muestra coches de un concesionario cuyo modelo contiene un texto. |
+| `/coche/<id_coche>/ultimo_cliente/` | `ultimo_cliente_coche` | Muestra el último cliente que compró un coche. |
+| `/coches/sin_ventas/` | `coches_sin_ventas` | Lista coches que no tienen ventas asociadas. |
+| `/concesionario/<id_concesionario>/detalle/` | `concesionario_detail` | Muestra el concesionario con sus empleados y coches. |
+| `/ventas/resumen/` | `resumen_ventas` | Calcula y muestra promedio, máximo y mínimo de precios de ventas. |
+
+---
+
+## Requisitos funcionales implementados
+
+1. **Gestión de concesionarios, empleados y coches**  
+2. **Gestión de clientes y ventas**  
+3. **Gestión de seguros y aseguradoras**  
+4. **Gestión de mantenimientos**  
+5. **Consultas agregadas con `aggregate()`**  
+6. **Filtros y búsquedas por atributos**  
+7. **Optimización de consultas (`select_related`, `prefetch_related`)**  
+8. **Validaciones de datos (`unique`, `blank`, `null`)**  

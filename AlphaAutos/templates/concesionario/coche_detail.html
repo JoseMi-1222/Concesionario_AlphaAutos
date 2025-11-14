@@ -1,20 +1,21 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="utf-8">
-    <title>Detalle del Coche</title>
-</head>
-<body>
-    <h1>Detalle del Coche</h1>
+{% extends 'concesionario/base.html' %}
 
+{% block title %}Detalle del Coche{% endblock %}
+
+{% block cabecera %}
+<h1>Detalle del Coche</h1>
+{% endblock %}
+
+{% block content %}
+{% if coche %}
     <p><strong>ID:</strong> {{ coche.id }}</p>
     <p><strong>Marca:</strong> {{ coche.marca.nombre }}</p>
     <p><strong>Modelo:</strong> {{ coche.modelo }}</p>
     <p><strong>Transmisión:</strong> {{ coche.get_transmision_display }}</p>
-    <p><strong>Precio:</strong> {{ coche.precio }} €</p>
+    <p><strong>Precio:</strong> {{ coche.precio|floatformat:2 }} €</p>
     <p><strong>Concesionario:</strong> {{ coche.concesionario.nombre }}</p>
-    <p><strong>Fecha de fabricación:</strong> {{ coche.fecha_fabricacion }}</p>
-
-    <p><a href="{% url 'AlphaAutos:coche_list' %}">Volver al listado</a></p>
-</body>
-</html>
+    <p><strong>Fecha de fabricación:</strong> {{ coche.fecha_fabricacion|date:"d/m/Y" }}</p>
+{% else %}
+    <p>No se encontró el coche.</p>
+{% endif %}
+{% endblock %}

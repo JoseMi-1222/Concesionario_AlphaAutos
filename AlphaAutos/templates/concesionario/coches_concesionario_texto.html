@@ -1,34 +1,26 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="utf-8">
-    <title>Coches del concesionario {{ concesionario.nombre }}</title>
-</head>
-<body>
-    <h1>Coches del concesionario {{ concesionario.nombre }}</h1>
-    <p>Mostrando modelos que contienen: <strong>{{ texto }}</strong></p>
+{% extends 'concesionario/base.html' %}
 
-    <table border="1">
-        <tr>
-            <th>ID</th>
-            <th>Marca</th>
-            <th>Modelo</th>
-            <th>Precio (€)</th>
-            <th>Concesionario</th>
-        </tr>
-        {% for coche in coches %}
-        <tr>
-            <td>{{ coche.id }}</td>
-            <td>{{ coche.marca.nombre }}</td>
-            <td>{{ coche.modelo }}</td>
-            <td>{{ coche.precio }}</td>
-            <td>{{ coche.concesionario.nombre }}</td>
-        </tr>
-        {% empty %}
+{% block title %}Coches en {{ concesionario.nombre }}{% endblock %}
+
+{% block cabecera %}
+<h1>Coches del concesionario {{ concesionario.nombre }}</h1>
+<p>Mostrando modelos que contienen: <strong>{{ texto }}</strong></p>
+{% endblock %}
+
+{% block content %}
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Marca</th>
+        <th>Modelo</th>
+        <th>Precio (€)</th>
+        <th>Concesionario</th>
+    </tr>
+    {% for coche in coches %}
+        {% include 'concesionario/for_row_coche.html' %}
+    {% empty %}
         <tr><td colspan="5">No hay coches que cumplan ese criterio.</td></tr>
-        {% endfor %}
-    </table>
+    {% endfor %}
+</table>
+{% endblock %}
 
-    <p><a href="{% url 'AlphaAutos:index' %}">Volver al inicio</a></p>
-</body>
-</html>

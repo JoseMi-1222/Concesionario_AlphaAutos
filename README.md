@@ -212,7 +212,7 @@ Representa el concesionario principal.
 
 ---
 
-## Requisitos funcionales implementados
+## Templates y Requisitos funcionales implementados
 
 1. **Gestión de concesionarios, empleados y coches**  
 2. **Gestión de clientes y ventas**  

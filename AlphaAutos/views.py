@@ -100,10 +100,11 @@ def ultimo_cliente_coche(request, id_coche):
     ultimo_cliente = ultima_venta.cliente if ultima_venta else None
 
     contexto = {
-        'coche_id': id_coche,
+        'venta': ultima_venta,
         'ultimo_cliente': ultimo_cliente
     }
     return render(request, 'concesionario/ultimo_cliente_coche.html', contexto)
+
 
 # --------------------------------------------------------------------
 # VISTA: Mostrar coches que no tienen ventas (isnull=True)

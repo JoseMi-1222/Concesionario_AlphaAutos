@@ -7,14 +7,15 @@
 {% endblock %}
 
 {% block content %}
-{% if ultimo_cliente %}
-<p><strong>Coche:</strong> {{ venta.coche.marca.nombre }} {{ venta.coche.modelo }}</p>
-<p><strong>Cliente:</strong> {{ ultimo_cliente.nombre }}</p>
-<p><strong>Fecha de venta:</strong> {{ venta.fecha_venta|date:"d/m/Y" }}</p>
-<p><strong>Precio final:</strong> {{ venta.precio_final|floatformat:2 }} €</p>
-<p><strong>Método de pago:</strong> {{ venta.metodo_pago }}</p>
+{% if venta %}
+    <p><strong>Coche:</strong> {{ venta.coche.marca.nombre }} {{ venta.coche.modelo }}</p>
+    <p><strong>Cliente:</strong> {{ venta.cliente.nombre }}</p>
+    <p><strong>Fecha de venta:</strong> {{ venta.fecha_venta|date:"d/m/Y" }}</p>
+    <p><strong>Precio final:</strong> {{ venta.precio_final|floatformat:2 }} €</p>
+    <p><strong>Método de pago:</strong> {{ venta.metodo_pago }}</p>
 {% else %}
-<p>Este coche no ha sido vendido todavía.</p>
+    <p>Este coche no ha sido vendido todavía.</p>
 {% endif %}
+<br>
+<p><a href="{% url 'AlphaAutos:index' %}">Volver al inicio</a></p>
 {% endblock %}
-

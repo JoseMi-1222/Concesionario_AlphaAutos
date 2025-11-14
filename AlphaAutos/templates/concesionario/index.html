@@ -8,9 +8,39 @@
 {% endblock %}
 
 {% block content %}
-<p>Explora nuestra amplia gama de coches y encuentra el concesionario más cercano a ti.</p>
-<img src="{% static 'concesionario/img/logo.png' %}" style="width:100%;max-width:600px;">
-{% endblock %}  
+<h3>Explora nuestra amplia gama de coches y encuentra el concesionario más cercano a ti.</h3>
+<img src="{% static 'concesionario/img/logo.png' %}" style="width:400px; height:400px;">
+
+<h2>Consultas rápidas</h2>
+<br>
+<ul>
+    <li>
+        Coches sin ventas:
+        <a href="{% url 'AlphaAutos:coches_sin_ventas' %}">Ver</a>
+    </li>
+
+    <li>
+        Coches por fecha (ejemplo: Diciembre 2024):
+        <a href="{% url 'AlphaAutos:coches_por_fecha' 2024 12 %}">Ver</a>
+    </li>
+
+    <li>
+        Coches por transmisión (ejemplo: Automática):
+        <a href="{% url 'AlphaAutos:coches_transmision' 'AT' %}">Ver</a>
+    </li>
+
+    <li>
+        Coches de un concesionario por texto (ejemplo: texto 'Golf' y concesionario id 1):
+        <a href="{% url 'AlphaAutos:coches_concesionario_texto' 1 'Golf' %}">Ver</a>
+    </li>
+
+    <li>
+        Último cliente de un coche (ejemplo: coche id 3):
+        <a href="{% url 'AlphaAutos:ultimo_cliente_coche' 3 %}">Ver</a>
+    </li>
+</ul>
+{% endblock %}
+
 
 
 

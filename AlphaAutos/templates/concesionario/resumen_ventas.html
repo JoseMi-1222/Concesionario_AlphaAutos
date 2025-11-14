@@ -12,5 +12,7 @@
 <p>Precio mínimo: {{ resumen.precio_min|floatformat:2 }} €</p>
 <p>Total ventas: {{ resumen.total_ventas }}</p>
 <p>Suma importes: {{ resumen.suma_importes|floatformat:2 }} €</p>
+<br>
+<p><a href="{% url 'AlphaAutos:index' %}">Volver al inicio</a></p>
 {% endblock %}
 

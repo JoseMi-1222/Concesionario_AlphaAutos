@@ -183,14 +183,14 @@ Representa el concesionario principal.
 12. ManyToManyField  
 
 **Parámetros comunes:**
-- `max_length`: limita la longitud del texto.
-- `unique`: impide valores duplicados.
-- `default`: establece un valor por defecto.
-- `null`: permite valores nulos en la base de datos.
-- `blank`: permite dejar el campo vacío en formularios.
-- `choices`: define un conjunto de valores válidos.
-- `help_text`: muestra información adicional en el panel de administración.
-- `on_delete`: define el comportamiento al eliminar el objeto relacionado (por ejemplo, `models.CASCADE`).
+- `max_length`: limita la longitud del texto.  
+- `unique`: impide valores duplicados.  
+- `default`: establece un valor por defecto.  
+- `null`: permite valores nulos en la base de datos.  
+- `blank`: permite dejar el campo vacío en formularios.  
+- `choices`: define un conjunto de valores válidos.  
+- `help_text`: muestra información adicional en el panel de administración.  
+- `on_delete`: define el comportamiento al eliminar el objeto relacionado (por ejemplo, `models.CASCADE`).  
 
 ---
 
@@ -208,6 +208,7 @@ Representa el concesionario principal.
 | `/coches/sin_ventas/` | `coches_sin_ventas` | Lista coches que no tienen ventas asociadas. |
 | `/concesionario/<id_concesionario>/detalle/` | `concesionario_detail` | Muestra el concesionario con sus empleados y coches. |
 | `/ventas/resumen/` | `resumen_ventas` | Calcula y muestra promedio, máximo y mínimo de precios de ventas. |
+| `/concesionarios/` | `lista_concesionarios` | Lista todos los concesionarios registrados. |
 
 ---
 
@@ -221,3 +222,34 @@ Representa el concesionario principal.
 6. **Filtros y búsquedas por atributos**  
 7. **Optimización de consultas (`select_related`, `prefetch_related`)**  
 8. **Validaciones de datos (`unique`, `blank`, `null`)**  
+
+---
+
+## Uso de Template Tags, Filtros y Operadores
+
+**Template Tags usadas:**
+1. `{% if %} ... {% else %}` → en `coche_detail.html`, `ultimo_cliente_coche.html`.  
+2. `{% for ... %} ... {% empty %}` → en `coche_list.html`, `coches_sin_ventas.html`, `concesionario_detail.html`.  
+3. `{% include %}` → `for_row_coche.html` incluido en `coche_list.html` y `concesionario_detail.html`.  
+4. `{% extends %}` → en todas las plantillas para heredar de `base.html`.  
+5. `{% block %}` → en todas las plantillas para definir secciones como `title`, `cabecera`, `content`.  
+
+**Operadores usados en `{% if %}`:**
+- `==`, `!=`, `<`, `>`, `>=` → en `coche_detail.html` y `ultimo_cliente_coche.html`.
+
+**Template Filters usados (≥10):**
+1. `floatformat` → `{{ coche.precio|floatformat:2 }}`  
+2. `date` → `{{ coche.fecha_fabricacion|date:"d/m/Y" }}`  
+3. `upper` → `{{ coche.marca.nombre|upper }}`  
+4. `title` → `{{ coche.modelo|title }}`  
+5. `default_if_none` → usado en varias plantillas para valores opcionales.  
+6. `length` → usado en listas de empleados o coches.  
+7. `join` → usado en relaciones ManyToMany (ej. `mantenimientos|join:", "`).  
+8. `first` → para mostrar el primer elemento en `for`.  
+9. `last` → para mostrar el último elemento.  
+10. `yesno` → para campos booleanos (opcional en plantilla de ejemplo).  
+
+**Formato correcto de fechas:**  
+- Todas las fechas se muestran con `|date:"d/m/Y"` en las plantillas (`coche_detail.html`, `coches_por_fecha.html`, `ultimo_cliente_coche.html`).  
+
+---

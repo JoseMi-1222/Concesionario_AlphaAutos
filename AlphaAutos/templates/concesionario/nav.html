@@ -1,3 +1,5 @@
+{% load static %}
+
 <header>
     <div class="logo">
         <img src="{% static 'concesionario/img/logo.png' %}" alt="Logo AlphaAutos" height="50">
@@ -7,7 +9,7 @@
             <li><a href="{% url 'AlphaAutos:index' %}">Inicio</a></li>
             <li><a href="{% url 'AlphaAutos:coche_list' %}">Coches</a></li>
             <li><a href="{% url 'AlphaAutos:resumen_ventas' %}">Resumen Ventas</a></li>
-            <li><a href="#">Concesionarios</a></li>
+            <li><a href="{% url 'AlphaAutos:lista_concesionarios' %}">Concesionarios</a></li>
         </ul>
     </nav>
 </header>

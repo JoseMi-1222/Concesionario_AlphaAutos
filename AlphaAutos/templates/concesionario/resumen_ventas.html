@@ -1,6 +1,16 @@
-<h1>Resumen de Ventas</h1>
+{% extends 'concesionario/base.html' %}
 
-<p>Precio promedio: {{ resumen.promedio|floatformat:2 }}</p>
-<p>Precio máximo: {{ resumen.maximo|floatformat:2 }}</p>
-<p>Precio mínimo: {{ resumen.minimo|floatformat:2 }}</p>
+{% block title %}Resumen de Ventas{% endblock %}
+
+{% block cabecera %}
+<h1>Resumen de Ventas</h1>
+{% endblock %}
+
+{% block content %}
+<p>Precio promedio: {{ resumen.precio_medio|floatformat:2 }} €</p>
+<p>Precio máximo: {{ resumen.precio_max|floatformat:2 }} €</p>
+<p>Precio mínimo: {{ resumen.precio_min|floatformat:2 }} €</p>
+<p>Total ventas: {{ resumen.total_ventas }}</p>
+<p>Suma importes: {{ resumen.suma_importes|floatformat:2 }} €</p>
+{% endblock %}
 

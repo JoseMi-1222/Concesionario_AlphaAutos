@@ -133,8 +133,18 @@ def concesionario_detail(request, id_concesionario):
 # -------------------------------------------------------------------
 def resumen_ventas(request):
     resumen = Venta.objects.aggregate(
-        total_ventas=Count('id'),
-        suma_importes=Sum('precio_final'),
-        precio_medio=Avg('precio_final')
-    )
+    total_ventas=Count('id'),
+    suma_importes=Sum('precio_final'),
+    precio_medio=Avg('precio_final'),
+    precio_max=Max('precio_final'),
+    precio_min=Min('precio_final')
+)
     return render(request, 'concesionario/resumen_ventas.html', {'resumen': resumen})
+
+# -------------------------------------------------------------------
+# VISTA: Listar todos los concesionarios
+# -------------------------------------------------------------------
+def lista_concesionarios(request):
+    concesionarios = Concesionario.objects.all()  # Obtiene todos los concesionarios
+    context = {'concesionarios': concesionarios}
+    return render(request, 'concesionario/lista_concesionario.html', context)

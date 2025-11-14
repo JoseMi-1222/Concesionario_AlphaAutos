@@ -1,4 +1,5 @@
 {% extends 'concesionario/base.html' %}
+{% load static %}
 
 {% block title %}Inicio - AlphaAutos{% endblock %}
 
@@ -7,41 +8,9 @@
 {% endblock %}
 
 {% block content %}
-{% if concesionario %}
-    <p><strong>Nombre:</strong> {{ concesionario.nombre }}</p>
-    <p><strong>Dirección:</strong> {{ concesionario.direccion }}</p>
-    <p><strong>Teléfono:</strong> {{ concesionario.telefono }}</p>
-    <p><strong>Ciudad:</strong> {{ concesionario.ciudad }}</p>
+<p>Explora nuestra amplia gama de coches y encuentra el concesionario más cercano a ti.</p>
+<img src="{% static 'concesionario/img/logo.png' %}" style="width:100%;max-width:600px;">
+{% endblock %}  
 
-    <h2>Empleados</h2>
-    {% if empleados %}
-        <ul>
-        {% for e in empleados %}
-            <li>{{ e.nombre }} — {{ e.puesto }} ({{ e.salario|floatformat:2 }} €)</li>
-        {% empty %}
-            <li>No hay empleados registrados.</li>
-        {% endfor %}
-        </ul>
-    {% endif %}
 
-    <h2>Coches</h2>
-    {% if coches %}
-        <table border="1">
-            <tr>
-                <th>ID</th>
-                <th>Marca</th>
-                <th>Modelo</th>
-                <th>Precio (€)</th>
-            </tr>
-            {% for c in coches %}
-                {% include 'concesionario/for_row_coche.html' %}
-            {% empty %}
-                <tr><td colspan="4">No hay coches registrados.</td></tr>
-            {% endfor %}
-        </table>
-    {% endif %}
-{% else %}
-    <p>No hay información del concesionario disponible.</p>
-{% endif %}
-{% endblock %}
 

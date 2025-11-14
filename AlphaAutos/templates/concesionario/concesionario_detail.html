@@ -1,48 +1,41 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="utf-8">
-    <title>Detalle del Concesionario</title>
-</head>
-<body>
-    <h1>Concesionario: {{ concesionario.nombre }}</h1>
-    <p><strong>Dirección:</strong> {{ concesionario.direccion }}</p>
-    <p><strong>Teléfono:</strong> {{ concesionario.telefono }}</p>
-    <p><strong>Ciudad:</strong> {{ concesionario.ciudad }}</p>
+{% extends 'concesionario/base.html' %}
 
-    <h2>Empleados</h2>
-    {% if empleados %}
-        <ul>
-            {% for e in empleados %}
-                <li>{{ e.nombre }} — {{ e.puesto }} ({{ e.salario }} €)</li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>No hay empleados registrados en este concesionario.</p>
-    {% endif %}
+{% block title %}Detalle Concesionario{% endblock %}
 
-    <h2>Coches</h2>
-    {% if coches %}
-        <table border="1">
-            <tr>
-                <th>ID</th>
-                <th>Marca</th>
-                <th>Modelo</th>
-                <th>Precio (€)</th>
-            </tr>
-            {% for c in coches %}
-            <tr>
-                <td>{{ c.id }}</td>
-                <td>{{ c.marca.nombre }}</td>
-                <td>{{ c.modelo }}</td>
-                <td>{{ c.precio }}</td>
-            </tr>
-            {% endfor %}
-        </table>
-    {% else %}
-        <p>No hay coches registrados en este concesionario.</p>
-    {% endif %}
+{% block cabecera %}
+<h1>Concesionario: {{ concesionario.nombre }}</h1>
+{% endblock %}
 
-    <p><a href="{% url 'AlphaAutos:index' %}">Volver al inicio</a></p>
-</body>
-</html>
+{% block content %}
+<p><strong>Dirección:</strong> {{ concesionario.direccion }}</p>
+<p><strong>Teléfono:</strong> {{ concesionario.telefono }}</p>
+<p><strong>Ciudad:</strong> {{ concesionario.ciudad }}</p>
+
+<h2>Empleados</h2>
+{% if empleados %}
+<ul>
+    {% for e in empleados %}
+        <li>{{ e.nombre }} — {{ e.puesto }} ({{ e.salario|floatformat:2 }} €)</li>
+    {% empty %}
+        <li>No hay empleados.</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+<h2>Coches</h2>
+{% if coches %}
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Marca</th>
+        <th>Modelo</th>
+        <th>Precio (€)</th>
+    </tr>
+    {% for c in coches %}
+        {% include 'concesionario/for_row_coche.html' with coche=c %}
+    {% empty %}
+        <tr><td colspan="4">No hay coches registrados.</td></tr>
+    {% endfor %}
+</table>
+{% endif %}
+{% endblock %}

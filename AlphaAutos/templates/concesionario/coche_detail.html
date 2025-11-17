@@ -9,13 +9,23 @@
 {% block content %}
 {% if coche %}
     <p><strong>ID:</strong> {{ coche.id }}</p>
-    <p><strong>Marca:</strong> {{ coche.marca.nombre }}</p>
-    <p><strong>Modelo:</strong> {{ coche.modelo }}</p>
+    <p><strong>Marca:</strong> {{ coche.marca.nombre|upper }}</p>
+    <p><strong>Modelo:</strong> {{ coche.modelo|title }}</p>
     <p><strong>Transmisión:</strong> {{ coche.get_transmision_display }}</p>
     <p><strong>Precio:</strong> {{ coche.precio|floatformat:2 }} €</p>
     <p><strong>Concesionario:</strong> {{ coche.concesionario.nombre }}</p>
     <p><strong>Fecha de fabricación:</strong> {{ coche.fecha_fabricacion|date:"d/m/Y" }}</p>
+
+    {% if coche.precio > 30000 %}
+        <p style="color:red;">Este coche es considerado caro.</p>
+    {% elif coche.precio < 10000 %}
+        <p style="color:green;">Este coche es una ganga.</p>
+    {% else %}
+        <p>Este coche tiene un precio estándar.</p>
+    {% endif %}
+
 {% else %}
     <p>No se encontró el coche.</p>
 {% endif %}
 {% endblock %}
+

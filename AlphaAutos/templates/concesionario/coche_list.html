@@ -16,7 +16,7 @@
         <th>Concesionario</th>
     </tr>
     {% for coche in coches %}
-        {% include 'concesionario/for_row_coche.html' %}
+        {% include 'concesionario/for_row_coche.html' with coche=coche %}
     {% empty %}
         <tr><td colspan="5">No hay coches registrados.</td></tr>
     {% endfor %}

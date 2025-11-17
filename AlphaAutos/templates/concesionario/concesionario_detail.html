@@ -3,23 +3,25 @@
 {% block title %}Detalle Concesionario{% endblock %}
 
 {% block cabecera %}
-<h1>Concesionario: {{ concesionario.nombre }}</h1>
+<h1>Concesionario: {{ concesionario.nombre|title }}</h1>
 {% endblock %}
 
 {% block content %}
 <p><strong>Dirección:</strong> {{ concesionario.direccion }}</p>
 <p><strong>Teléfono:</strong> {{ concesionario.telefono }}</p>
-<p><strong>Ciudad:</strong> {{ concesionario.ciudad }}</p>
+<p><strong>Ciudad:</strong> {{ concesionario.ciudad|title }}</p>
 
 <h2>Empleados</h2>
 {% if empleados %}
 <ul>
     {% for e in empleados %}
-        <li>{{ e.nombre }} — {{ e.puesto }} ({{ e.salario|floatformat:2 }} €)</li>
+        <li>{{ e.nombre|title }} — {{ e.puesto|title }} ({{ e.salario|floatformat:2 }} €)</li>
     {% empty %}
         <li>No hay empleados.</li>
     {% endfor %}
 </ul>
+{% else %}
+<p>No hay empleados registrados.</p>
 {% endif %}
 
 <h2>Coches</h2>
@@ -37,5 +39,14 @@
         <tr><td colspan="4">No hay coches registrados.</td></tr>
     {% endfor %}
 </table>
+
+{% if coches|length >= 10 %}
+    <p>Este concesionario tiene un amplio catálogo.</p>
+{% else %}
+    <p>Catálogo reducido.</p>
+{% endif %}
+
+{% else %}
+<p>No hay coches registrados.</p>
 {% endif %}
 {% endblock %}

@@ -16,12 +16,10 @@
         <th>Concesionario</th>
     </tr>
     {% for coche in coches %}
-        {% include 'concesionario/for_row_coche.html' %}
+        {% include 'concesionario/for_row_coche.html' with coche=coche %}
     {% empty %}
         <tr><td colspan="5">No hay coches sin ventas.</td></tr>
     {% endfor %}
 </table>
-<br>
-<p><a href="{% url 'AlphaAutos:index' %}">Volver al inicio</a></p>
 {% endblock %}
 

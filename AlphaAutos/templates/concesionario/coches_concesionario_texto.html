@@ -1,10 +1,10 @@
 {% extends 'concesionario/base.html' %}
 
-{% block title %}Coches en {{ concesionario.nombre }}{% endblock %}
+{% block title %}Coches en {{ concesionario.nombre }} con "{{ texto }}"{% endblock %}
 
 {% block cabecera %}
 <h1>Coches del concesionario {{ concesionario.nombre }}</h1>
-<p>Mostrando modelos que contienen: <strong>{{ texto }}</strong></p>
+<p>Filtrado por modelo: <strong>{{ texto }}</strong></p>
 {% endblock %}
 
 {% block content %}
@@ -17,12 +17,9 @@
         <th>Concesionario</th>
     </tr>
     {% for coche in coches %}
-        {% include 'concesionario/for_row_coche.html' %}
+        {% include 'concesionario/for_row_coche.html' with coche=coche %}
     {% empty %}
         <tr><td colspan="5">No hay coches que cumplan ese criterio.</td></tr>
     {% endfor %}
 </table>
-<br>
-<p><a href="{% url 'AlphaAutos:index' %}">Volver al inicio</a></p>  
 {% endblock %}
-

@@ -12,22 +12,14 @@
         <th>ID</th>
         <th>Marca</th>
         <th>Modelo</th>
-        <th>Fecha de fabricación</th>
+        <th>Precio (€)</th>
         <th>Concesionario</th>
     </tr>
     {% for coche in coches %}
-        <tr>
-            <td><a href="{% url 'AlphaAutos:coche_detail' coche.id %}">{{ coche.id }}</a></td>
-            <td>{{ coche.marca.nombre|upper }}</td>
-            <td>{{ coche.modelo|title }}</td>
-            <td>{{ coche.fecha_fabricacion|date:"d/m/Y" }}</td>
-            <td>{{ coche.concesionario.nombre }}</td>
-        </tr>
+        {% include 'concesionario/for_row_coche.html' with coche=coche %}
     {% empty %}
         <tr><td colspan="5">No hay coches fabricados en esa fecha.</td></tr>
     {% endfor %}
 </table>
-<br>
-<p><a href="{% url 'AlphaAutos:index' %}">Volver al inicio</a></p>
 {% endblock %}
 

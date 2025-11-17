@@ -234,20 +234,21 @@ Representa el concesionario principal.
 4. `{% extends %}` → en todas las plantillas para heredar de `base.html`.  
 5. `{% block %}` → en todas las plantillas para definir secciones como `title`, `cabecera`, `content`.  
 
-**Operadores usados en `{% if %}`:**
-- `==`, `!=`, `<`, `>`, `>=` → en `coche_detail.html` y `ultimo_cliente_coche.html`.
+## Operadores y Template Filters usados
 
-**Template Filters usados (≥10):**
-1. `floatformat` → `{{ coche.precio|floatformat:2 }}`  
-2. `date` → `{{ coche.fecha_fabricacion|date:"d/m/Y" }}`  
-3. `upper` → `{{ coche.marca.nombre|upper }}`  
-4. `title` → `{{ coche.modelo|title }}`  
-5. `default_if_none` → usado en varias plantillas para valores opcionales.  
-6. `length` → usado en listas de empleados o coches.  
-7. `join` → usado en relaciones ManyToMany (ej. `mantenimientos|join:", "`).  
-8. `first` → para mostrar el primer elemento en `for`.  
-9. `last` → para mostrar el último elemento.  
-10. `yesno` → para campos booleanos (opcional en plantilla de ejemplo).  
+### Operadores:
+- `==` → para comprobar transmisión automática (`coche.transmision == 'AT'`)  
+- `!=` → para marcas distintas (`coche.marca.nombre != 'Ford'`)  
+- `>` → para precios altos (`coche.precio > 30000`)  
+- `<` → para precios bajos (`coche.precio < 10000`)  
+- `>=` → para ventas gama media-alta (`venta.precio_final >= 25000`)  
+
+### Template Filters:
+- `floatformat` → para mostrar precios con 2 decimales  (`coche_detail.html`)
+- `upper` → para mostrar nombres en mayúsculas  (`coche_list.html`)
+- `title` → para mostrar nombres y modelos capitalizados  (`base.html`) 
+- `date` → para formatear fechas  (`coche_detail.html`)
+- `length` → para contar elementos de listas (coches) (`concesionario_detail.html`)   
 
 **Formato correcto de fechas:**  
 - Todas las fechas se muestran con `|date:"d/m/Y"` en las plantillas (`coche_detail.html`, `coches_por_fecha.html`, `ultimo_cliente_coche.html`).  

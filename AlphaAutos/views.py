@@ -149,3 +149,19 @@ def lista_concesionarios(request):
     concesionarios = Concesionario.objects.all()  # Obtiene todos los concesionarios
     context = {'concesionarios': concesionarios}
     return render(request, 'concesionario/lista_concesionario.html', context)
+
+# -------------------------------------------------------------------
+# Vista: Formulario para crear un nuevo coche
+# -------------------------------------------------------------------
+from .form import CocheModelForm
+def crear_coche(request):
+    if request.method == 'POST':
+        form = CocheModelForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return render(request, 'concesionario/crear_coche.html')
+    else:
+        form = CocheModelForm()
+    
+    contexto = {'form': form}
+    return render(request, 'concesionario/crear_coche.html', contexto)

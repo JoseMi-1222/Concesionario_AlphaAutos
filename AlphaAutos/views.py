@@ -1,4 +1,5 @@
-from django.shortcuts import render, get_object_or_404
+from django.contrib import messages
+from django.shortcuts import redirect, render, get_object_or_404
 from .models import *
 from django.db.models import F, Q, Avg, Max, Min, Count, Sum
 
@@ -159,7 +160,8 @@ def crear_coche(request):
         form = CocheModelForm(request.POST)
         if form.is_valid():
             form.save()
-            return render(request, 'concesionario/crear_coche.html')
+            messages.success(request, "Coche creado correctamente.")
+            return redirect('AlphaAutos:coche_list')
     else:
         form = CocheModelForm()
     

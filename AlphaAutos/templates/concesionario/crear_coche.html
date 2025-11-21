@@ -9,7 +9,7 @@
 
 {% block content %}
 <h3>Rellena el formulario para añadir un nuevo coche a la base de datos.</h3>
-<form method="post" action="coche/nuevo/">
+<form method="post" action="{% url 'AlphaAutos:crear_coche' %}">
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">Guardar Coche</button>

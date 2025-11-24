@@ -1,0 +1,21 @@
+{% extends 'concesionario/base.html' %}
+{% load static %}
+{% load django_bootstrap5 %}
+{% load bootstrap_icons %}
+
+{% block title %}Añadir Marca - AlphaAutos{% endblock %}
+
+{% block cabecera %}
+<h1 class="text-center mt-3">Añadir una nueva marca</h1>
+{% endblock %}  
+
+{% block content %}
+<h3>Rellena el formulario para añadir una nueva marca a la base de datos.</h3>   
+<form method="post" action="{% url 'AlphaAutos:crear_marca' %}" class="mt-4">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    <button class="btn btn-primary" type="submit">Guardar Marca</button>
+</form>
+{% endblock %}  
+
+    

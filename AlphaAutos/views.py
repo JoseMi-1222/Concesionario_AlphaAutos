@@ -153,6 +153,14 @@ def lista_concesionarios(request):
     return render(request, 'concesionario/lista_concesionario.html', context)
 
 # -------------------------------------------------------------------
+# VISTA: Listar todas las marcas
+# -------------------------------------------------------------------
+def lista_marcas(request):
+    marcas = Marca.objects.all()  # Obtiene todas las marcas
+    context = {'marcas': marcas}
+    return render(request, 'concesionario/lista_marcas.html', context)
+
+# -------------------------------------------------------------------
 # Vista: Formulario para crear un nuevo coche
 # -------------------------------------------------------------------
 def crear_coche(request):
@@ -183,3 +191,19 @@ def crear_concesionario(request):
     
     contexto = {'form': form}
     return render(request, 'Crud_Concesionario/crear_concesionario.html', contexto)
+
+# -------------------------------------------------------------------
+# Vista: Formulario para crear una nueva marca
+# -------------------------------------------------------------------
+def crear_marca(request):
+    if request.method == 'POST':
+        form = MarcaModelForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Marca creada correctamente.")
+            return redirect('AlphaAutos:lista_marcas')
+    else:
+        form = MarcaModelForm()
+    
+    contexto = {'form': form}
+    return render(request, 'Crud_Marca/crear_marca.html', contexto)

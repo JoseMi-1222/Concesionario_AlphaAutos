@@ -34,7 +34,7 @@ class CocheModelForm(ModelForm):
         return self.cleaned_data
     
 # -------------------------------------------------------------------
-#Crud_Concesionario
+# Crud_Concesionario
 # VISTA: Crear un nuevo concesionario (CRUD - Create)
 # -------------------------------------------------------------------
 
@@ -54,6 +54,31 @@ class ConcesionarioModelForm(ModelForm):
         # Validar que el teléfono tenga un formato adecuado (ejemplo simple)
         if telefono and not telefono.isdigit():
             self.add_error('telefono', 'El teléfono debe contener solo números.')
+            
+        return self.cleaned_data
+    
+# -------------------------------------------------------------------
+# Crud_Marca
+# VISTA: Crear una nueva marca (CRUD - Create)
+# -------------------------------------------------------------------
+
+class MarcaModelForm(ModelForm):
+    class Meta:
+        model = Marca
+        fields = ['nombre', 'pais_origen', 'año_fundacion', 'descripcion']
+        
+    def clean(self):
+        año_fundacion = self.cleaned_data.get('año_fundacion')
+        descripcion = self.cleaned_data.get('descripcion')
+        
+        # Validar que el año de fundación este dentro de un rango.
+        current_year = datetime.now().year
+        if año_fundacion is not None and (año_fundacion < 1950 or año_fundacion > current_year):
+            self.add_error('año_fundacion', f'El año de fundación debe estar entre 1950 y {current_year}.')
+            
+        # Validar que la descripción no tenga menos de 5 caracteres
+        if descripcion is not None and len(descripcion) < 5:
+            self.add_error('descripcion', 'La descripción debe tener al menos 5 caracteres.')
             
         return self.cleaned_data
 

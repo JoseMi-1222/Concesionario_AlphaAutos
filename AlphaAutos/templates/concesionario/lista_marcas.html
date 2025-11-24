@@ -1,0 +1,27 @@
+{% extends 'concesionario/base.html' %}
+{% load static %}
+
+{% block title %}Listado de Marcas{% endblock %}
+
+{% block cabecera %}
+<h1>Listado de Marcas</h1>
+{% endblock %}  
+
+{% block content %}
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Nombre de la Marca</th>
+    </tr>
+    {% for marca in marcas %}
+    <tr>
+        <td>{{ marca.id }}</td>
+        <td>{{ marca.nombre }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="2">No hay marcas registradas.</td></tr>
+    {% endfor %}
+</table>
+<br>
+<p><a href="{% url 'AlphaAutos:index' %}">Volver al inicio</a></p>  
+{% endblock %}

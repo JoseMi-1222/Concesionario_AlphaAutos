@@ -1,0 +1,20 @@
+{% extends 'concesionario/base.html' %}
+{% load static %}
+{% load django_bootstrap5 %}
+{% load bootstrap_icons %}
+
+{% block title %}Añadir Empleado - AlphaAutos{% endblock %}
+
+{% block cabecera %}
+<h1 class="text-center mt-3">Añadir un nuevo empleado</h1>
+{% endblock %}
+
+{% block content %}
+<h3>Rellena el formulario para añadir un nuevo empleado a la base de datos.</h3>   
+<form method="post" action="{% url 'AlphaAutos:crear_empleados' %}" class="mt-4">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    <button class="btn btn-primary" type="submit">Guardar Empleado</button>
+</form>
+{% endblock %}
+

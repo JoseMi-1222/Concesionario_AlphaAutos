@@ -81,6 +81,35 @@ class MarcaModelForm(ModelForm):
             self.add_error('descripcion', 'La descripción debe tener al menos 5 caracteres.')
             
         return self.cleaned_data
+    
+# -------------------------------------------------------------------
+# Crud_Empleado
+# VISTA: Crear un nuevo empleado (CRUD - Create)
+# -------------------------------------------------------------------
+class EmpleadoModelForm(ModelForm):
+    class Meta:
+        model = Empleado
+        fields = ['nombre', 'puesto', 'fecha_contratacion', 'concesionario', 'salario']
+        widgets = {
+             'fecha_contratacion': forms.SelectDateWidget(
+                years=range(2000, datetime.now().year + 1),
+                attrs={'class': 'form-select d-inline w-auto'}
+            )
+        }
+        
+    def clean(self):
+        salario = self.cleaned_data.get('salario')
+        fecha_contratacion = self.cleaned_data.get('fecha_contratacion')
+        
+        # Validar que el salario no sea negativo ni 0
+        if salario is not None and salario <= 0:
+            self.add_error('salario', 'El salario no puede ser negativo o 0.')
+    
+        # Validar que la fecha de contratación no sea futura
+        if fecha_contratacion is not None and fecha_contratacion > datetime.now().date():
+            self.add_error('fecha_contratacion', 'La fecha de contratación no puede ser futura.')
+            
+        return self.cleaned_data
 
 
 

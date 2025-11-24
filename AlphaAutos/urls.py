@@ -20,6 +20,6 @@ urlpatterns = [
     path('coche/nuevo/', views.crear_coche, name='crear_coche'),
     path('concesionario/nuevo/', views.crear_concesionario, name='crear_concesionario'),
     path('marca/nuevo/', views.crear_marca, name='crear_marca'),
-    
-
+    path('empleados/', views.lista_empleados, name='lista_empleados'),
+    path('empleado/nuevo/', views.crear_empleado, name='crear_empleados'),
 ]

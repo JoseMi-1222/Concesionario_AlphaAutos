@@ -12,7 +12,6 @@
 <img src="{% static 'concesionario/img/logo.png' %}" style="width:400px; height:400px;">
 
 <h2>Consultas rápidas</h2>
-<br>
 <ul>
     <li>
         Coches sin ventas:
@@ -39,6 +38,27 @@
         <a href="{% url 'AlphaAutos:ultimo_cliente_coche' 3 %}">Ver</a>
     </li>
 </ul>
+
+<br>
+
+<h2>Consultas Coches</h2>
+<ul>
+    <li>
+        Crear coche
+        <a href="{% url 'AlphaAutos:crear_coche' %}">Ir al formulario</a>
+    </li>
+</ul>
+
+<br>
+
+<h2>Consultas Concesionarios</h2>
+<ul>
+    <li>
+        Crear concesionario
+        <a href="{% url 'AlphaAutos:crear_concesionario' %}">Ir al formulario</a>
+    </li>
+</ul>   
+
 {% endblock %}
 
 

@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.shortcuts import redirect, render, get_object_or_404
 from .models import *
 from django.db.models import F, Q, Avg, Max, Min, Count, Sum
+from .form import *
 
 # -------------------------------
 # VISTA: Errores
@@ -154,7 +155,6 @@ def lista_concesionarios(request):
 # -------------------------------------------------------------------
 # Vista: Formulario para crear un nuevo coche
 # -------------------------------------------------------------------
-from .form import CocheModelForm
 def crear_coche(request):
     if request.method == 'POST':
         form = CocheModelForm(request.POST)
@@ -167,3 +167,19 @@ def crear_coche(request):
     
     contexto = {'form': form}
     return render(request, 'Crud_Coche/crear_coche.html', contexto)
+
+# -------------------------------------------------------------------
+# Vista: Formulario para crear un nuevo concesionario
+# -------------------------------------------------------------------
+def crear_concesionario(request):
+    if request.method == 'POST':
+        form = ConcesionarioModelForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Concesionario creado correctamente.")
+            return redirect('AlphaAutos:lista_concesionarios')
+    else:
+        form = ConcesionarioModelForm()
+    
+    contexto = {'form': form}
+    return render(request, 'Crud_Concesionario/crear_concesionario.html', contexto)

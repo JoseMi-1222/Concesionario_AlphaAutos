@@ -4,18 +4,29 @@
     <meta charset="UTF-8">
     <title>{% block title %}AlphaAutos{% endblock %}</title>
     {% load static %}
+    {% load django_bootstrap5 %}
+    {% load bootstrap_icons %}
+    {% bootstrap_css %}
     <link rel="stylesheet" href="{% static 'concesionario/css/style.css' %}">
     <script src="{% static 'concesionario/js/script.js' %}" defer></script>
 </head>
+
 <body>
     {% include 'concesionario/nav.html' %}
 
-    {% block cabecera %}{% endblock %}
+    <div class="container">
+        {% block cabecera %}{% endblock %}
+    </div>
 
-    <main>
+    <main class="container">
+        {% bootstrap_messages %}
         {% block content %}{% endblock %}
     </main>
 
     {% include 'concesionario/footer.html' %}
+
+    {% bootstrap_javascript %}
+
 </body>
 </html>
+

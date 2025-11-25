@@ -1,0 +1,21 @@
+{% extends 'concesionario/base.html' %}
+{% load static %}
+{% load django_bootstrap5 %}
+{% load bootstrap_icons %}
+
+{% block title %}Crear Cliente - AlphaAutos{% endblock %}
+
+{% block cabecera %}
+<h1>Crear Nuevo Cliente</h1>
+{% endblock %}
+
+{% block content %}
+<form method="post" novalidate>
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    <button type="submit" class="btn btn-primary">Crear Cliente</button>
+</form>
+{% endblock %}
+
+
+

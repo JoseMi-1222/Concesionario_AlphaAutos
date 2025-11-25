@@ -110,6 +110,29 @@ class EmpleadoModelForm(ModelForm):
             self.add_error('fecha_contratacion', 'La fecha de contratación no puede ser futura.')
             
         return self.cleaned_data
+    
+# -------------------------------------------------------------------
+# Crud_Cliente
+# VISTA: Crear un nuevo cliente (CRUD - Create)
+# -------------------------------------------------------------------
+class ClienteModelForm(ModelForm):
+    class Meta:
+        model = Cliente
+        fields = ['nombre', 'email', 'telefono', 'fecha_registro']
+        
+    def clean(self):
+        email = self.cleaned_data.get('email')
+        telefono = self.cleaned_data.get('telefono')
+        
+        # Validar que el email tenga un formato adecuado (ejemplo simple)
+        if email and "@" not in email:
+            self.add_error('email', 'El email no tiene un formato válido.')
+            
+        # Validar que el teléfono tenga un formato adecuado (ejemplo simple)
+        if telefono and not telefono.isdigit():
+            self.add_error('telefono', 'El teléfono debe contener solo números.')
+            
+        return self.cleaned_data
 
 
 

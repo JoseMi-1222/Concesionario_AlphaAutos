@@ -166,7 +166,15 @@ def lista_marcas(request):
 def lista_empleados(request):
     empleados = Empleado.objects.all()  # Obtiene todos los empleados
     context = {'empleados': empleados}
-    return render(request, 'concesionario/lista_empleados.html', context)   
+    return render(request, 'concesionario/lista_empleados.html', context) 
+
+# -------------------------------------------------------------------
+# VISTA: Listar todos los clientes
+# -------------------------------------------------------------------
+def lista_clientes(request):
+    clientes = Cliente.objects.all()  # Obtiene todos los clientes
+    context = {'clientes': clientes}
+    return render(request, 'concesionario/lista_clientes.html', context)
 
 # -------------------------------------------------------------------
 # Vista: Formulario para crear un nuevo coche
@@ -231,3 +239,19 @@ def crear_empleado(request):
     
     contexto = {'form': form}
     return render(request, 'Crud_Empleados/crear_empleados.html', contexto)
+
+# -------------------------------------------------------------------
+# Vista: Formulario para crear un nuevo cliente
+# -------------------------------------------------------------------
+def crear_cliente(request):
+    if request.method == 'POST':
+        form = ClienteModelForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Cliente creado correctamente.")
+            return redirect('AlphaAutos:lista_clientes')
+    else:
+        form = ClienteModelForm()
+    
+    contexto = {'form': form}
+    return render(request, 'Crud_Clientes/crear_cliente.html', contexto)

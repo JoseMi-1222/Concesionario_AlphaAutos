@@ -22,4 +22,6 @@ urlpatterns = [
     path('marca/nuevo/', views.crear_marca, name='crear_marca'),
     path('empleados/', views.lista_empleados, name='lista_empleados'),
     path('empleado/nuevo/', views.crear_empleado, name='crear_empleados'),
+    path('clientes/', views.lista_clientes, name='lista_clientes'),
+    path('cliente/nuevo/', views.crear_cliente, name='crear_cliente'),
 ]

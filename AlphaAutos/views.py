@@ -221,12 +221,34 @@ def buscar_coches(request):
 
         contexto = {"form": form, "coches": qs}
 
-        # ⬅️ ⬅️ Renderizar los resultados
+        #Renderizar los resultados
         return render(request, "Crud_Coche/coche_busqueda.html", contexto)
 
     # Si el formulario no es válido o no buscaron nada → mostrar formulario
     contexto = {"form": form}
     return render(request, "Crud_Coche/buscar_coches.html", contexto)
+
+# -------------------------------------------------------------------
+# Vista: Formulario para editar un coche existente
+# -------------------------------------------------------------------
+def editar_coche(request, id_coche):
+    coche = get_object_or_404(Coche, id=id_coche)
+
+    if request.method == 'POST':
+        formulario = CocheModelForm(request.POST, instance=coche)
+        if formulario.is_valid():
+            try:
+                formulario.save()
+                messages.success(request, "Coche editado correctamente.")
+                return redirect('AlphaAutos:coche_detail', id_coche=coche.id)
+            except Exception as e:
+                messages.error(request, f"Error al guardar el coche: {e}")
+    else:
+        formulario = CocheModelForm(instance=coche)
+
+    contexto = {'formulario': formulario, 'coche': coche}
+    return render(request, 'Crud_Coche/editar_coche.html', contexto)
+    
 
 # -------------------------------------------------------------------
 # Vista: Formulario para crear un nuevo concesionario
@@ -265,7 +287,7 @@ def buscar_concesionarios(request):
 
         contexto = {"form": form, "concesionarios": qs}
 
-        # ⬅️ ⬅️ Renderizar los resultados
+        #Renderizar los resultados
         return render(request, "Crud_Concesionario/concesionario_busqueda.html", contexto)
 
     # Si el formulario no es válido o no buscaron nada → mostrar formulario
@@ -308,7 +330,7 @@ def buscar_marcas(request):
 
         contexto = {"form": form, "marcas": qs}
 
-        # ⬅️ ⬅️ Renderizar los resultados
+        #Renderizar los resultados
         return render(request, "Crud_Marca/marca_busqueda.html", contexto)
 
     # Si el formulario no es válido o no buscaron nada → mostrar formulario
@@ -352,7 +374,7 @@ def buscar_empleados(request):
 
         contexto = {"form": form, "empleados": qs}
 
-        # ⬅️ ⬅️ Renderizar los resultados
+        #Renderizar los resultados
         return render(request, "Crud_Empleados/empleado_busqueda.html", contexto)
 
     # Si el formulario no es válido o no buscaron nada → mostrar formulario
@@ -396,7 +418,7 @@ def buscar_clientes(request):
 
         contexto = {"form": form, "clientes": qs}
 
-        # ⬅️ ⬅️ Renderizar los resultados
+        #Renderizar los resultados
         return render(request, "Crud_Clientes/cliente_busqueda.html", contexto)
 
     # Si el formulario no es válido o no buscaron nada → mostrar formulario
@@ -440,7 +462,7 @@ def buscar_aseguradoras(request):
 
         contexto = {"form": form, "aseguradoras": qs}
 
-        # ⬅️ ⬅️ Renderizar los resultados
+        #Renderizar los resultados
         return render(request, "Crud_Aseguradora/aseguradora_busqueda.html", contexto)
 
     # Si el formulario no es válido o no buscaron nada → mostrar formulario

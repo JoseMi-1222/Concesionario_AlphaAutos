@@ -4,4 +4,5 @@
     <td>{{ coche.modelo|title }}</td>
     <td>{{ coche.precio|floatformat:2 }} €</td>
     <td>{{ coche.concesionario.nombre }}</td>
+    <td><a href="{% url 'AlphaAutos:editar_coche' coche.id %}">Editar</a></td>
 </tr>

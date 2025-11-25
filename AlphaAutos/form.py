@@ -92,7 +92,7 @@ class EmpleadoModelForm(ModelForm):
         fields = ['nombre', 'puesto', 'fecha_contratacion', 'concesionario', 'salario']
         widgets = {
              'fecha_contratacion': forms.SelectDateWidget(
-                years=range(2000, datetime.now().year + 1),
+                years=range(2000, datetime.now().year + 10),
                 attrs={'class': 'form-select d-inline w-auto'}
             )
         }

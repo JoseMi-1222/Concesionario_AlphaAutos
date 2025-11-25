@@ -34,6 +34,22 @@ class CocheModelForm(ModelForm):
         return self.cleaned_data
     
 # -------------------------------------------------------------------
+# Crud_Coche
+# VISTA: Buscar un coche (CRUD - Read)
+# -------------------------------------------------------------------
+class CocheSearchForm(forms.Form):
+    marca = forms.CharField(required=False, label="Marca")
+    modelo = forms.CharField(required=False, label="Modelo")
+    precio_max = forms.DecimalField(required=False, min_value=0, label="Precio Máximo")
+
+    def clean(self):
+        cleaned = super().clean()
+        if not any(cleaned.values()):
+            raise forms.ValidationError("Introduce al menos un criterio de búsqueda.")
+        return cleaned
+
+    
+# -------------------------------------------------------------------
 # Crud_Concesionario
 # VISTA: Crear un nuevo concesionario (CRUD - Create)
 # -------------------------------------------------------------------

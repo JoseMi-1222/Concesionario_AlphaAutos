@@ -201,6 +201,30 @@ def crear_coche(request):
     return render(request, 'Crud_Coche/crear_coche.html', contexto)
 
 # -------------------------------------------------------------------
+# Vista: Formulario para buscar un coche
+# -------------------------------------------------------------------
+def buscar_coches(request):
+    form = CocheSearchForm(request.GET or None)
+    qs = Coche.objects.all()
+
+    if form.is_valid():
+        marca = form.cleaned_data.get("marca")
+        modelo = form.cleaned_data.get("modelo")
+        precio_max = form.cleaned_data.get("precio_max")
+
+        if marca:
+            qs = qs.filter(marca__nombre__icontains=marca)
+        if modelo:
+            qs = qs.filter(modelo__icontains=modelo)
+        if precio_max is not None:
+            qs = qs.filter(precio__lte=precio_max)
+
+    contexto = {"form": form, "coches": qs}
+    return render(request, "Crud_Coche/coche_busqueda.html", contexto)
+
+
+
+# -------------------------------------------------------------------
 # Vista: Formulario para crear un nuevo concesionario
 # -------------------------------------------------------------------
 def crear_concesionario(request):

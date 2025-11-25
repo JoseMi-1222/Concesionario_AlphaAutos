@@ -26,4 +26,5 @@ urlpatterns = [
     path('cliente/nuevo/', views.crear_cliente, name='crear_cliente'),
     path('aseguradoras/', views.lista_aseguradoras, name='lista_aseguradoras'),
     path('aseguradora/nuevo/', views.crear_aseguradora, name='crear_aseguradora'),
+    path('buscar_coches/', views.buscar_coches, name='buscar_coches'),
 ]

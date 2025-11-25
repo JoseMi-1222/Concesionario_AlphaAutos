@@ -1,0 +1,39 @@
+{% extends 'concesionario/coche_list.html' %}
+
+{% block title %}Buscar Coches - AlphaAutos{% endblock %}
+
+{% block cabecera %}
+<h1 class="text-center mt-3">Resultados de la búsqueda de coches</h1>
+{% endblock %}  
+    
+{% block content %}
+    {% if coches %}
+        <h3>Se han encontrado {{ coches|length }} coche(s) que coinciden con los criterios de búsqueda.</h3>
+        <table class="table table-striped mt-4">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Marca</th>
+                    <th>Modelo</th>
+                    <th>Año</th>
+                    <th>Precio</th>
+                    <th>Concesionario</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for coche in coches %}
+                <tr>
+                    <td>{{ coche.id }}</td>
+                    <td>{{ coche.marca.nombre }}</td>
+                    <td>{{ coche.modelo }}</td>
+                    <td>{{ coche.anio }}</td>
+                    <td>{{ coche.precio }}</td>
+                    <td>{{ coche.concesionario.nombre }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <h3>No se han encontrado coches que coincidan con los criterios de búsqueda.</h3>
+    {% endif %}
+{% endblock %}

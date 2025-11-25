@@ -219,8 +219,15 @@ def buscar_coches(request):
         if precio_max is not None:
             qs = qs.filter(precio__lte=precio_max)
 
-    contexto = {"form": form, "coches": qs}
-    return render(request, "Crud_Coche/coche_busqueda.html", contexto)
+        contexto = {"form": form, "coches": qs}
+
+        # ⬅️ ⬅️ Renderizar los resultados
+        return render(request, "Crud_Coche/coche_busqueda.html", contexto)
+
+    # Si el formulario no es válido o no buscaron nada → mostrar formulario
+    contexto = {"form": form}
+    return render(request, "Crud_Coche/buscar_coches.html", contexto)
+
 
 
 

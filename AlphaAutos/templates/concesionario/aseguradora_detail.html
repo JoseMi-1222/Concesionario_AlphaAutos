@@ -1,0 +1,31 @@
+{% extends 'concesionario/base.html' %}
+
+{% block title %}Detalle Aseguradora{% endblock %}
+
+{% block cabecera %}
+<h1>Detalle de la Aseguradora</h1>
+{% endblock %}
+
+{% block content %}
+{% if aseguradora %}
+    <div class="mb-3">
+        <a class="btn btn-sm btn-outline-secondary" href="{% url 'AlphaAutos:editar_aseguradora' aseguradora.id %}">Editar</a>
+    </div>
+
+    <p><strong>ID:</strong> {{ aseguradora.id }}</p>
+    <p><strong>Nombre:</strong> {{ aseguradora.nombre }}</p>
+    <p><strong>País:</strong> {{ aseguradora.pais }}</p>
+    <p><strong>Teléfono:</strong> {{ aseguradora.telefono }}</p>
+    <p><strong>Web:</strong> <a href="{{ aseguradora.web }}" target="_blank">{{ aseguradora.web }}</a></p>
+    <p><strong>Seguros:</strong>
+        {% for seguro in aseguradora.seguros.all %}
+            {{ seguro.tipo_seguro }}{% if not forloop.last %}, {% endif %}
+        {% empty %}
+            Ninguno
+        {% endfor %}
+    </p>
+
+{% else %}
+    <p>No se encontró la aseguradora.</p>
+{% endif %}
+{% endblock %}

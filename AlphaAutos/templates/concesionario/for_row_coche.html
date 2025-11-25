@@ -1,14 +1,13 @@
 {% load django_bootstrap5 %}
 
 <tr>
-    <td><a href="{% url 'AlphaAutos:coche_detail' coche.id %}">{{ coche.id }}</a></td>
+    <td>{{ coche.id }}</td>
     <td>{{ coche.marca.nombre|upper }}</td>
     <td>{{ coche.modelo|title }}</td>
     <td>{{ coche.precio|floatformat:2 }} €</td>
     <td>{{ coche.concesionario.nombre }}</td>
     <td>
-        <a href="{% url 'AlphaAutos:editar_coche' coche.id %}"> 
-            <i class="bi bi-pencil"></i>
-        </a>
+        <a class="btn btn-sm btn-outline-primary me-2 text-nowrap" href="{% url 'AlphaAutos:coche_detail' coche.id %}">Ver en detalle</a>
+        <a class="btn btn-sm btn-outline-secondary text-nowrap" href="{% url 'AlphaAutos:editar_coche' coche.id %}">Editar</a>
     </td>
 </tr>

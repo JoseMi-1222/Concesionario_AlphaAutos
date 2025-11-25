@@ -17,6 +17,7 @@
                 <th>Nombre</th>
                 <th>País de Origen</th>
                 <th>Año de Fundación</th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -26,6 +27,10 @@
                 <td>{{ marca.nombre }}</td>
                 <td>{{ marca.pais_origen }}</td>
                 <td>{{ marca.año_fundacion }}</td>
+                <td>
+                    <a class="btn btn-sm btn-outline-primary me-2 text-nowrap" href="{% url 'AlphaAutos:marca_detail' marca.id %}">Ver en detalle</a>
+                    <a class="btn btn-sm btn-outline-secondary text-nowrap" href="{% url 'AlphaAutos:editar_marca' marca.id %}">Editar</a>
+                </td>
             </tr>
             {% endfor %}
         </tbody>

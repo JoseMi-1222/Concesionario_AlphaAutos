@@ -294,6 +294,26 @@ def buscar_concesionarios(request):
     contexto = {"form": form}
     return render(request, "Crud_Concesionario/buscar_concesionarios.html", contexto)
 # -------------------------------------------------------------------
+# VISTA: Formulario para editar un concesionario existente
+# -------------------------------------------------------------------
+def editar_concesionario(request, id_concesionario):
+    concesionario = get_object_or_404(Concesionario, id=id_concesionario)
+
+    if request.method == 'POST':
+        formulario = ConcesionarioModelForm(request.POST, instance=concesionario)
+        if formulario.is_valid():
+            try:
+                formulario.save()
+                messages.success(request, "Concesionario editado correctamente.")
+                return redirect('AlphaAutos:concesionario_detail', id_concesionario=concesionario.id)
+            except Exception as e:
+                messages.error(request, f"Error al guardar el concesionario: {e}")
+    else:
+        formulario = ConcesionarioModelForm(instance=concesionario)
+
+    contexto = {'formulario': formulario, 'concesionario': concesionario}
+    return render(request, 'Crud_Concesionario/editar_concesionario.html', contexto)
+# -------------------------------------------------------------------
 # Vista: Formulario para crear una nueva marca 
 # -------------------------------------------------------------------
 def crear_marca(request):
@@ -336,6 +356,41 @@ def buscar_marcas(request):
     # Si el formulario no es válido o no buscaron nada → mostrar formulario
     contexto = {"form": form}
     return render(request, "Crud_Marca/buscar_marcas.html", contexto)
+
+# -------------------------------------------------------------------
+# VISTA: Mostrar una marca y sus coches relacionados
+# -------------------------------------------------------------------
+def marca_detail(request, id_marca):
+    marca = get_object_or_404(Marca, id=id_marca)
+    coches = marca.coche_set.select_related('concesionario').all()
+
+    contexto = {
+        'marca': marca,
+        'coches': coches,
+    }
+    return render(request, 'concesionario/marca_detail.html', contexto)
+
+
+# -------------------------------------------------------------------
+# VISTA: Formulario para editar una marca existente
+# -------------------------------------------------------------------
+def editar_marca(request, id_marca):
+    marca = get_object_or_404(Marca, id=id_marca)
+
+    if request.method == 'POST':
+        formulario = MarcaModelForm(request.POST, instance=marca)
+        if formulario.is_valid():
+            try:
+                formulario.save()
+                messages.success(request, "Marca editada correctamente.")
+                return redirect('AlphaAutos:lista_marcas')
+            except Exception as e:
+                messages.error(request, f"Error al guardar la marca: {e}")
+    else:
+        formulario = MarcaModelForm(instance=marca)
+
+    contexto = {'formulario': formulario, 'marca': marca}
+    return render(request, 'Crud_Marca/editar_marca.html', contexto)
 
 # -------------------------------------------------------------------
 # Vista: Formulario para crear un nuevo empleado
@@ -468,3 +523,87 @@ def buscar_aseguradoras(request):
     # Si el formulario no es válido o no buscaron nada → mostrar formulario
     contexto = {"form": form}
     return render(request, "Crud_Aseguradora/buscar_aseguradoras.html", contexto)
+
+
+# -------------------------------------------------------------------
+# VISTA: Mostrar detalle de empleado y editar
+# -------------------------------------------------------------------
+def empleado_detail(request, id_empleado):
+    empleado = get_object_or_404(Empleado, id=id_empleado)
+    contexto = {'empleado': empleado}
+    return render(request, 'concesionario/empleado_detail.html', contexto)
+
+
+def editar_empleado(request, id_empleado):
+    empleado = get_object_or_404(Empleado, id=id_empleado)
+
+    if request.method == 'POST':
+        formulario = EmpleadoModelForm(request.POST, instance=empleado)
+        if formulario.is_valid():
+            try:
+                formulario.save()
+                messages.success(request, "Empleado editado correctamente.")
+                return redirect('AlphaAutos:lista_empleados')
+            except Exception as e:
+                messages.error(request, f"Error al guardar el empleado: {e}")
+    else:
+        formulario = EmpleadoModelForm(instance=empleado)
+
+    contexto = {'formulario': formulario, 'empleado': empleado}
+    return render(request, 'Crud_Empleados/editar_empleados.html', contexto)
+
+
+# -------------------------------------------------------------------
+# VISTA: Mostrar detalle de cliente y editar
+# -------------------------------------------------------------------
+def cliente_detail(request, id_cliente):
+    cliente = get_object_or_404(Cliente, id=id_cliente)
+    contexto = {'cliente': cliente}
+    return render(request, 'concesionario/cliente_detail.html', contexto)
+
+
+def editar_cliente(request, id_cliente):
+    cliente = get_object_or_404(Cliente, id=id_cliente)
+
+    if request.method == 'POST':
+        formulario = ClienteModelForm(request.POST, instance=cliente)
+        if formulario.is_valid():
+            try:
+                formulario.save()
+                messages.success(request, "Cliente editado correctamente.")
+                return redirect('AlphaAutos:lista_clientes')
+            except Exception as e:
+                messages.error(request, f"Error al guardar el cliente: {e}")
+    else:
+        formulario = ClienteModelForm(instance=cliente)
+
+    contexto = {'formulario': formulario, 'cliente': cliente}
+    return render(request, 'Crud_Clientes/editar_cliente.html', contexto)
+
+
+# -------------------------------------------------------------------
+# VISTA: Mostrar detalle de aseguradora y editar
+# -------------------------------------------------------------------
+def aseguradora_detail(request, id_aseguradora):
+    aseguradora = get_object_or_404(Aseguradora, id=id_aseguradora)
+    contexto = {'aseguradora': aseguradora}
+    return render(request, 'concesionario/aseguradora_detail.html', contexto)
+
+
+def editar_aseguradora(request, id_aseguradora):
+    aseguradora = get_object_or_404(Aseguradora, id=id_aseguradora)
+
+    if request.method == 'POST':
+        formulario = AseguradoraModelForm(request.POST, instance=aseguradora)
+        if formulario.is_valid():
+            try:
+                formulario.save()
+                messages.success(request, "Aseguradora editada correctamente.")
+                return redirect('AlphaAutos:lista_aseguradoras')
+            except Exception as e:
+                messages.error(request, f"Error al guardar la aseguradora: {e}")
+    else:
+        formulario = AseguradoraModelForm(instance=aseguradora)
+
+    contexto = {'formulario': formulario, 'aseguradora': aseguradora}
+    return render(request, 'Crud_Aseguradora/editar_aseguradora.html', contexto)

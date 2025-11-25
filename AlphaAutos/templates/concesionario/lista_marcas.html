@@ -12,16 +12,22 @@
     <tr>
         <th>ID</th>
         <th>Nombre de la Marca</th>
+        <th>Acciones</th>
     </tr>
     {% for marca in marcas %}
     <tr>
         <td>{{ marca.id }}</td>
         <td>{{ marca.nombre }}</td>
+            <td>
+            <a class="btn btn-sm btn-outline-primary me-2 text-nowrap" href="{% url 'AlphaAutos:marca_detail' marca.id %}">Ver en detalle</a>
+            <a class="btn btn-sm btn-outline-secondary text-nowrap" href="{% url 'AlphaAutos:editar_marca' marca.id %}">Editar</a>
+        </td>
     </tr>
     {% empty %}
     <tr><td colspan="2">No hay marcas registradas.</td></tr>
     {% endfor %}
 </table>
 <br>
-<p><a href="{% url 'AlphaAutos:index' %}">Volver al inicio</a></p>  
+<p><a href="{% url 'AlphaAutos:index' %}" class="btn btn-secondary">Volver al inicio</a></p>  
+<br>
 {% endblock %}

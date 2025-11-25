@@ -16,6 +16,7 @@
                     <th>Nombre</th>
                     <th>Ciudad</th>
                     <th>Teléfono</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -25,6 +26,10 @@
                     <td>{{ concesionario.nombre }}</td>
                     <td>{{ concesionario.ciudad }}</td>
                     <td>{{ concesionario.telefono }}</td>
+                    <td>
+                        <a class="btn btn-sm btn-outline-primary text-nowrap" href="{% url 'AlphaAutos:concesionario_detail' concesionario.id %}">Ver</a>
+                        <a class="btn btn-sm btn-outline-secondary text-nowrap" href="{% url 'AlphaAutos:editar_concesionario' concesionario.id %}">Editar</a>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>

@@ -1,0 +1,23 @@
+{% extends 'concesionario/base.html' %}
+
+{% block title %}Detalle Cliente{% endblock %}
+
+{% block cabecera %}
+<h1>Detalle del Cliente</h1>
+{% endblock %}
+
+{% block content %}
+{% if cliente %}
+    <div class="mb-3">
+        <a class="btn btn-sm btn-outline-secondary" href="{% url 'AlphaAutos:editar_cliente' cliente.id %}">Editar</a>
+    </div>
+
+    <p><strong>ID:</strong> {{ cliente.id }}</p>
+    <p><strong>Nombre:</strong> {{ cliente.nombre }}</p>
+    <p><strong>Email:</strong> {{ cliente.email }}</p>
+    <p><strong>Teléfono:</strong> {{ cliente.telefono }}</p>
+    <p><strong>Fecha de registro:</strong> {{ cliente.fecha_registro }}</p>
+{% else %}
+    <p>No se encontró el cliente.</p>
+{% endif %}
+{% endblock %}

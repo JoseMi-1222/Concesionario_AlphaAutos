@@ -1,6 +1,11 @@
 {% extends 'concesionario/base.html' %}
+
+{% block title %}Lista de Empleados - AlphaAutos{% endblock %}
+{% block cabecera %}
+<h1>Lista de Empleados</h1>
+{% endblock %}
+
 {% block content %}
-    <h1>Lista de Empleados</h1>
     <table>
         <thead>
             <tr>
@@ -9,6 +14,7 @@
                 <th>Salario</th>
                 <th>Fecha de Contratación</th>
                 <th>Concesionario</th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -19,9 +25,15 @@
                 <td>{{ empleado.salario }}</td>
                 <td>{{ empleado.fecha_contratacion }}</td>
                 <td>{{ empleado.concesionario.nombre }}</td>
+                <td>
+                    <a class="btn btn-sm btn-outline-primary me-2 text-nowrap" href="{% url 'AlphaAutos:empleado_detail' empleado.id %}">Ver en detalle</a>
+                    <a class="btn btn-sm btn-outline-secondary text-nowrap" href="{% url 'AlphaAutos:editar_empleado' empleado.id %}">Editar</a>
+                </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
-    <a href="{% url 'AlphaAutos:index' %}">Volver al inicio</a>
+    <br>
+    <a href="{% url 'AlphaAutos:index' %}" class="btn btn-secondary">Volver al inicio</a>
+    <br>
 {% endblock %}

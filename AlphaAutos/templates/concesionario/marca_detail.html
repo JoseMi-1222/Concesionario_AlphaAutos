@@ -1,0 +1,55 @@
+{% extends 'concesionario/base.html' %}
+
+{% block title %}Detalle de la Marca{% endblock %}
+
+{% block cabecera %}
+<h1>Detalle de la Marca</h1>
+{% endblock %}
+
+{% block content %}
+{% if marca %}
+    <div class="mb-3">
+        <a class="btn btn-sm btn-outline-secondary" href="{% url 'AlphaAutos:editar_marca' marca.id %}">Editar</a>
+    </div>
+
+    <p><strong>ID:</strong> {{ marca.id }}</p>
+    <p><strong>Nombre:</strong> {{ marca.nombre }}</p>
+    <p><strong>País de origen:</strong> {{ marca.pais_origen }}</p>
+    <p><strong>Año de fundación:</strong> {{ marca.año_fundacion }}</p>
+    <p><strong>Descripción:</strong> {{ marca.descripcion }}</p>
+
+    <h3 class="mt-4">Coches de esta marca</h3>
+    {% if coches %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Modelo</th>
+                    <th>Precio</th>
+                    <th>Concesionario</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for coche in coches %}
+                <tr>
+                    <td>{{ coche.id }}</td>
+                    <td>{{ coche.modelo }}</td>
+                    <td>{{ coche.precio|floatformat:2 }} €</td>
+                    <td>{{ coche.concesionario.nombre }}</td>
+                    <td>
+                        <a class="btn btn-sm btn-outline-primary me-2" href="{% url 'AlphaAutos:coche_detail' coche.id %}">Ver en detalle</a>
+                        <a class="btn btn-sm btn-outline-secondary" href="{% url 'AlphaAutos:editar_coche' coche.id %}">Editar</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No hay coches registrados para esta marca.</p>
+    {% endif %}
+
+{% else %}
+    <p>No se encontró la marca.</p>
+{% endif %}
+{% endblock %}

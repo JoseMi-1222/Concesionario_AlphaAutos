@@ -1,0 +1,29 @@
+{% extends 'concesionario/base.html' %}
+{% load static %}
+{% load django_bootstrap5 %}
+{% load bootstrap_icons %}
+
+{% block title %}Editar Empleado - AlphaAutos{% endblock %}
+
+{% block cabecera %}
+<h1 class="text-center mt-3">Editar empleado</h1>
+{% endblock %}
+
+{% block content %}
+<h3>Rellena el formulario para editar el empleado en la base de datos.</h3>
+
+<form method="post" action="{% url 'AlphaAutos:editar_empleado' empleado.id %}" class="mt-4">
+    {% csrf_token %}
+    {% bootstrap_form formulario %}
+
+    <button class="btn btn-primary" type="submit">Guardar Empleado</button>
+</form>
+
+{% if messages %}
+  <ul class="mt-3">
+    {% for message in messages %}
+      <li class="alert alert-{{ message.tags }}">{{ message }}</li>
+    {% endfor %}
+  </ul>
+{% endif %}
+{% endblock %}

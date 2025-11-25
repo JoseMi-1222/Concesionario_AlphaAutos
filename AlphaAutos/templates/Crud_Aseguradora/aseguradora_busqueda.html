@@ -18,6 +18,7 @@
                     <th>Teléfono</th>
                     <th>Web</th>
                     <th>Seguros</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -29,6 +30,10 @@
                     <td>{{ aseguradora.telefono }}</td>
                     <td>{{ aseguradora.web }}</td>
                     <td>{{ aseguradora.seguros }}</td>
+                    <td>
+                        <a class="btn btn-sm btn-outline-primary me-2 text-nowrap" href="{% url 'AlphaAutos:aseguradora_detail' aseguradora.id %}">Ver en detalle</a>
+                        <a class="btn btn-sm btn-outline-secondary text-nowrap" href="{% url 'AlphaAutos:editar_aseguradora' aseguradora.id %}">Editar</a>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>

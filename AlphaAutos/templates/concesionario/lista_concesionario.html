@@ -22,7 +22,8 @@
             <td>{{ concesionario.ciudad }}</td>
             <td>{{ concesionario.telefono }}</td>
             <td>
-                <a href="{% url 'AlphaAutos:concesionario_detail' concesionario.id %}">Ver detalle</a>
+                <a class="btn btn-sm btn-outline-primary text-nowrap" href="{% url 'AlphaAutos:concesionario_detail' concesionario.id %}">Ver detalle</a>
+                <a class="btn btn-sm btn-outline-secondary text-nowrap" href="{% url 'AlphaAutos:editar_concesionario' concesionario.id %}">Editar</a>
             </td>
         </tr>
     {% empty %}
@@ -30,5 +31,6 @@
     {% endfor %}
 </table>
 <br>
-<p><a href="{% url 'AlphaAutos:index' %}">Volver al inicio</a></p>
+<p><a href="{% url 'AlphaAutos:index' %}" class="btn btn-secondary">Volver al inicio</a></p>
+<br>
 {% endblock %}

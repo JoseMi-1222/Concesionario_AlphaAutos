@@ -17,7 +17,7 @@
         <th>Modelo</th>
         <th>Precio (€)</th>
         <th>Concesionario</th>
-        <th>Modificar</th>
+        <th>Acciones</th>
     </tr>
     {% for coche in coches %}
         {% include 'concesionario/for_row_coche.html' with coche=coche %}   
@@ -26,5 +26,6 @@
     {% endfor %}
 </table>
 <br>
-<p><a href="{% url 'AlphaAutos:index' %}">Volver al inicio</a></p>
+<p><a href="{% url 'AlphaAutos:index' %}" class="btn btn-secondary">Volver al inicio</a></p>
+<br>
 {% endblock %}

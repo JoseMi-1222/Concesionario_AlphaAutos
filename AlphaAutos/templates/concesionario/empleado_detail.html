@@ -1,0 +1,24 @@
+{% extends 'concesionario/base.html' %}
+
+{% block title %}Detalle Empleado{% endblock %}
+
+{% block cabecera %}
+<h1>Detalle del Empleado</h1>
+{% endblock %}
+
+{% block content %}
+{% if empleado %}
+    <div class="mb-3">
+        <a class="btn btn-sm btn-outline-secondary" href="{% url 'AlphaAutos:editar_empleado' empleado.id %}">Editar</a>
+    </div>
+
+    <p><strong>ID:</strong> {{ empleado.id }}</p>
+    <p><strong>Nombre:</strong> {{ empleado.nombre }}</p>
+    <p><strong>Puesto:</strong> {{ empleado.puesto }}</p>
+    <p><strong>Salario:</strong> {{ empleado.salario }}</p>
+    <p><strong>Fecha de contratación:</strong> {{ empleado.fecha_contratacion }}</p>
+    <p><strong>Concesionario:</strong> {{ empleado.concesionario.nombre }}</p>
+{% else %}
+    <p>No se encontró el empleado.</p>
+{% endif %}
+{% endblock %}

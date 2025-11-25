@@ -8,6 +8,9 @@
 
 {% block content %}
 {% if coche %}
+    <div class="mb-3">
+        <a class="btn btn-sm btn-outline-secondary" href="{% url 'AlphaAutos:editar_coche' coche.id %}">Editar</a>
+    </div>
     <p><strong>ID:</strong> {{ coche.id }}</p>
     <p><strong>Marca:</strong> {{ coche.marca.nombre|upper }}</p>
     <p><strong>Modelo:</strong> {{ coche.modelo|title }}</p>

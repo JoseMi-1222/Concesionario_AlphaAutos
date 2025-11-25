@@ -1,0 +1,35 @@
+{% extends 'concesionario/lista_concesionario.html' %}
+
+{% block title %}Buscar Concesionarios - AlphaAutos{% endblock %}
+
+{% block cabecera %}
+<h1 class="text-center mt-3">Resultados de la búsqueda de concesionarios</h1>
+{% endblock %}
+    
+{% block content %}
+    {% if concesionarios %}
+        <h3>Se han encontrado {{ concesionarios|length }} concesionario(s) que coinciden con los criterios de búsqueda.</h3>
+        <table class="table table-striped mt-4">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Ciudad</th>
+                    <th>Teléfono</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for concesionario in concesionarios %}
+                <tr>
+                    <td>{{ concesionario.id }}</td>
+                    <td>{{ concesionario.nombre }}</td>
+                    <td>{{ concesionario.ciudad }}</td>
+                    <td>{{ concesionario.telefono }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <h3>No se han encontrado concesionarios que coincidan con los criterios de búsqueda.</h3>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends 'concesionario/lista_marcas.html' %}
+
+{% block title %}Buscar Marca - AlphaAutos{% endblock %}
+
+{% block cabecera %}
+<h1 class="text-center mt-3">Resultados de la búsqueda de marcas</h1>
+{% endblock %}  
+
+{% block content %}
+<h3>Estos son los resultados de tu búsqueda:</h3>   
+
+{% if marcas %}
+    <table class="table table-striped mt-4">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>País de Origen</th>
+                <th>Año de Fundación</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for marca in marcas %}
+            <tr>
+                <td>{{ marca.id }}</td>
+                <td>{{ marca.nombre }}</td>
+                <td>{{ marca.pais_origen }}</td>
+                <td>{{ marca.año_fundacion }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p class="mt-4">No se encontraron marcas que coincidan con los criterios de búsqueda.</p>
+{% endif %}
+
+{% endblock %}

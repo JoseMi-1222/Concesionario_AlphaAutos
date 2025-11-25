@@ -1,0 +1,37 @@
+{% extends 'concesionario/lista_clientes.html' %}
+
+{% block title %}Buscar Cliente - AlphaAutos{% endblock %}
+
+{% block cabecera %}
+<h1 class="text-center mt-3">Resultados de la búsqueda de cliente</h1>
+{% endblock %}
+
+{% block content %}
+    {% if clientes %}
+        <h3>Se han encontrado {{ clientes|length }} cliente(s) que coinciden con los criterios de búsqueda.</h3>
+        <table class="table table-striped mt-4">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Email</th>
+                    <th>Teléfono</th>
+                    <th>Fecha de Registro</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cliente in clientes %}
+                <tr>
+                    <td>{{ cliente.id }}</td>
+                    <td>{{ cliente.nombre }}</td>
+                    <td>{{ cliente.email }}</td>
+                    <td>{{ cliente.telefono }}</td>
+                    <td>{{ cliente.fecha_registro }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <h3>No se han encontrado clientes que coincidan con los criterios de búsqueda.</h3>
+    {% endif %}
+{% endblock %}

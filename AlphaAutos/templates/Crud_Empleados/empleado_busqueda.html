@@ -1,0 +1,36 @@
+{% extends 'concesionario/lista_empleados.html' %}
+
+{% block title %}Buscar Empleado - AlphaAutos{% endblock %}
+
+{% block cabecera %}
+<h1 class="text-center mt-3">Buscar empleados</h1>
+{% endblock %}
+
+{% block content %}
+    {% if empleados %}
+        <h3>Se han encontrado {{ empleados|length }} empleado(s) que coinciden con los criterios de búsqueda.</h3>
+        <table class="table table-striped mt-4">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Puesto</th>
+                    <th>Concesionario</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for empleado in empleados %}
+                <tr>
+                    <td>{{ empleado.id }}</td>
+                    <td>{{ empleado.nombre }}</td>
+                    <td>{{ empleado.puesto }}</td>
+                    <td>{{ empleado.concesionario.nombre }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <h3>No se han encontrado empleados que coincidan con los criterios de búsqueda.</h3>
+    {% endif %}
+{% endblock %}
+

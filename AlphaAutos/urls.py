@@ -27,4 +27,9 @@ urlpatterns = [
     path('aseguradoras/', views.lista_aseguradoras, name='lista_aseguradoras'),
     path('aseguradora/nuevo/', views.crear_aseguradora, name='crear_aseguradora'),
     path('buscar_coches/', views.buscar_coches, name='buscar_coches'),
+    path('buscar_concesionarios/', views.buscar_concesionarios, name='buscar_concesionarios'),
+    path('buscar_marcas/', views.buscar_marcas, name='buscar_marcas'),
+    path('buscar_empleados/', views.buscar_empleados, name='buscar_empleados'),
+    path('buscar_clientes/', views.buscar_clientes, name='buscar_clientes'),
+    path('buscar_aseguradoras/', views.buscar_aseguradoras, name='buscar_aseguradoras'),
 ]

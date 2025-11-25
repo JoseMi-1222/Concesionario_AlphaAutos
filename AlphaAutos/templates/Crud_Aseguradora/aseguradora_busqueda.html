@@ -1,0 +1,39 @@
+{% extends 'concesionario/lista_aseguradoras.html' %}
+
+{% block title %}Resultados de la búsqueda - AlphaAutos{% endblock %}
+
+{% block cabecera %}
+<h1 class="text-center mt-3">Resultados de la búsqueda de aseguradora</h1>
+{% endblock %}
+
+{% block content %}
+    {% if aseguradoras %}
+        <h3>Se han encontrado {{ aseguradoras|length }} aseguradora(s) que coinciden con los criterios de búsqueda.</h3>
+        <table class="table table-striped mt-4">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Pais</th>
+                    <th>Teléfono</th>
+                    <th>Web</th>
+                    <th>Seguros</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for aseguradora in aseguradoras %}
+                <tr>
+                    <td>{{ aseguradora.id }}</td>
+                    <td>{{ aseguradora.nombre }}</td>
+                    <td>{{ aseguradora.pais }}</td>
+                    <td>{{ aseguradora.telefono }}</td>
+                    <td>{{ aseguradora.web }}</td>
+                    <td>{{ aseguradora.seguros }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <h3>No se han encontrado aseguradoras que coincidan con los criterios de búsqueda.</h3>
+    {% endif %}
+{% endblock %}

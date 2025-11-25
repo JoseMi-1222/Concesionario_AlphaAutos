@@ -1,0 +1,20 @@
+{% extends 'concesionario/base.html' %}
+{% load static %}
+{% load django_bootstrap5 %}
+{% load bootstrap_icons %}
+
+{% block title %}Buscar Concesionario - AlphaAutos{% endblock %}
+
+{% block cabecera %}
+<h1 class="text-center mt-3">Buscar concesionarios</h1>
+{% endblock %}
+
+{% block content %}
+<h3>Rellena el formulario para buscar concesionarios en la base de datos.</h3>   
+
+<form method="get" action="{% url 'AlphaAutos:buscar_concesionarios' %}" class="mt-4">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    <button class="btn btn-primary" type="submit">Buscar Concesionarios</button>
+</form>
+{% endblock %}  

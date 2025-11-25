@@ -228,9 +228,6 @@ def buscar_coches(request):
     contexto = {"form": form}
     return render(request, "Crud_Coche/buscar_coches.html", contexto)
 
-
-
-
 # -------------------------------------------------------------------
 # Vista: Formulario para crear un nuevo concesionario
 # -------------------------------------------------------------------
@@ -248,7 +245,34 @@ def crear_concesionario(request):
     return render(request, 'Crud_Concesionario/crear_concesionario.html', contexto)
 
 # -------------------------------------------------------------------
-# Vista: Formulario para crear una nueva marca
+# Vista: Formulario para buscar un concesionario 3 posibles filtros
+# -------------------------------------------------------------------
+def buscar_concesionarios(request):
+    form = ConcesionarioSearchForm(request.GET or None)
+    qs = Concesionario.objects.all()
+
+    if form.is_valid():
+        nombre = form.cleaned_data.get("nombre")
+        ciudad = form.cleaned_data.get("ciudad")
+        telefono = form.cleaned_data.get("telefono")
+
+        if nombre:
+            qs = qs.filter(nombre__icontains=nombre)
+        if ciudad:
+            qs = qs.filter(ciudad__icontains=ciudad)
+        if telefono:
+            qs = qs.filter(telefono__icontains=telefono)
+
+        contexto = {"form": form, "concesionarios": qs}
+
+        # ⬅️ ⬅️ Renderizar los resultados
+        return render(request, "Crud_Concesionario/concesionario_busqueda.html", contexto)
+
+    # Si el formulario no es válido o no buscaron nada → mostrar formulario
+    contexto = {"form": form}
+    return render(request, "Crud_Concesionario/buscar_concesionarios.html", contexto)
+# -------------------------------------------------------------------
+# Vista: Formulario para crear una nueva marca 
 # -------------------------------------------------------------------
 def crear_marca(request):
     if request.method == 'POST':
@@ -262,6 +286,34 @@ def crear_marca(request):
     
     contexto = {'form': form}
     return render(request, 'Crud_Marca/crear_marca.html', contexto)
+
+# -------------------------------------------------------------------
+# Vista: Formulario para buscar una marca con 3 posibles filtros
+# -------------------------------------------------------------------
+def buscar_marcas(request):
+    form = MarcaSearchForm(request.GET or None)
+    qs = Marca.objects.all()
+
+    if form.is_valid():
+        nombre = form.cleaned_data.get("nombre")
+        pais_origen = form.cleaned_data.get("pais_origen")
+        año_fundacion = form.cleaned_data.get("año_fundacion")
+
+        if nombre:
+            qs = qs.filter(nombre__icontains=nombre)
+        if pais_origen:
+            qs = qs.filter(pais_origen__icontains=pais_origen)
+        if año_fundacion is not None:
+            qs = qs.filter(año_fundacion=año_fundacion)
+
+        contexto = {"form": form, "marcas": qs}
+
+        # ⬅️ ⬅️ Renderizar los resultados
+        return render(request, "Crud_Marca/marca_busqueda.html", contexto)
+
+    # Si el formulario no es válido o no buscaron nada → mostrar formulario
+    contexto = {"form": form}
+    return render(request, "Crud_Marca/buscar_marcas.html", contexto)
 
 # -------------------------------------------------------------------
 # Vista: Formulario para crear un nuevo empleado
@@ -280,6 +332,34 @@ def crear_empleado(request):
     return render(request, 'Crud_Empleados/crear_empleados.html', contexto)
 
 # -------------------------------------------------------------------
+# Vista: Formulario para buscar un empleado con 3 posibles filtros
+# -------------------------------------------------------------------
+def buscar_empleados(request):
+    form = EmpleadoSearchForm(request.GET or None)
+    qs = Empleado.objects.all()
+
+    if form.is_valid():
+        nombre = form.cleaned_data.get("nombre")
+        puesto = form.cleaned_data.get("puesto")
+        concesionario = form.cleaned_data.get("concesionario")
+
+        if nombre:
+            qs = qs.filter(nombre__icontains=nombre)
+        if puesto:
+            qs = qs.filter(puesto__icontains=puesto)
+        if concesionario:
+            qs = qs.filter(concesionario=concesionario)
+
+        contexto = {"form": form, "empleados": qs}
+
+        # ⬅️ ⬅️ Renderizar los resultados
+        return render(request, "Crud_Empleados/empleado_busqueda.html", contexto)
+
+    # Si el formulario no es válido o no buscaron nada → mostrar formulario
+    contexto = {"form": form}
+    return render(request, "Crud_Empleados/buscar_empleados.html", contexto)
+
+# -------------------------------------------------------------------
 # Vista: Formulario para crear un nuevo cliente
 # -------------------------------------------------------------------
 def crear_cliente(request):
@@ -296,6 +376,34 @@ def crear_cliente(request):
     return render(request, 'Crud_Clientes/crear_cliente.html', contexto)
 
 # -------------------------------------------------------------------
+# Vista: Formulario para buscar un cliente con 3 posibles filtros
+# -------------------------------------------------------------------
+def buscar_clientes(request):
+    form = ClienteSearchForm(request.GET or None)
+    qs = Cliente.objects.all()
+
+    if form.is_valid():
+        nombre = form.cleaned_data.get("nombre")
+        email = form.cleaned_data.get("email")
+        telefono = form.cleaned_data.get("telefono")
+
+        if nombre:
+            qs = qs.filter(nombre__icontains=nombre)
+        if email:
+            qs = qs.filter(email__icontains=email)
+        if telefono:
+            qs = qs.filter(telefono__icontains=telefono)
+
+        contexto = {"form": form, "clientes": qs}
+
+        # ⬅️ ⬅️ Renderizar los resultados
+        return render(request, "Crud_Clientes/cliente_busqueda.html", contexto)
+
+    # Si el formulario no es válido o no buscaron nada → mostrar formulario
+    contexto = {"form": form}
+    return render(request, "Crud_Clientes/buscar_clientes.html", contexto)
+
+# -------------------------------------------------------------------
 # Vista: Formulario para crear una nueva aseguradora
 # -------------------------------------------------------------------
 def crear_aseguradora(request):
@@ -310,3 +418,31 @@ def crear_aseguradora(request):
     
     contexto = {'form': form}
     return render(request, 'Crud_Aseguradora/crear_aseguradora.html', contexto)
+
+# -------------------------------------------------------------------
+# Vista: Formulario para buscar una aseguradora con 3 posibles filtros  
+# -------------------------------------------------------------------
+def buscar_aseguradoras(request):
+    form = AseguradoraSearchForm(request.GET or None)
+    qs = Aseguradora.objects.all()
+
+    if form.is_valid():
+        nombre = form.cleaned_data.get("nombre")
+        pais = form.cleaned_data.get("pais")
+        telefono = form.cleaned_data.get("telefono")
+
+        if nombre:
+            qs = qs.filter(nombre__icontains=nombre)
+        if pais:
+            qs = qs.filter(pais__icontains=pais)
+        if telefono:
+            qs = qs.filter(telefono__icontains=telefono)
+
+        contexto = {"form": form, "aseguradoras": qs}
+
+        # ⬅️ ⬅️ Renderizar los resultados
+        return render(request, "Crud_Aseguradora/aseguradora_busqueda.html", contexto)
+
+    # Si el formulario no es válido o no buscaron nada → mostrar formulario
+    contexto = {"form": form}
+    return render(request, "Crud_Aseguradora/buscar_aseguradoras.html", contexto)

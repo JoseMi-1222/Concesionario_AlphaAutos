@@ -1,0 +1,20 @@
+{% extends 'concesionario/base.html' %}
+{% load static %}
+{% load django_bootstrap5 %}
+{% load bootstrap_icons %}
+
+{% block title %}Buscar Marca - AlphaAutos{% endblock %}
+
+{% block cabecera %}
+<h1 class="text-center mt-3">Buscar una marca</h1>
+{% endblock %}  
+
+{% block content %}
+<h3>Rellena el formulario para buscar una marca en la base de datos.</h3>   
+
+<form method="GET" action="{% url 'AlphaAutos:buscar_marcas' %}" class="mt-4">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    <button class="btn btn-primary" type="submit">Buscar Marca</button>
+</form>
+{% endblock %}  

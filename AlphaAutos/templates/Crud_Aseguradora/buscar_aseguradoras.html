@@ -1,0 +1,20 @@
+{% extends 'concesionario/base.html' %}
+{% load static %}
+{% load django_bootstrap5 %}
+{% load bootstrap_icons %}
+
+{% block title %}Buscar Aseguradora - AlphaAutos{% endblock %}
+
+{% block cabecera %}
+<h1>Buscar Aseguradora</h1>
+{% endblock %}
+
+{% block content %}
+<h3>Rellena el formulario para buscar aseguradoras en la base de datos.</h3>
+
+<form action="{% url 'AlphaAutos:buscar_aseguradoras' %}" method="get" class="mt-4">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    <button type="submit" class="btn btn-primary">Buscar</button>
+</form>
+{% endblock %}

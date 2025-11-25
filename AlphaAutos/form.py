@@ -74,6 +74,21 @@ class ConcesionarioModelForm(ModelForm):
         return self.cleaned_data
     
 # -------------------------------------------------------------------
+# Crud_Concesionario
+# VISTA: Buscar un concesionario (CRUD - Create)
+# -------------------------------------------------------------------
+class ConcesionarioSearchForm(forms.Form):
+    nombre = forms.CharField(required=False, label="Nombre")
+    ciudad = forms.CharField(required=False, label="Ciudad")
+    telefono = forms.CharField(required=False, label="Teléfono")
+
+    def clean(self):
+        cleaned = super().clean()
+        if not any(cleaned.values()):
+            raise forms.ValidationError("Introduce al menos un criterio de búsqueda.")
+        return cleaned
+    
+# -------------------------------------------------------------------
 # Crud_Marca
 # VISTA: Crear una nueva marca (CRUD - Create)
 # -------------------------------------------------------------------
@@ -97,6 +112,21 @@ class MarcaModelForm(ModelForm):
             self.add_error('descripcion', 'La descripción debe tener al menos 5 caracteres.')
             
         return self.cleaned_data
+    
+# -------------------------------------------------------------------
+# Crud_Marca
+# VISTA: Buscar una marca (CRUD - Create)
+# -------------------------------------------------------------------
+class MarcaSearchForm(forms.Form):
+    nombre = forms.CharField(required=False, label="Nombre")
+    pais_origen = forms.CharField(required=False, label="País de Origen")
+    año_fundacion = forms.IntegerField(required=False, min_value=1900, max_value=datetime.now().year, label="Año de Fundación")
+
+    def clean(self):
+        cleaned = super().clean()
+        if not any(cleaned.values()):
+            raise forms.ValidationError("Introduce al menos un criterio de búsqueda.")
+        return cleaned
     
 # -------------------------------------------------------------------
 # Crud_Empleado
@@ -128,6 +158,22 @@ class EmpleadoModelForm(ModelForm):
         return self.cleaned_data
     
 # -------------------------------------------------------------------
+# Crud_Empleado
+# VISTA: Buscar un empleado (CRUD - Create)
+# -------------------------------------------------------------------
+class EmpleadoSearchForm(forms.Form):
+    nombre = forms.CharField(required=False, label="Nombre")
+    puesto = forms.CharField(required=False, label="Puesto")
+    concesionario = forms.ModelChoiceField(queryset=Concesionario.objects.all(), required=False, label="Concesionario")
+
+    def clean(self):
+        cleaned = super().clean()
+        if not any(cleaned.values()):
+            raise forms.ValidationError("Introduce al menos un criterio de búsqueda.")
+        return cleaned
+    
+    
+# -------------------------------------------------------------------
 # Crud_Cliente
 # VISTA: Crear un nuevo cliente (CRUD - Create)
 # -------------------------------------------------------------------
@@ -149,6 +195,21 @@ class ClienteModelForm(ModelForm):
             self.add_error('telefono', 'El teléfono debe contener solo números.')
             
         return self.cleaned_data
+    
+# -------------------------------------------------------------------
+# Crud_Cliente
+# VISTA: Buscar un cliente (CRUD - Create)
+# -------------------------------------------------------------------
+class ClienteSearchForm(forms.Form):
+    nombre = forms.CharField(required=False, label="Nombre")
+    email = forms.CharField(required=False, label="Email")
+    telefono = forms.CharField(required=False, label="Teléfono")
+
+    def clean(self):
+        cleaned = super().clean()
+        if not any(cleaned.values()):
+            raise forms.ValidationError("Introduce al menos un criterio de búsqueda.")
+        return cleaned
     
 # -------------------------------------------------------------------
 # Crud_Aseguradora
@@ -173,6 +234,19 @@ class AseguradoraModelForm(ModelForm):
             
         return self.cleaned_data
 
+# -------------------------------------------------------------------
+# Crud_Aseguradora
+# VISTA: Buscar una aseguradora (CRUD - Create)
+# -------------------------------------------------------------------
+class AseguradoraSearchForm(forms.Form):
+    nombre = forms.CharField(required=False, label="Nombre")
+    pais = forms.CharField(required=False, label="País")
+    telefono = forms.CharField(required=False, label="Teléfono")
 
+    def clean(self):
+        cleaned = super().clean()
+        if not any(cleaned.values()):
+            raise forms.ValidationError("Introduce al menos un criterio de búsqueda.")
+        return cleaned
 
         

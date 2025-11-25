@@ -114,7 +114,7 @@ class Aseguradora(models.Model):
     nombre = models.CharField(max_length=100)
     pais = models.CharField(max_length=50)
     telefono = models.CharField(max_length=20)
-    web = models.URLField(blank=True)
+    web = models.CharField(max_length=100, blank=True)
     seguros = models.ManyToManyField(Seguro)
 
     def __str__(self):

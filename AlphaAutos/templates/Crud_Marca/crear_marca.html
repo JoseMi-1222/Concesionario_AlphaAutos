@@ -11,6 +11,7 @@
 
 {% block content %}
 <h3>Rellena el formulario para añadir una nueva marca a la base de datos.</h3>   
+
 <form method="post" action="{% url 'AlphaAutos:crear_marca' %}" class="mt-4">
     {% csrf_token %}
     {% bootstrap_form form %}

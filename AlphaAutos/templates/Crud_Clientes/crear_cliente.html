@@ -10,7 +10,9 @@
 {% endblock %}
 
 {% block content %}
-<form method="post" novalidate>
+<h3>Rellena el formulario para añadir un nuevo cliente a la base de datos.</h3>
+
+<form action="{% url 'AlphaAutos:crear_cliente' %}" method="post" class="mt-4">
     {% csrf_token %}
     {% bootstrap_form form %}
     <button type="submit" class="btn btn-primary">Crear Cliente</button>

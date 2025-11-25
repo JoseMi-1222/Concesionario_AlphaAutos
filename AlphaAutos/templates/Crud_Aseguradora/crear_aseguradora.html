@@ -1,0 +1,20 @@
+{% extends 'concesionario/base.html' %}
+{% load static %}
+{% load django_bootstrap5 %}
+{% load bootstrap_icons %}
+
+{% block title %}Crear Aseguradora - AlphaAutos{% endblock %}
+
+{% block cabecera %}
+<h1>Crear Nueva Aseguradora</h1>
+{% endblock %}
+
+{% block content %}
+<h3>Rellena el formulario para añadir una nueva aseguradora a la base de datos.</h3>
+
+<form action="{% url 'AlphaAutos:crear_aseguradora' %}" method="post" class="mt-4">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    <button type="submit" class="btn btn-primary">Crear</button>
+</form>
+{% endblock %}

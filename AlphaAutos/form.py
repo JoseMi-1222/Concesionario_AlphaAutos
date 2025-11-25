@@ -133,6 +133,29 @@ class ClienteModelForm(ModelForm):
             self.add_error('telefono', 'El teléfono debe contener solo números.')
             
         return self.cleaned_data
+    
+# -------------------------------------------------------------------
+# Crud_Aseguradora
+# VISTA: Crear una nueva aseguradora (CRUD - Create)
+# -------------------------------------------------------------------
+class AseguradoraModelForm(ModelForm):
+    class Meta:
+        model = Aseguradora
+        fields = ['nombre', 'pais', 'telefono', 'web', 'seguros']
+        
+    def clean(self):
+        telefono = self.cleaned_data.get('telefono')
+        web = self.cleaned_data.get('web')
+            
+        # Validar que el teléfono tenga un formato adecuado (ejemplo simple)
+        if telefono and not telefono.isdigit():
+            self.add_error('telefono', 'El teléfono debe contener solo números.')
+            
+        # Validar que la web tenga un formato adecuado (ejemplo simple)
+        if web and not web.startswith("www"):
+            self.add_error('web', 'La web debe comenzar con "www".')
+            
+        return self.cleaned_data
 
 
 

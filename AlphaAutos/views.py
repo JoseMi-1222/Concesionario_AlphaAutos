@@ -177,6 +177,14 @@ def lista_clientes(request):
     return render(request, 'concesionario/lista_clientes.html', context)
 
 # -------------------------------------------------------------------
+# Vista: Listar todas las aseguradoras
+# -------------------------------------------------------------------
+def lista_aseguradoras(request):
+    aseguradoras = Aseguradora.objects.all()  # Obtiene todas las aseguradoras
+    context = {'aseguradoras': aseguradoras}
+    return render(request, 'concesionario/lista_aseguradoras.html', context)
+
+# -------------------------------------------------------------------
 # Vista: Formulario para crear un nuevo coche
 # -------------------------------------------------------------------
 def crear_coche(request):
@@ -255,3 +263,19 @@ def crear_cliente(request):
     
     contexto = {'form': form}
     return render(request, 'Crud_Clientes/crear_cliente.html', contexto)
+
+# -------------------------------------------------------------------
+# Vista: Formulario para crear una nueva aseguradora
+# -------------------------------------------------------------------
+def crear_aseguradora(request):
+    if request.method == 'POST':
+        form = AseguradoraModelForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Aseguradora creada correctamente.")
+            return redirect('AlphaAutos:lista_aseguradoras')
+    else:
+        form = AseguradoraModelForm()
+    
+    contexto = {'form': form}
+    return render(request, 'Crud_Aseguradora/crear_aseguradora.html', contexto)

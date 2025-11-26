@@ -9,6 +9,7 @@
     <table>
         <thead>
             <tr>
+                <th>ID</th>
                 <th>Nombre</th>
                 <th>Puesto</th>
                 <th>Salario</th>
@@ -20,6 +21,7 @@
         <tbody>
             {% for empleado in empleados %}
             <tr>
+                <td>{{ empleado.id }}</td>
                 <td>{{ empleado.nombre }}</td>
                 <td>{{ empleado.puesto }}</td>
                 <td>{{ empleado.salario }}</td>

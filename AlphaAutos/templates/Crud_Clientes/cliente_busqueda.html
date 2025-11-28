@@ -31,6 +31,7 @@
                     <td>
                         <a class="btn btn-sm btn-outline-primary me-2 text-nowrap" href="{% url 'AlphaAutos:cliente_detail' cliente.id %}">Ver en detalle</a>
                         <a class="btn btn-sm btn-outline-secondary text-nowrap" href="{% url 'AlphaAutos:editar_cliente' cliente.id %}">Editar</a>
+                        <a class="btn btn-sm btn-outline-danger ms-2 text-nowrap" href="{% url 'AlphaAutos:eliminar_cliente' cliente.id %}" onclick="return confirm('¿Estás seguro de que deseas eliminar este cliente?');">Eliminar</a>
                     </td>
                 </tr>
                 {% endfor %}

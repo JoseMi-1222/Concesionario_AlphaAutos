@@ -254,3 +254,68 @@ Representa el concesionario principal.
 - Todas las fechas se muestran con `|date:"d/m/Y"` en las plantillas (`coche_detail.html`, `coches_por_fecha.html`, `ultimo_cliente_coche.html`).  
 
 ---
+
+## Widgets usados en los formularios
+
+- **`forms.SelectDateWidget`**: usado en `AlphaAutos/form.py` para los campos **`fecha_fabricacion`** (en `CocheModelForm`) y **`fecha_contratacion`** (en `EmpleadoModelForm`). Proporciona selectores de día/mes/año.
+- **`forms.NumberInput`**: usado en `AlphaAutos/form.py` para el campo **`precio`** (en `CocheModelForm`) — campo numérico con atributo `step` para decimales.
+- **`forms.TextInput`**: usado en `AlphaAutos/form.py` para el campo **`modelo`** (en `CocheModelForm`) — input de texto simple.
+- **`forms.Textarea`**: usado en `AlphaAutos/form.py` para el campo **`descripcion`** (en `MarcaModelForm`) — área de texto multipárrafo.
+- **`forms.EmailInput`**: usado en `AlphaAutos/form.py` para el campo **`email`** (en `ClienteModelForm`) — input tipo email (valida formato en el navegador cuando procede).
+- **`forms.DateInput`**: usado en `AlphaAutos/form.py` para el campo **`fecha_registro`** (en `ClienteModelForm`) — usa el selector de fecha nativo HTML5 (`type="date"`).
+
+Estos widgets están definidos en `AlphaAutos/form.py` dentro de las clases `ModelForm` correspondientes. Si quieres que todos los campos usen estilos Bootstrap homogéneos o prefieres reemplazar `SelectDateWidget` por un `DateInput` con un datepicker JS, puedo hacer esos cambios también.
+
+## Validaciones definidas en `AlphaAutos/form.py`
+
+A continuación se listan todas las validaciones implementadas en `AlphaAutos/form.py`, indicando qué comprobación se hace y en qué formulario/campo se aplica.
+
+- **`CocheModelForm.clean()`**
+	- `precio` no puede ser nulo ni menor o igual a 0 → añade error en `precio` con mensaje: "El precio no puede ser negativo o 0." (formulario: `CocheModelForm`).
+	- `fecha_fabricacion` no puede ser una fecha futura → añade error en `fecha_fabricacion` con mensaje: "La fecha de fabricación no puede ser futura." (formulario: `CocheModelForm`).
+
+- **`CocheSearchForm`**
+	- `precio_max` definido con `min_value=0` (campo): impide introducir valores negativos (validación de campo).
+	- `clean()` verifica que al menos un criterio de búsqueda esté presente; si todos los campos están vacíos lanza `ValidationError("Introduce al menos un criterio de búsqueda.")`.
+
+- **`ConcesionarioModelForm.clean()`**
+	- `nombre` no puede estar vacío → añade error en `nombre` con mensaje: "El nombre no puede estar vacío.".
+	- `telefono` debe contener solo dígitos (si se proporciona) → añade error en `telefono` con mensaje: "El teléfono debe contener solo números.".
+
+- **`ConcesionarioSearchForm.clean()`**
+	- Verifica que al menos un criterio de búsqueda esté presente; si no, lanza `ValidationError("Introduce al menos un criterio de búsqueda.")`.
+
+- **`MarcaModelForm.clean()`**
+	- `año_fundacion` (si se proporciona) debe estar entre 1950 y el año actual → añade error en `año_fundacion` con mensaje: "El año de fundación debe estar entre 1950 y {current_year}.".
+	- `descripcion` (si se proporciona) debe tener al menos 5 caracteres → añade error en `descripcion` con mensaje: "La descripción debe tener al menos 5 caracteres.".
+
+- **`MarcaSearchForm`**
+	- `año_fundacion` definido con `min_value=1900` y `max_value=datetime.now().year` (validación de campo).
+	- `clean()` verifica que al menos un criterio de búsqueda esté presente; si no, lanza `ValidationError("Introduce al menos un criterio de búsqueda.")`.
+
+- **`EmpleadoModelForm.clean()`**
+	- `salario` (si se proporciona) no puede ser menor o igual a 0 → añade error en `salario` con mensaje: "El salario no puede ser negativo o 0.".
+	- `fecha_contratacion` no puede ser futura → añade error en `fecha_contratacion` con mensaje: "La fecha de contratación no puede ser futura.".
+
+- **`EmpleadoSearchForm.clean()`**
+	- Verifica que al menos un criterio de búsqueda esté presente; si no, lanza `ValidationError("Introduce al menos un criterio de búsqueda.")`.
+
+- **`ClienteModelForm.clean()`**
+	- `email` (si se proporciona) se comprueba de forma simple: debe contener el carácter `@`; si no, añade error en `email` con mensaje: "El email no tiene un formato válido.".
+	- `telefono` (si se proporciona) debe contener solo dígitos → añade error en `telefono` con mensaje: "El teléfono debe contener solo números.".
+
+- **`ClienteSearchForm.clean()`**
+	- Verifica que al menos un criterio de búsqueda esté presente; si no, lanza `ValidationError("Introduce al menos un criterio de búsqueda.")`.
+
+- **`AseguradoraModelForm.clean()`**
+	- `telefono` (si se proporciona) debe contener solo dígitos → añade error en `telefono` con mensaje: "El teléfono debe contener solo números.".
+	- `web` (si se proporciona) debe comenzar con `"www"` → añade error en `web` con mensaje: "La web debe comenzar con \"www\".".
+
+- **`AseguradoraSearchForm.clean()`**
+	- Verifica que al menos un criterio de búsqueda esté presente; si no, lanza `ValidationError("Introduce al menos un criterio de búsqueda.")`.
+
+Notas adicionales:
+- Varias validaciones son comprobadas a nivel de campo usando parámetros de los campos (por ejemplo `min_value`, `max_value`) y no solo en `clean()`; estas comprobaciones aparecerán como errores de campo normales cuando se valide el formulario.
+
+
+

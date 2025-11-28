@@ -17,7 +17,9 @@ class CocheModelForm(ModelForm):
              'fecha_fabricacion': forms.SelectDateWidget(
                 years=range(current_year - 10, current_year + 11),
                 attrs={'class': 'form-select d-inline w-auto'}
-            )
+            ),
+            'precio': forms.NumberInput(attrs={'class': 'form-control', 'step': '0.01'}),
+            'modelo': forms.TextInput(attrs={'class': 'form-control'})
         }
         
     def clean(self):
@@ -83,8 +85,20 @@ class ConcesionarioSearchForm(forms.Form):
 
     def clean(self):
         cleaned = super().clean()
-        if not any(cleaned.values()):
+        nombre = cleaned.get('nombre')
+        ciudad = cleaned.get('ciudad')
+        telefono = cleaned.get('telefono')
+
+        # Al menos un criterio
+        if not any([v for v in (nombre, ciudad, telefono) if v]):
             raise forms.ValidationError("Introduce al menos un criterio de búsqueda.")
+
+        # Validaciones adicionales
+        if telefono and not telefono.isdigit():
+            self.add_error('telefono', 'El teléfono debe contener solo números.')
+        if nombre and len(nombre.strip()) < 2:
+            self.add_error('nombre', 'Introduce al menos 2 caracteres para el nombre.')
+
         return cleaned
     
 # -------------------------------------------------------------------
@@ -96,6 +110,9 @@ class MarcaModelForm(ModelForm):
     class Meta:
         model = Marca
         fields = ['nombre', 'pais_origen', 'año_fundacion', 'descripcion']
+        widgets = {
+            'descripcion': forms.Textarea(attrs={'class': 'form-control', 'rows': 3})
+        }
         
     def clean(self):
         año_fundacion = self.cleaned_data.get('año_fundacion')
@@ -167,8 +184,20 @@ class EmpleadoSearchForm(forms.Form):
 
     def clean(self):
         cleaned = super().clean()
-        if not any(cleaned.values()):
+        nombre = cleaned.get('nombre')
+        puesto = cleaned.get('puesto')
+        concesionario = cleaned.get('concesionario')
+
+        # Al menos un criterio
+        if not any([v for v in (nombre, puesto, concesionario) if v]):
             raise forms.ValidationError("Introduce al menos un criterio de búsqueda.")
+
+        # Validaciones adicionales
+        if nombre and len(nombre.strip()) < 2:
+            self.add_error('nombre', 'Introduce al menos 2 caracteres para el nombre.')
+        if puesto and len(puesto.strip()) < 2:
+            self.add_error('puesto', 'Introduce al menos 2 caracteres para el puesto.')
+
         return cleaned
     
     
@@ -180,6 +209,10 @@ class ClienteModelForm(ModelForm):
     class Meta:
         model = Cliente
         fields = ['nombre', 'email', 'telefono', 'fecha_registro']
+        widgets = {
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'fecha_registro': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'})
+        }
         
     def clean(self):
         email = self.cleaned_data.get('email')
@@ -206,8 +239,20 @@ class ClienteSearchForm(forms.Form):
 
     def clean(self):
         cleaned = super().clean()
-        if not any(cleaned.values()):
+        nombre = cleaned.get('nombre')
+        email = cleaned.get('email')
+        telefono = cleaned.get('telefono')
+
+        # Al menos un criterio
+        if not any([v for v in (nombre, email, telefono) if v]):
             raise forms.ValidationError("Introduce al menos un criterio de búsqueda.")
+
+        # Validaciones adicionales
+        if email and '@' not in email:
+            self.add_error('email', 'El email no tiene un formato válido.')
+        if telefono and not telefono.isdigit():
+            self.add_error('telefono', 'El teléfono debe contener solo números.')
+
         return cleaned
     
 # -------------------------------------------------------------------
@@ -244,8 +289,20 @@ class AseguradoraSearchForm(forms.Form):
 
     def clean(self):
         cleaned = super().clean()
-        if not any(cleaned.values()):
+        nombre = cleaned.get('nombre')
+        pais = cleaned.get('pais')
+        telefono = cleaned.get('telefono')
+
+        # Al menos un criterio
+        if not any([v for v in (nombre, pais, telefono) if v]):
             raise forms.ValidationError("Introduce al menos un criterio de búsqueda.")
+
+        # Validaciones adicionales
+        if nombre and len(nombre.strip()) < 2:
+            self.add_error('nombre', 'Introduce al menos 2 caracteres para el nombre.')
+        if telefono and not telefono.isdigit():
+            self.add_error('telefono', 'El teléfono debe contener solo números.')
+
         return cleaned
 
         

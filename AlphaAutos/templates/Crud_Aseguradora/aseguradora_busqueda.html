@@ -33,6 +33,7 @@
                     <td>
                         <a class="btn btn-sm btn-outline-primary me-2 text-nowrap" href="{% url 'AlphaAutos:aseguradora_detail' aseguradora.id %}">Ver en detalle</a>
                         <a class="btn btn-sm btn-outline-secondary text-nowrap" href="{% url 'AlphaAutos:editar_aseguradora' aseguradora.id %}">Editar</a>
+                        <a class="btn btn-sm btn-outline-danger ms-2 text-nowrap" href="{% url 'AlphaAutos:eliminar_aseguradora' aseguradora.id %}" onclick="return confirm('¿Estás seguro de que deseas eliminar esta aseguradora?');">Eliminar</a>
                     </td>
                 </tr>
                 {% endfor %}

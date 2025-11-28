@@ -42,4 +42,10 @@ urlpatterns = [
     path('buscar_aseguradoras/', views.buscar_aseguradoras, name='buscar_aseguradoras'),
     path('coche/editar/<int:id_coche>/', views.editar_coche, name='editar_coche'),
     path('concesionario/editar/<int:id_concesionario>/', views.editar_concesionario, name='editar_concesionario'),
+    path('coche/eliminar/<int:id_coche>/', views.eliminar_coche, name='eliminar_coche'),
+    path('concesionario/eliminar/<int:id_concesionario>/', views.eliminar_concesionario, name='eliminar_concesionario'),
+    path('marca/eliminar/<int:id_marca>/', views.eliminar_marca, name='eliminar_marca'),
+    path('empleado/eliminar/<int:id_empleado>/', views.eliminar_empleado, name='eliminar_empleado'),
+    path('cliente/eliminar/<int:id_cliente>/', views.eliminar_cliente, name='eliminar_cliente'),
+    path('aseguradora/eliminar/<int:id_aseguradora>/', views.eliminar_aseguradora, name='eliminar_aseguradora'),
 ]

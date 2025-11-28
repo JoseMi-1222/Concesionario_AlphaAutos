@@ -21,6 +21,7 @@
             <td>
             <a class="btn btn-sm btn-outline-primary me-2 text-nowrap" href="{% url 'AlphaAutos:marca_detail' marca.id %}">Ver en detalle</a>
             <a class="btn btn-sm btn-outline-secondary text-nowrap" href="{% url 'AlphaAutos:editar_marca' marca.id %}">Editar</a>
+            <a class="btn btn-sm btn-outline-danger text-nowrap" href="{% url 'AlphaAutos:eliminar_marca' marca.id %}" onclick="return confirm('¿Estás seguro de que deseas eliminar?');">Eliminar</a>
         </td>
     </tr>
     {% empty %}

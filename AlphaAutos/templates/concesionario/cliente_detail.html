@@ -10,6 +10,7 @@
 {% if cliente %}
     <div class="mb-3">
         <a class="btn btn-sm btn-outline-secondary" href="{% url 'AlphaAutos:editar_cliente' cliente.id %}">Editar</a>
+        <a class="btn btn-sm btn-outline-danger text-nowrap" href="{% url 'AlphaAutos:eliminar_cliente' cliente.id %}" onclick="return confirm('¿Estás seguro de que deseas eliminar?');">Eliminar</a>
     </div>
 
     <p><strong>ID:</strong> {{ cliente.id }}</p>

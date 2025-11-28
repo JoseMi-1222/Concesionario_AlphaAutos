@@ -248,7 +248,18 @@ def editar_coche(request, id_coche):
 
     contexto = {'formulario': formulario, 'coche': coche}
     return render(request, 'Crud_Coche/editar_coche.html', contexto)
-    
+
+# -------------------------------------------------------------------
+# VISTA: Eliminar un coche existente
+# -------------------------------------------------------------------
+def eliminar_coche(request, id_coche):
+    coche = Coche.objects.get(id=id_coche)
+    try:
+        coche.delete()
+        messages.success(request, "Coche eliminado correctamente.")
+    except :
+        pass
+    return redirect('AlphaAutos:coche_list')
 
 # -------------------------------------------------------------------
 # Vista: Formulario para crear un nuevo concesionario
@@ -313,6 +324,18 @@ def editar_concesionario(request, id_concesionario):
 
     contexto = {'formulario': formulario, 'concesionario': concesionario}
     return render(request, 'Crud_Concesionario/editar_concesionario.html', contexto)
+# -------------------------------------------------------------------
+# VISTA: Eliminar un concesionario existente
+# -------------------------------------------------------------------
+def eliminar_concesionario(request, id_concesionario):
+    concesionario = Concesionario.objects.get(id=id_concesionario)
+    try:
+        concesionario.delete()
+        messages.success(request, "Concesionario eliminado correctamente.")
+    except :
+        pass
+    return redirect('AlphaAutos:lista_concesionarios')
+
 # -------------------------------------------------------------------
 # Vista: Formulario para crear una nueva marca 
 # -------------------------------------------------------------------
@@ -392,6 +415,18 @@ def editar_marca(request, id_marca):
     contexto = {'formulario': formulario, 'marca': marca}
     return render(request, 'Crud_Marca/editar_marca.html', contexto)
 
+# ---------------------------------------------------
+# Vista: Formulario para eliminar una marca existente
+# ---------------------------------------------------
+def eliminar_marca(request, id_marca):
+    marca = Marca.objects.get(id=id_marca)
+    try:
+        marca.delete()
+        messages.success(request, "Marca eliminada correctamente.")
+    except :
+        pass
+    return redirect('AlphaAutos:lista_marcas')
+
 # -------------------------------------------------------------------
 # Vista: Formulario para crear un nuevo empleado
 # -------------------------------------------------------------------
@@ -435,6 +470,18 @@ def buscar_empleados(request):
     # Si el formulario no es válido o no buscaron nada → mostrar formulario
     contexto = {"form": form}
     return render(request, "Crud_Empleados/buscar_empleados.html", contexto)
+
+# -------------------------------------------------------------------
+# Vista: Formulario para eliminar empleado
+# -------------------------------------------------------------------
+def eliminar_empleado(request, id_empleado):
+    empleado = Empleado.objects.get(id=id_empleado)
+    try:
+        empleado.delete()
+        messages.success(request, "Empleado eliminado correctamente.")
+    except :
+        pass
+    return redirect('AlphaAutos:lista_empleados')
 
 # -------------------------------------------------------------------
 # Vista: Formulario para crear un nuevo cliente
@@ -607,3 +654,27 @@ def editar_aseguradora(request, id_aseguradora):
 
     contexto = {'formulario': formulario, 'aseguradora': aseguradora}
     return render(request, 'Crud_Aseguradora/editar_aseguradora.html', contexto)
+
+# -------------------------------------------------------------------
+# VISTA: Eliminar un cliente existente
+# -------------------------------------------------------------------
+def eliminar_cliente(request, id_cliente):
+    cliente = Cliente.objects.get(id=id_cliente)
+    try:
+        cliente.delete()
+        messages.success(request, "Cliente eliminado correctamente.")
+    except :
+        pass
+    return redirect('AlphaAutos:lista_clientes')
+
+# -------------------------------------------------------------------
+# VISTA: Eliminar una aseguradora existente
+# -------------------------------------------------------------------
+def eliminar_aseguradora(request, id_aseguradora):
+    aseguradora = Aseguradora.objects.get(id=id_aseguradora)
+    try:
+        aseguradora.delete()
+        messages.success(request, "Aseguradora eliminada correctamente.")
+    except :
+        pass
+    return redirect('AlphaAutos:lista_aseguradoras')

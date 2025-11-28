@@ -10,6 +10,7 @@
 {% if empleado %}
     <div class="mb-3">
         <a class="btn btn-sm btn-outline-secondary" href="{% url 'AlphaAutos:editar_empleado' empleado.id %}">Editar</a>
+        <a class="btn btn-sm btn-outline-danger text-nowrap" href="{% url 'AlphaAutos:eliminar_empleado' empleado.id %}" onclick="return confirm('¿Estás seguro de que deseas eliminar?');">Eliminar</a>
     </div>
 
     <p><strong>ID:</strong> {{ empleado.id }}</p>

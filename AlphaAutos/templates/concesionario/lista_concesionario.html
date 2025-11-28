@@ -24,6 +24,7 @@
             <td>
                 <a class="btn btn-sm btn-outline-primary text-nowrap" href="{% url 'AlphaAutos:concesionario_detail' concesionario.id %}">Ver detalle</a>
                 <a class="btn btn-sm btn-outline-secondary text-nowrap" href="{% url 'AlphaAutos:editar_concesionario' concesionario.id %}">Editar</a>
+                <a class="btn btn-sm btn-outline-danger text-nowrap" href="{% url 'AlphaAutos:eliminar_concesionario' concesionario.id %}" onclick="return confirm('¿Estás seguro de que deseas eliminar?');">Eliminar</a>
             </td>
         </tr>
     {% empty %}

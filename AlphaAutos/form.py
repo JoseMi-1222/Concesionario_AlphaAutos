@@ -47,7 +47,6 @@ class CocheSearchForm(forms.Form):
         if not any(cleaned.values()):
             raise forms.ValidationError("Introduce al menos un criterio de búsqueda.")
         return cleaned
-
     
 # -------------------------------------------------------------------
 # Crud_Concesionario

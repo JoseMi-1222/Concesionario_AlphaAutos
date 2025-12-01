@@ -59,6 +59,8 @@ class Coche(models.Model):
     precio = models.DecimalField(max_digits=10, decimal_places=2)
     transmision = models.CharField(max_length=2, choices=TRANSMISIONES, default='MT')
     fecha_fabricacion = models.DateField()
+    #Nuevo campo para la imagen del coche
+    imagen = models.ImageField(upload_to='coches/', null=True, blank=True)
 
     def __str__(self):
         return f"{self.marca.nombre} {self.modelo}"

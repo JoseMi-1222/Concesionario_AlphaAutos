@@ -49,3 +49,10 @@ urlpatterns = [
     path('cliente/eliminar/<int:id_cliente>/', views.eliminar_cliente, name='eliminar_cliente'),
     path('aseguradora/eliminar/<int:id_aseguradora>/', views.eliminar_aseguradora, name='eliminar_aseguradora'),
 ]
+
+# Añadir configuración para servir archivos de medios en modo desarrollo
+from django.conf import settings
+from django.conf.urls.static import static
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

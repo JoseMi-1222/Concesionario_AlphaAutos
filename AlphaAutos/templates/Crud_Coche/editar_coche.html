@@ -12,7 +12,7 @@
 {% block content %}
 <h3>Rellena el formulario para editar el coche en la base de datos.</h3>
 
-<form method="post" action="{% url 'AlphaAutos:editar_coche' coche.id %}" class="mt-4">
+<form method="post" action="{% url 'AlphaAutos:editar_coche' coche.id %}" class="mt-4" enctype="multipart/form-data">
     {% csrf_token %}
     {% bootstrap_form formulario %}
 

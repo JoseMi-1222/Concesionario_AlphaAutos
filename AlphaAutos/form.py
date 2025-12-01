@@ -12,7 +12,7 @@ class CocheModelForm(ModelForm):
     class Meta:
         model = Coche
         current_year = datetime.now().year
-        fields = ['marca', 'concesionario', 'modelo', 'precio', 'transmision', 'fecha_fabricacion']
+        fields = ['marca', 'concesionario', 'modelo', 'imagen', 'precio', 'transmision', 'fecha_fabricacion']
         widgets = {
              'fecha_fabricacion': forms.SelectDateWidget(
                 years=range(current_year - 10, current_year + 11),

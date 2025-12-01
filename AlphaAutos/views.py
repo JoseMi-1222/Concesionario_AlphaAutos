@@ -189,7 +189,7 @@ def lista_aseguradoras(request):
 # -------------------------------------------------------------------
 def crear_coche(request):
     if request.method == 'POST':
-        form = CocheModelForm(request.POST)
+        form = CocheModelForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             messages.success(request, "Coche creado correctamente.")
@@ -237,7 +237,7 @@ def editar_coche(request, id_coche):
     coche = get_object_or_404(Coche, id=id_coche)
 
     if request.method == 'POST':
-        formulario = CocheModelForm(request.POST, instance=coche)
+        formulario = CocheModelForm(request.POST, request.FILES, instance=coche)
         if formulario.is_valid():
             try:
                 formulario.save()

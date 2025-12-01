@@ -470,7 +470,7 @@
     "fields": {
         "nombre": "Join executive gas second himself.",
         "pais_origen": "Business view follow which similar.",
-        "año_fundacion": -28300,
+        "anio_fundacion": -28300,
         "descripcion": "See brother whom business. Effect another recognize tough.\nBehavior join travel billion because fast. Section stay catch beautiful these mind."
     }
 },
@@ -480,7 +480,7 @@
     "fields": {
         "nombre": "Edge total history customer recently base.",
         "pais_origen": "Them magazine forward west tonight performance.",
-        "año_fundacion": 19784,
+        "anio_fundacion": 19784,
         "descripcion": "Economy various natural suggest play. Its choice development.\nDemocratic against simple. Market executive past task outside staff."
     }
 },
@@ -490,7 +490,7 @@
     "fields": {
         "nombre": "True both boy month Mrs.",
         "pais_origen": "Property line if me.",
-        "año_fundacion": -1882,
+        "anio_fundacion": -1882,
         "descripcion": "Pass Congress both determine magazine thought far. Answer to foot religious property capital. Cultural life either foreign cause finally. Rate performance clearly in."
     }
 },
@@ -500,7 +500,7 @@
     "fields": {
         "nombre": "Perhaps enough that seek. Car military wind.",
         "pais_origen": "Manage need poor large.",
-        "año_fundacion": -6053,
+        "anio_fundacion": -6053,
         "descripcion": "Increase focus marriage he relationship every beyond. Energy especially beyond apply. Number everyone young paper say can."
     }
 },
@@ -510,7 +510,7 @@
     "fields": {
         "nombre": "Against authority ball course down air director.",
         "pais_origen": "Tree subject stop detail worker less.",
-        "año_fundacion": -10820,
+        "anio_fundacion": -10820,
         "descripcion": "Voice herself keep point. Very argue necessary war seat. May begin perhaps available effect statement."
     }
 },
@@ -520,8 +520,8 @@
     "fields": {
         "nombre": "Alcántara y Cobos S.L.",
         "pais_origen": "Trinidad y Tabago",
-        "año_fundacion": 2018,
-        "descripcion": "Año elementos francisco mesa diversas últimos."
+        "anio_fundacion": 2018,
+        "descripcion": "anio elementos francisco mesa diversas últimos."
     }
 },
 {
@@ -530,7 +530,7 @@
     "fields": {
         "nombre": "Restauración Albero S.C.P",
         "pais_origen": "Azerbaiyán",
-        "año_fundacion": 1971,
+        "anio_fundacion": 1971,
         "descripcion": "Última solo salud varias objeto esfuerzo democracia."
     }
 },
@@ -540,7 +540,7 @@
     "fields": {
         "nombre": "Talleres del Noroeste S.A.",
         "pais_origen": "Uganda",
-        "año_fundacion": 1952,
+        "anio_fundacion": 1952,
         "descripcion": "Crisis hacerlo embargo contenido. Podía argentina lenguaje acerca."
     }
 },
@@ -550,7 +550,7 @@
     "fields": {
         "nombre": "Inversiones Internacionales S.L.N.E",
         "pais_origen": "Guinea",
-        "año_fundacion": 1979,
+        "anio_fundacion": 1979,
         "descripcion": "Viene director grande hacen hemos otra estados presenta. Principales cuarto políticas vía marzo."
     }
 },
@@ -560,7 +560,7 @@
     "fields": {
         "nombre": "Distribuciones Piñol y asociados S.L.",
         "pais_origen": "República Democrática Popular Lao",
-        "año_fundacion": 1977,
+        "anio_fundacion": 1977,
         "descripcion": "Palabras experiencia tu principios victoria creo. Creo viaje c aun evitar mercado para."
     }
 },
@@ -570,7 +570,7 @@
     "fields": {
         "nombre": "Vilma Leiva Izaguirre S.A.T.",
         "pais_origen": "Iraq",
-        "año_fundacion": 1992,
+        "anio_fundacion": 1992,
         "descripcion": "Especie sur francisco. Va posición buenos elementos productos ir n."
     }
 },
@@ -580,7 +580,7 @@
     "fields": {
         "nombre": "Familia López S.Coop.",
         "pais_origen": "Zimbabwe",
-        "año_fundacion": 2012,
+        "anio_fundacion": 2012,
         "descripcion": "Cuando asociación acuerdo bajo. Se fecha servicio."
     }
 },
@@ -590,7 +590,7 @@
     "fields": {
         "nombre": "Consultoría Pallarès S.A.",
         "pais_origen": "Mongolia",
-        "año_fundacion": 1967,
+        "anio_fundacion": 1967,
         "descripcion": "Mano salir éste control buen. Democracia embargo pronto señora población antes."
     }
 },
@@ -600,7 +600,7 @@
     "fields": {
         "nombre": "Dolores Fabregat Cantero S.A.T.",
         "pais_origen": "Malta",
-        "año_fundacion": 2016,
+        "anio_fundacion": 2016,
         "descripcion": "Tan las enfermedad. Martín gonzález uso etc radio casa."
     }
 },
@@ -608,10 +608,10 @@
     "model": "AlphaAutos.marca",
     "pk": 15,
     "fields": {
-        "nombre": "Infraestructuras Española S.L.",
+        "nombre": "Infraestructuras Espaniola S.L.",
         "pais_origen": "Tailandia",
-        "año_fundacion": 1998,
-        "descripcion": "Negro queda tenían españoles acerca."
+        "anio_fundacion": 1998,
+        "descripcion": "Negro queda tenían espanioles acerca."
     }
 },
 {
@@ -1779,7 +1779,7 @@
     "fields": {
         "fecha_revision": "2025-09-03",
         "kilometros": 112646,
-        "comentarios": "Poder fuentes dan españoles estar.",
+        "comentarios": "Poder fuentes dan espanioles estar.",
         "coste": "876.18",
         "coches": [
             10

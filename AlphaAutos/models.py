@@ -40,7 +40,7 @@ class Usuario_Empleado(models.Model):
 class Marca(models.Model):
     nombre = models.CharField(max_length=50)
     pais_origen = models.CharField(max_length=50)
-    año_fundacion = models.IntegerField(null=True)
+    anio_fundacion = models.IntegerField(null=True)
     descripcion = models.TextField(blank=True)
 
     def __str__(self):

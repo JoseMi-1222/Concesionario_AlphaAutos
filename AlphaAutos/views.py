@@ -46,7 +46,7 @@ def coche_detail(request, id_coche):
     return render(request, 'concesionario/coche_detail.html', contexto)
 
 # ----------------------------------------------------------------
-# VISTA: Listar coches fabricados en un año y mes concretos
+# VISTA: Listar coches fabricados en un anio y mes concretos
 # ----------------------------------------------------------------
 def coches_por_fecha(request, anio, mes):
     coches = Coche.objects.filter(
@@ -205,24 +205,26 @@ def crear_coche(request):
 # -------------------------------------------------------------------
 def buscar_coches(request):
     form = CocheSearchForm(request.GET or None)
-    qs = Coche.objects.all()
 
-    if form.is_valid():
-        marca = form.cleaned_data.get("marca")
-        modelo = form.cleaned_data.get("modelo")
-        precio_max = form.cleaned_data.get("precio_max")
+    if(len(request.GET)>0):
+        if form.is_valid():
+            qs = Coche.objects
+            marca = form.cleaned_data.get("marca")
+            modelo = form.cleaned_data.get("modelo")
+            precio_max = form.cleaned_data.get("precio_max")
+            if marca:
+                qs = qs.filter(marca__nombre__icontains=marca)
+            if modelo:
+                qs = qs.filter(modelo__icontains=modelo)
+            if precio_max is not None:
+                qs = qs.filter(precio__lte=precio_max)
 
-        if marca:
-            qs = qs.filter(marca__nombre__icontains=marca)
-        if modelo:
-            qs = qs.filter(modelo__icontains=modelo)
-        if precio_max is not None:
-            qs = qs.filter(precio__lte=precio_max)
 
-        contexto = {"form": form, "coches": qs}
+            coches = qs.all()
+            contexto = {"form": form, "coches": coches}
 
-        #Renderizar los resultados
-        return render(request, "Crud_Coche/coche_busqueda.html", contexto)
+            #Renderizar los resultados
+            return render(request, "Crud_Coche/coche_busqueda.html", contexto)
 
     # Si el formulario no es válido o no buscaron nada → mostrar formulario
     contexto = {"form": form}
@@ -282,26 +284,24 @@ def crear_concesionario(request):
 # -------------------------------------------------------------------
 def buscar_concesionarios(request):
     form = ConcesionarioSearchForm(request.GET or None)
-    qs = Concesionario.objects.all()
 
-    if form.is_valid():
-        nombre = form.cleaned_data.get("nombre")
-        ciudad = form.cleaned_data.get("ciudad")
-        telefono = form.cleaned_data.get("telefono")
+    if len(request.GET) > 0:
+        if form.is_valid():
+            qs = Concesionario.objects.all()
+            nombre = form.cleaned_data.get("nombre")
+            ciudad = form.cleaned_data.get("ciudad")
+            telefono = form.cleaned_data.get("telefono")
 
-        if nombre:
-            qs = qs.filter(nombre__icontains=nombre)
-        if ciudad:
-            qs = qs.filter(ciudad__icontains=ciudad)
-        if telefono:
-            qs = qs.filter(telefono__icontains=telefono)
+            if nombre:
+                qs = qs.filter(nombre__icontains=nombre)
+            if ciudad:
+                qs = qs.filter(ciudad__icontains=ciudad)
+            if telefono:
+                qs = qs.filter(telefono__icontains=telefono)
 
-        contexto = {"form": form, "concesionarios": qs}
+            contexto = {"form": form, "concesionarios": qs}
+            return render(request, "Crud_Concesionario/concesionario_busqueda.html", contexto)
 
-        #Renderizar los resultados
-        return render(request, "Crud_Concesionario/concesionario_busqueda.html", contexto)
-
-    # Si el formulario no es válido o no buscaron nada → mostrar formulario
     contexto = {"form": form}
     return render(request, "Crud_Concesionario/buscar_concesionarios.html", contexto)
 # -------------------------------------------------------------------
@@ -357,26 +357,24 @@ def crear_marca(request):
 # -------------------------------------------------------------------
 def buscar_marcas(request):
     form = MarcaSearchForm(request.GET or None)
-    qs = Marca.objects.all()
 
-    if form.is_valid():
-        nombre = form.cleaned_data.get("nombre")
-        pais_origen = form.cleaned_data.get("pais_origen")
-        año_fundacion = form.cleaned_data.get("año_fundacion")
+    if len(request.GET) > 0:
+        if form.is_valid():
+            qs = Marca.objects.all()
+            nombre = form.cleaned_data.get("nombre")
+            pais_origen = form.cleaned_data.get("pais_origen")
+            anio_fundacion = form.cleaned_data.get("anio_fundacion")
 
-        if nombre:
-            qs = qs.filter(nombre__icontains=nombre)
-        if pais_origen:
-            qs = qs.filter(pais_origen__icontains=pais_origen)
-        if año_fundacion is not None:
-            qs = qs.filter(año_fundacion=año_fundacion)
+            if nombre:
+                qs = qs.filter(nombre__icontains=nombre)
+            if pais_origen:
+                qs = qs.filter(pais_origen__icontains=pais_origen)
+            if anio_fundacion is not None:
+                qs = qs.filter(anio_fundacion=anio_fundacion)
 
-        contexto = {"form": form, "marcas": qs}
+            contexto = {"form": form, "marcas": qs}
+            return render(request, "Crud_Marca/marca_busqueda.html", contexto)
 
-        #Renderizar los resultados
-        return render(request, "Crud_Marca/marca_busqueda.html", contexto)
-
-    # Si el formulario no es válido o no buscaron nada → mostrar formulario
     contexto = {"form": form}
     return render(request, "Crud_Marca/buscar_marcas.html", contexto)
 
@@ -448,26 +446,24 @@ def crear_empleado(request):
 # -------------------------------------------------------------------
 def buscar_empleados(request):
     form = EmpleadoSearchForm(request.GET or None)
-    qs = Empleado.objects.all()
 
-    if form.is_valid():
-        nombre = form.cleaned_data.get("nombre")
-        puesto = form.cleaned_data.get("puesto")
-        concesionario = form.cleaned_data.get("concesionario")
+    if len(request.GET) > 0:
+        if form.is_valid():
+            qs = Empleado.objects.all()
+            nombre = form.cleaned_data.get("nombre")
+            puesto = form.cleaned_data.get("puesto")
+            concesionario = form.cleaned_data.get("concesionario")
 
-        if nombre:
-            qs = qs.filter(nombre__icontains=nombre)
-        if puesto:
-            qs = qs.filter(puesto__icontains=puesto)
-        if concesionario:
-            qs = qs.filter(concesionario=concesionario)
+            if nombre:
+                qs = qs.filter(nombre__icontains=nombre)
+            if puesto:
+                qs = qs.filter(puesto__icontains=puesto)
+            if concesionario:
+                qs = qs.filter(concesionario=concesionario)
 
-        contexto = {"form": form, "empleados": qs}
+            contexto = {"form": form, "empleados": qs}
+            return render(request, "Crud_Empleados/empleado_busqueda.html", contexto)
 
-        #Renderizar los resultados
-        return render(request, "Crud_Empleados/empleado_busqueda.html", contexto)
-
-    # Si el formulario no es válido o no buscaron nada → mostrar formulario
     contexto = {"form": form}
     return render(request, "Crud_Empleados/buscar_empleados.html", contexto)
 
@@ -504,26 +500,24 @@ def crear_cliente(request):
 # -------------------------------------------------------------------
 def buscar_clientes(request):
     form = ClienteSearchForm(request.GET or None)
-    qs = Cliente.objects.all()
 
-    if form.is_valid():
-        nombre = form.cleaned_data.get("nombre")
-        email = form.cleaned_data.get("email")
-        telefono = form.cleaned_data.get("telefono")
+    if len(request.GET) > 0:
+        if form.is_valid():
+            qs = Cliente.objects.all()
+            nombre = form.cleaned_data.get("nombre")
+            email = form.cleaned_data.get("email")
+            telefono = form.cleaned_data.get("telefono")
 
-        if nombre:
-            qs = qs.filter(nombre__icontains=nombre)
-        if email:
-            qs = qs.filter(email__icontains=email)
-        if telefono:
-            qs = qs.filter(telefono__icontains=telefono)
+            if nombre:
+                qs = qs.filter(nombre__icontains=nombre)
+            if email:
+                qs = qs.filter(email__icontains=email)
+            if telefono:
+                qs = qs.filter(telefono__icontains=telefono)
 
-        contexto = {"form": form, "clientes": qs}
+            contexto = {"form": form, "clientes": qs}
+            return render(request, "Crud_Clientes/cliente_busqueda.html", contexto)
 
-        #Renderizar los resultados
-        return render(request, "Crud_Clientes/cliente_busqueda.html", contexto)
-
-    # Si el formulario no es válido o no buscaron nada → mostrar formulario
     contexto = {"form": form}
     return render(request, "Crud_Clientes/buscar_clientes.html", contexto)
 
@@ -548,26 +542,24 @@ def crear_aseguradora(request):
 # -------------------------------------------------------------------
 def buscar_aseguradoras(request):
     form = AseguradoraSearchForm(request.GET or None)
-    qs = Aseguradora.objects.all()
 
-    if form.is_valid():
-        nombre = form.cleaned_data.get("nombre")
-        pais = form.cleaned_data.get("pais")
-        telefono = form.cleaned_data.get("telefono")
+    if len(request.GET) > 0:
+        if form.is_valid():
+            qs = Aseguradora.objects.all()
+            nombre = form.cleaned_data.get("nombre")
+            pais = form.cleaned_data.get("pais")
+            telefono = form.cleaned_data.get("telefono")
 
-        if nombre:
-            qs = qs.filter(nombre__icontains=nombre)
-        if pais:
-            qs = qs.filter(pais__icontains=pais)
-        if telefono:
-            qs = qs.filter(telefono__icontains=telefono)
+            if nombre:
+                qs = qs.filter(nombre__icontains=nombre)
+            if pais:
+                qs = qs.filter(pais__icontains=pais)
+            if telefono:
+                qs = qs.filter(telefono__icontains=telefono)
 
-        contexto = {"form": form, "aseguradoras": qs}
+            contexto = {"form": form, "aseguradoras": qs}
+            return render(request, "Crud_Aseguradora/aseguradora_busqueda.html", contexto)
 
-        #Renderizar los resultados
-        return render(request, "Crud_Aseguradora/aseguradora_busqueda.html", contexto)
-
-    # Si el formulario no es válido o no buscaron nada → mostrar formulario
     contexto = {"form": form}
     return render(request, "Crud_Aseguradora/buscar_aseguradoras.html", contexto)
 

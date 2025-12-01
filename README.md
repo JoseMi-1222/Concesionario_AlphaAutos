@@ -338,7 +338,7 @@ Notas adicionales:
 
 ---
 
-**Cambios en la rama `imagen`**
+**Funcion para añadir imagenes**
 
 - **`AlphaAutos/models.py` (modificado):** se añadió un campo para almacenar la imagen del `Coche` (p.ej. `ImageField`) para poder asociar fotos a cada vehículo.
 - **`AlphaAutos/migrations/0004_coche_imagen.py` (añadida):** migración que crea el nuevo campo de imagen en la base de datos.

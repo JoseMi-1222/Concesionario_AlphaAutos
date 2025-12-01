@@ -336,5 +336,42 @@ A continuación se listan todas las validaciones implementadas en `AlphaAutos/fo
 Notas adicionales:
 - Varias validaciones son comprobadas a nivel de campo usando parámetros de los campos (por ejemplo `min_value`, `max_value`) y no solo en `clean()`; estas comprobaciones aparecerán como errores de campo normales cuando se valide el formulario.
 
+---
+
+**Cambios en la rama `imagen`**
+
+- **`AlphaAutos/models.py` (modificado):** se añadió un campo para almacenar la imagen del `Coche` (p.ej. `ImageField`) para poder asociar fotos a cada vehículo.
+- **`AlphaAutos/migrations/0004_coche_imagen.py` (añadida):** migración que crea el nuevo campo de imagen en la base de datos.
+- **`AlphaAutos/form.py` (modificado):** los formularios de `Coche` se adaptaron para aceptar el campo de imagen en creación/edición.
+- **`AlphaAutos/views.py` (modificado):** las vistas de crear/editar `Coche` añadieron manejo del archivo subido (guardar imagen) y el flujo de guardado se ajustó.
+- **`AlphaAutos/urls.py` (modificado):** adaptaciones para servir archivos media en desarrollo o rutas relacionadas con imágenes (configuración de `MEDIA_URL`/`MEDIA_ROOT` en `mysite/settings.py`).
+- **`mysite/settings.py` (modificado):** configuradas las variables `MEDIA_URL` y `MEDIA_ROOT` para servir y almacenar las imágenes subidas.
+- **Plantillas (modificadas):**
+	- `AlphaAutos/templates/Crud_Coche/crear_coche.html` — formulario actualizado para permitir subir imagen del coche.
+	- `AlphaAutos/templates/Crud_Coche/editar_coche.html` — permite modificar la imagen asociada al coche.
+	- `AlphaAutos/templates/concesionario/coche_detail.html` — muestra la imagen del coche en la vista de detalle y conserva el botón de editar.
+- **Media (añadido):** `media/coches/*` — imágenes de ejemplo subidas al repositorio para pruebas (ej.: `3.jpg`, `ChatGPT_Image_...png`, etc.).
+
+Cómo probar los cambios localmente:
+
+- Asegúrate de tener instaladas las dependencias y el entorno activado.
+- Ejecuta las migraciones para aplicar el nuevo campo:
+
+```powershell
+python manage.py migrate
+```
+
+- Levanta el servidor de desarrollo y verifica que `MEDIA_URL` esté servido (en dev Django lo hace automáticamente si está configurado):
+
+```powershell
+python manage.py runserver
+```
+
+- Ve a la página de creación/edición de coches, sube una imagen y comprueba en la vista de detalle que la imagen se muestra.
+
+Notas:
+- Si el servidor de producción gestiona archivos estáticos/media de forma distinta, configura `MEDIA_ROOT` y el servidor web (nginx, etc.) para servir las imágenes.
+- Las imágenes incluidas en `media/coches/` son de ejemplo para desarrollo/testing; puedes eliminarlas o reemplazarlas según tus necesidades.
+
 
 

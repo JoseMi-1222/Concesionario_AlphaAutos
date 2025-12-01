@@ -61,6 +61,12 @@ class CocheSearchForm(forms.Form):
                 self.add_error('marca', 'Introduce al menos 2 caracteres para la marca.')
             if modelo and len(modelo.strip()) < 1:
                 self.add_error('modelo', 'Introduce un modelo válido.')
+            # Validación extra 1: precio máximo razonable
+            if precio_max and precio_max > 10000000:
+                self.add_error('precio_max', 'El precio máximo es excesivo para una búsqueda.')
+            # Validación extra 2: caracteres válidos en modelo
+            if modelo and any(not (c.isalnum() or c.isspace() or c in "-_.") for c in modelo):
+                self.add_error('modelo', 'El modelo contiene caracteres inválidos.')
 
         return cleaned
     
@@ -114,6 +120,12 @@ class ConcesionarioSearchForm(forms.Form):
                 self.add_error('telefono', 'El teléfono debe contener solo números.')
             if nombre and len(nombre.strip()) < 2:
                 self.add_error('nombre', 'Introduce al menos 2 caracteres para el nombre.')
+            # Validación extra 1: la ciudad debe tener al menos 2 caracteres si se proporciona
+            if ciudad and len(ciudad.strip()) < 2:
+                self.add_error('ciudad', 'Introduce al menos 2 caracteres para la ciudad.')
+            # Validación extra 2: teléfono razonable
+            if telefono and len(telefono.strip()) < 7:
+                self.add_error('telefono', 'El teléfono es demasiado corto para ser válido.')
 
         return cleaned
     
@@ -171,6 +183,12 @@ class MarcaSearchForm(forms.Form):
                 self.add_error('nombre', 'Introduce al menos 2 caracteres para el nombre.')
             if pais_origen and len(pais_origen.strip()) < 2:
                 self.add_error('pais_origen', 'Introduce al menos 2 caracteres para el país de origen.')
+            # Validación extra 1: nombre solo letras y espacios
+            if nombre and not nombre.replace(' ', '').isalpha():
+                self.add_error('nombre', 'El nombre de la marca solo debe contener letras.')
+            # Validación extra 2: país sin dígitos
+            if pais_origen and any(char.isdigit() for char in pais_origen):
+                self.add_error('pais_origen', 'El país no debe contener números.')
 
         return cleaned
     
@@ -229,6 +247,12 @@ class EmpleadoSearchForm(forms.Form):
                 self.add_error('nombre', 'Introduce al menos 2 caracteres para el nombre.')
             if puesto and len(puesto.strip()) < 2:
                 self.add_error('puesto', 'Introduce al menos 2 caracteres para el puesto.')
+            # Validación extra 1: el nombre no debe contener números
+            if nombre and any(char.isdigit() for char in nombre):
+                self.add_error('nombre', 'El nombre no puede contener números.')
+            # Validación extra 2: límite razonable de longitud para puesto
+            if puesto and len(puesto.strip()) > 50:
+                self.add_error('puesto', 'El nombre del puesto es demasiado largo.')
 
         return cleaned
     
@@ -286,6 +310,12 @@ class ClienteSearchForm(forms.Form):
                 self.add_error('email', 'El email no tiene un formato válido.')
             if telefono and not telefono.isdigit():
                 self.add_error('telefono', 'El teléfono debe contener solo números.')
+            # Validación extra 1: nombre mínimo 2 caracteres
+            if nombre and len(nombre.strip()) < 2:
+                self.add_error('nombre', 'Introduce al menos 2 caracteres para el nombre.')
+            # Validación extra 2: teléfono razonable
+            if telefono and len(telefono.strip()) < 7:
+                self.add_error('telefono', 'El teléfono es demasiado corto para ser válido.')
 
         return cleaned
     

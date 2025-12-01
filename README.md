@@ -276,43 +276,62 @@ A continuación se listan todas las validaciones implementadas en `AlphaAutos/fo
 
 - **`CocheSearchForm`**
 	- `precio_max` definido con `min_value=0` (campo): impide introducir valores negativos (validación de campo).
-	- `clean()` verifica que al menos un criterio de búsqueda esté presente; si todos los campos están vacíos lanza `ValidationError("Introduce al menos un criterio de búsqueda.")`.
+	- `clean()` ahora utiliza `cleaned = super().clean()` y **asocia errores a cada campo** usando `self.add_error(...)` cuando no se proporciona ningún criterio — esto hace que los campos se marquen como inválidos en las plantillas.
+	- Validaciones adicionales añadidas (dos comprobaciones extra):
+		- `marca`: mínimo 2 caracteres si se proporciona.
+		- `modelo`: caracteres válidos únicamente (alfanuméricos, espacios, `- _ .`) y mínimo 1 carácter.
+		- `precio_max`: límite razonable (se añade error si `> 10.000.000`).
 
 - **`ConcesionarioModelForm.clean()`**
 	- `nombre` no puede estar vacío → añade error en `nombre` con mensaje: "El nombre no puede estar vacío.".
 	- `telefono` debe contener solo dígitos (si se proporciona) → añade error en `telefono` con mensaje: "El teléfono debe contener solo números.".
 
 - **`ConcesionarioSearchForm.clean()`**
-	- Verifica que al menos un criterio de búsqueda esté presente; si no, lanza `ValidationError("Introduce al menos un criterio de búsqueda.")`.
+	- `clean()` usa `self.add_error(...)` por campo cuando no se proporciona ningún criterio de búsqueda (marcando los campos como inválidos en la UI).
+	- Validaciones adicionales añadidas (dos comprobaciones extra):
+		- `ciudad`: si se proporciona, mínimo 2 caracteres.
+		- `telefono`: debe contener solo dígitos y, si se proporciona, mínimo 7 dígitos.
 
 - **`MarcaModelForm.clean()`**
 	- `año_fundacion` (si se proporciona) debe estar entre 1950 y el año actual → añade error en `año_fundacion` con mensaje: "El año de fundación debe estar entre 1950 y {current_year}.".
 	- `descripcion` (si se proporciona) debe tener al menos 5 caracteres → añade error en `descripcion` con mensaje: "La descripción debe tener al menos 5 caracteres.".
 
 - **`MarcaSearchForm`**
-	- `año_fundacion` definido con `min_value=1900` y `max_value=datetime.now().year` (validación de campo).
-	- `clean()` verifica que al menos un criterio de búsqueda esté presente; si no, lanza `ValidationError("Introduce al menos un criterio de búsqueda.")`.
+	- `anio_fundacion` definido con `min_value=1900` y `max_value=datetime.now().year` (validación de campo).
+	- `clean()` ahora añade errores por campo con `self.add_error(...)` si no se proporcionan criterios de búsqueda.
+	- Validaciones adicionales añadidas (dos comprobaciones extra):
+		- `nombre`: mínimo 2 caracteres y solo letras/espacios (no permite números ni símbolos fuera de espacios).
+		- `pais_origen`: mínimo 2 caracteres y no debe contener dígitos.
 
 - **`EmpleadoModelForm.clean()`**
 	- `salario` (si se proporciona) no puede ser menor o igual a 0 → añade error en `salario` con mensaje: "El salario no puede ser negativo o 0.".
 	- `fecha_contratacion` no puede ser futura → añade error en `fecha_contratacion` con mensaje: "La fecha de contratación no puede ser futura.".
 
 - **`EmpleadoSearchForm.clean()`**
-	- Verifica que al menos un criterio de búsqueda esté presente; si no, lanza `ValidationError("Introduce al menos un criterio de búsqueda.")`.
+	- `clean()` añade errores por campo vía `self.add_error(...)` cuando no hay criterios de búsqueda.
+	- Validaciones adicionales añadidas (dos comprobaciones extra):
+		- `nombre`: mínimo 2 caracteres y no debe contener números.
+		- `puesto`: mínimo 2 caracteres y longitud máxima razonable (50 caracteres).
 
 - **`ClienteModelForm.clean()`**
 	- `email` (si se proporciona) se comprueba de forma simple: debe contener el carácter `@`; si no, añade error en `email` con mensaje: "El email no tiene un formato válido.".
 	- `telefono` (si se proporciona) debe contener solo dígitos → añade error en `telefono` con mensaje: "El teléfono debe contener solo números.".
 
 - **`ClienteSearchForm.clean()`**
-	- Verifica que al menos un criterio de búsqueda esté presente; si no, lanza `ValidationError("Introduce al menos un criterio de búsqueda.")`.
+	- `clean()` ahora asigna errores por campo con `self.add_error(...)` cuando no hay criterios de búsqueda.
+	- Validaciones adicionales añadidas (dos comprobaciones extra):
+		- `nombre`: mínimo 2 caracteres si se proporciona.
+		- `telefono`: debe contener solo dígitos y, si se proporciona, mínimo 7 dígitos.
 
 - **`AseguradoraModelForm.clean()`**
 	- `telefono` (si se proporciona) debe contener solo dígitos → añade error en `telefono` con mensaje: "El teléfono debe contener solo números.".
 	- `web` (si se proporciona) debe comenzar con `"www"` → añade error en `web` con mensaje: "La web debe comenzar con \"www\".".
 
 - **`AseguradoraSearchForm.clean()`**
-	- Verifica que al menos un criterio de búsqueda esté presente; si no, lanza `ValidationError("Introduce al menos un criterio de búsqueda.")`.
+	- `clean()` usa `self.add_error(...)` por campo cuando no se proporciona ningún criterio de búsqueda.
+	- Validaciones adicionales (ya presentes):
+		- `nombre`: mínimo 2 caracteres si se proporciona.
+		- `telefono`: debe contener solo dígitos si se proporciona.
 
 Notas adicionales:
 - Varias validaciones son comprobadas a nivel de campo usando parámetros de los campos (por ejemplo `min_value`, `max_value`) y no solo en `clean()`; estas comprobaciones aparecerán como errores de campo normales cuando se valide el formulario.

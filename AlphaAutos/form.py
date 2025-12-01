@@ -25,6 +25,7 @@ class CocheModelForm(ModelForm):
     def clean(self):
         precio = self.cleaned_data.get('precio')
         fecha_fabricacion = self.cleaned_data.get('fecha_fabricacion')
+        modelo= self.cleaned_data.get('modelo')
         
         # Validar que el precio no sea negativo
         if precio is not None and precio <= 0:
@@ -33,6 +34,11 @@ class CocheModelForm(ModelForm):
         # Validar que la fecha de fabricación no sea futura
         if fecha_fabricacion is not None and fecha_fabricacion > datetime.now().date():
             self.add_error('fecha_fabricacion', 'La fecha de fabricación no puede ser futura.')
+    
+        #Controlar que modelo tenga como maximo 100 caracteres
+        if modelo is not None and len(modelo) > 100:
+            self.add_error('modelo', 'El modelo no puede tener más de 100 caracteres.')
+        
         return self.cleaned_data
     
 # -------------------------------------------------------------------
@@ -48,6 +54,7 @@ class CocheSearchForm(forms.Form):
         cleaned = super().clean()
         if not any(cleaned.values()):
             raise forms.ValidationError("Introduce al menos un criterio de búsqueda.")
+        modelo = cleaned.get('modelo')
         return cleaned
     
 # -------------------------------------------------------------------
@@ -63,6 +70,7 @@ class ConcesionarioModelForm(ModelForm):
     def clean(self):
         nombre = self.cleaned_data.get('nombre')
         telefono = self.cleaned_data.get('telefono')
+        ciudad = self.cleaned_data.get('ciudad')
         
         # Validar que el nombre no esté vacío
         if not nombre:
@@ -71,6 +79,18 @@ class ConcesionarioModelForm(ModelForm):
         # Validar que el teléfono tenga un formato adecuado (ejemplo simple)
         if telefono and not telefono.isdigit():
             self.add_error('telefono', 'El teléfono debe contener solo números.')
+            
+        #Validar que nombre tenga como maximo 100 caracteres
+        if nombre is not None and len(nombre) > 100:
+            self.add_error('nombre', 'El nombre no puede tener más de 100 caracteres.')
+            
+        #Validar que ciudad tenga como maximo 50 caracteres
+        if ciudad is not None and len(ciudad) > 50:
+            self.add_error('ciudad', 'La ciudad no puede tener más de 50 caracteres.')
+            
+        #Validar que telefono tenga como maximo 20 caracteres
+        if telefono is not None and len(telefono) > 20:
+            self.add_error('telefono', 'El teléfono no puede tener más de 20 caracteres.')
             
         return self.cleaned_data
     
@@ -96,6 +116,7 @@ class ConcesionarioSearchForm(forms.Form):
         # Validaciones adicionales
         if telefono and not telefono.isdigit():
             self.add_error('telefono', 'El teléfono debe contener solo números.')
+            
         if nombre and len(nombre.strip()) < 2:
             self.add_error('nombre', 'Introduce al menos 2 caracteres para el nombre.')
 
@@ -117,6 +138,8 @@ class MarcaModelForm(ModelForm):
     def clean(self):
         año_fundacion = self.cleaned_data.get('año_fundacion')
         descripcion = self.cleaned_data.get('descripcion')
+        nombre = self.cleaned_data.get('nombre')
+        pais_origen = self.cleaned_data.get('pais_origen')
         
         # Validar que el año de fundación este dentro de un rango.
         current_year = datetime.now().year
@@ -126,6 +149,14 @@ class MarcaModelForm(ModelForm):
         # Validar que la descripción no tenga menos de 5 caracteres
         if descripcion is not None and len(descripcion) < 5:
             self.add_error('descripcion', 'La descripción debe tener al menos 5 caracteres.')
+            
+        #Validar que nombre tenga como maximo 50 caracteres
+        if nombre is not None and len(nombre) > 50:
+            self.add_error('nombre', 'El nombre no puede tener más de 50 caracteres.')
+        
+        #Validar que pais_origen tenga como maximo 50 caracteres
+        if pais_origen is not None and len(pais_origen) > 50:
+            self.add_error('pais_origen', 'El país de origen no puede tener más de 50 caracteres.')
             
         return self.cleaned_data
     
@@ -143,6 +174,7 @@ class MarcaSearchForm(forms.Form):
         if not any(cleaned.values()):
             raise forms.ValidationError("Introduce al menos un criterio de búsqueda.")
         return cleaned
+  
     
 # -------------------------------------------------------------------
 # Crud_Empleado
@@ -162,6 +194,8 @@ class EmpleadoModelForm(ModelForm):
     def clean(self):
         salario = self.cleaned_data.get('salario')
         fecha_contratacion = self.cleaned_data.get('fecha_contratacion')
+        nombre = self.cleaned_data.get('nombre')
+        puesto = self.cleaned_data.get('puesto')
         
         # Validar que el salario no sea negativo ni 0
         if salario is not None and salario <= 0:
@@ -170,6 +204,18 @@ class EmpleadoModelForm(ModelForm):
         # Validar que la fecha de contratación no sea futura
         if fecha_contratacion is not None and fecha_contratacion > datetime.now().date():
             self.add_error('fecha_contratacion', 'La fecha de contratación no puede ser futura.')
+        
+        #Validar que nombre tenga como maximo 100 caracteres
+        if nombre is not None and len(nombre) > 100:
+            self.add_error('nombre', 'El nombre no puede tener más de 100 caracteres.')
+        
+        #Validar que puesto tenga como maximo 100 caracteres
+        if puesto is not None and len(puesto) > 100:
+            self.add_error('puesto', 'El puesto no puede tener más de 100 caracteres.')
+            
+        #Validar que salario no tenga mas de 8 digitos en total
+        if salario is not None and salario >= 10**8:
+            self.add_error('salario', 'El salario no puede tener más de 8 dígitos en total.')
             
         return self.cleaned_data
     
@@ -217,6 +263,7 @@ class ClienteModelForm(ModelForm):
     def clean(self):
         email = self.cleaned_data.get('email')
         telefono = self.cleaned_data.get('telefono')
+        nombre = self.cleaned_data.get('nombre')
         
         # Validar que el email tenga un formato adecuado (ejemplo simple)
         if email and "@" not in email:
@@ -225,6 +272,14 @@ class ClienteModelForm(ModelForm):
         # Validar que el teléfono tenga un formato adecuado (ejemplo simple)
         if telefono and not telefono.isdigit():
             self.add_error('telefono', 'El teléfono debe contener solo números.')
+            
+        #Validar que nombre tenga como maximo 100 caracteres
+        if nombre is not None and len(nombre) > 100:
+            self.add_error('nombre', 'El nombre no puede tener más de 100 caracteres.')
+        
+        #Validar que telefono tenga como maximo 20 caracteres
+        if telefono is not None and len(telefono) > 20:
+            self.add_error('telefono', 'El teléfono no puede tener más de 20 caracteres.')
             
         return self.cleaned_data
     
@@ -267,6 +322,8 @@ class AseguradoraModelForm(ModelForm):
     def clean(self):
         telefono = self.cleaned_data.get('telefono')
         web = self.cleaned_data.get('web')
+        nombre = self.cleaned_data.get('nombre')
+        pais = self.cleaned_data.get('pais')
             
         # Validar que el teléfono tenga un formato adecuado (ejemplo simple)
         if telefono and not telefono.isdigit():
@@ -275,6 +332,22 @@ class AseguradoraModelForm(ModelForm):
         # Validar que la web tenga un formato adecuado (ejemplo simple)
         if web and not web.startswith("www"):
             self.add_error('web', 'La web debe comenzar con "www".')
+            
+        #Validar que nombre tenga como maximo 100 caracteres
+        if nombre is not None and len(nombre) > 100:
+            self.add_error('nombre', 'El nombre no puede tener más de 100 caracteres.')
+            
+        #Validar que pais tenga como maximo 50 caracteres
+        if pais is not None and len(pais) > 50:
+            self.add_error('pais', 'El país no puede tener más de 50 caracteres.')
+        
+        #Validar que telefono tenga como maximo 20 caracteres
+        if telefono is not None and len(telefono) > 20:
+            self.add_error('telefono', 'El teléfono no puede tener más de 20 caracteres.')
+        
+        #validar que web tenga como maximo 100 caracteres
+        if web is not None and len(web) > 100:
+            self.add_error('web', 'La web no puede tener más de 100 caracteres.')
             
         return self.cleaned_data
 

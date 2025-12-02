@@ -1,9 +1,11 @@
 from django.contrib import messages
+from django.contrib.auth import login
 from django.shortcuts import redirect, render, get_object_or_404
 from .models import *
 from django.db.models import F, Q, Avg, Max, Min, Count, Sum
 from .form import *
 from AlphaAutos import form
+
 
 # -------------------------------
 # VISTA: Errores
@@ -691,6 +693,9 @@ def registrar_usuario(request):
                 gerente = Gerente.objects.create(usuario=user)
                 gerente.save()
             messages.success(request, "Usuario registrado correctamente.")
+            
+            login(request, user)
+            return redirect('AlphaAutos:index')
     else:
         formulario = RegistroForm()
         

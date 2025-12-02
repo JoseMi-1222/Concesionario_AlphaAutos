@@ -2,6 +2,20 @@ from datetime import datetime
 from django import forms
 from .models import *
 from django.forms import ModelForm
+from django.contrib.auth.forms import UserCreationForm
+
+# -------------------------------------------------------------------
+# Formulario de registro de usuario personalizado
+# -------------------------------------------------------------------
+class RegistroForm(UserCreationForm):
+    roles = (
+        (Usuario.GERENTE, 'Gerente'),
+        (Usuario.COMPRADOR, 'Comprador'),
+    )
+    rol = forms.ChoiceField(choices=roles)
+    class Meta:
+        model = Usuario
+        fields = ('username', 'email', 'password1', 'password2', 'rol')
 
 # -------------------------------------------------------------------
 # Crud_Coche

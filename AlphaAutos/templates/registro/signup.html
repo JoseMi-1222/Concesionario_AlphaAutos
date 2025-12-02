@@ -1,0 +1,19 @@
+{% extends 'concesionario/base.html' %}
+{% load static %}
+{% load django_bootstrap5 %}
+{% load bootstrap_icons %}
+
+{% block title %}Registro de Usuario - AlphaAutos{% endblock %}
+
+{% block cabecera %}
+<h1 class="text-center mt-3">Registro de Nuevo Usuario</h1>
+{% endblock %}
+
+{% block content %}
+<h3>Rellena el formulario para crear una nueva cuenta de usuario.</h3>
+<form method="post" action="{% url 'AlphaAutos:registrar_usuario' %}" class="mt-4">
+    {% csrf_token %}
+    {% bootstrap_form formulario %}
+    {% bootstrap_button "Registrar Usuario" button_type="submit" button_class="btn-primary" %}
+</form>
+{% endblock %}

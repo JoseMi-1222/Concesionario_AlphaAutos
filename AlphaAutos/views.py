@@ -3,6 +3,7 @@ from django.shortcuts import redirect, render, get_object_or_404
 from .models import *
 from django.db.models import F, Q, Avg, Max, Min, Count, Sum
 from .form import *
+from AlphaAutos import form
 
 # -------------------------------
 # VISTA: Errores
@@ -673,3 +674,25 @@ def eliminar_aseguradora(request, id_aseguradora):
     except :
         pass
     return redirect('AlphaAutos:lista_aseguradoras')
+
+# -------------------------------------------------------------------
+# VISTA: Registro de nuevo usuario
+# -------------------------------------------------------------------
+def registrar_usuario(request):
+    if request.method == 'POST':
+        formulario = RegistroForm(request.POST)
+        if formulario.is_valid():
+            user = formulario.save()
+            rol = int(formulario.cleaned_data.get('rol'))
+            if (rol == Usuario.COMPRADOR):
+                comprador = Comprador.objects.create(usuario=user)
+                comprador.save()
+            elif (rol == Usuario.GERENTE):
+                gerente = Gerente.objects.create(usuario=user)
+                gerente.save()
+            messages.success(request, "Usuario registrado correctamente.")
+    else:
+        formulario = RegistroForm()
+        
+    contexto = {'formulario': formulario}
+    return render(request, 'registro/signup.html', contexto)

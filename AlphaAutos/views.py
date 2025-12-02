@@ -24,7 +24,10 @@ def mi_error_400(request, exception=None):
 # VISTA: Página inicial (Index)
 # -------------------------------
 def index(request):
-    return render(request, "concesionario/index.html")
+    if(not "fecha_inicio" in request.session):
+        request.session["fecha_inicio"] = datetime.now().strftime("%Y-%m-%d %H:%M")
+        
+    return render(request, 'concesionario/index.html')
 
 # --------------------------------------------------
 # VISTA: Listar todos los coches con sus relaciones

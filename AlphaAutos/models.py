@@ -1,6 +1,35 @@
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth.models import AbstractUser
 
+# Definicion de los tipos de usuairios
+class Usuario(AbstractUser):
+    ADMINISTRADOR = 1
+    GERENTE = 2
+    COMPRADOR = 3
+    ROLES = (
+        (ADMINISTRADOR, 'administrador'),
+        (GERENTE, 'gerente'),
+        (COMPRADOR, 'comprador'),
+    )
+    
+    rol = models.PositiveSmallIntegerField(
+        choices=ROLES, default=1
+    )
+    
+# Gerente (1:1 con Usuario)
+class Gerente(models.Model):
+    usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE, null=True)
+    
+    def __str__(self):
+        return self.usuario.username
+    
+ # Comprador (1:1 con Usuario)   
+class Comprador(models.Model):
+    usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE, null=True)
+    
+    def __str__(self):
+        return self.usuario.username
 
 # Concesionario principal
 class Concesionario(models.Model):
@@ -66,7 +95,7 @@ class Coche(models.Model):
         return f"{self.marca.nombre} {self.modelo}"
 
 
-# Cliente (N:M con Coches)
+# Cliente (N:M con Coches) y (1:1 con Usuario)
 class Cliente(models.Model):
     nombre = models.CharField(max_length=100)
     email = models.EmailField(unique=True)

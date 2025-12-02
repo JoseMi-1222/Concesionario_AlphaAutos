@@ -5,6 +5,7 @@ from .models import *
 from django.db.models import F, Q, Avg, Max, Min, Count, Sum
 from .form import *
 from AlphaAutos import form
+from django.contrib.auth.decorators import permission_required
 
 
 # -------------------------------
@@ -193,6 +194,7 @@ def lista_aseguradoras(request):
 # -------------------------------------------------------------------
 # Vista: Formulario para crear un nuevo coche
 # -------------------------------------------------------------------
+@permission_required('AlphaAutos.add_coche')
 def crear_coche(request):
     if request.method == 'POST':
         form = CocheModelForm(request.POST, request.FILES)
@@ -700,4 +702,4 @@ def registrar_usuario(request):
         formulario = RegistroForm()
         
     contexto = {'formulario': formulario}
-    return render(request, 'registro/signup.html', contexto)
+    return render(request, 'registration/signup.html', contexto)

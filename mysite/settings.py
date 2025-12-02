@@ -135,3 +135,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Custom user model
 AUTH_USER_MODEL = 'AlphaAutos.Usuario'
+
+# Authentication redirects
+LOGIN_REDIRECT_URL = 'AlphaAutos:index'
+LOGOUT_REDIRECT_URL = 'AlphaAutos:index'

@@ -52,10 +52,12 @@
 
 <h2>Consultas Coches</h2>
 <ul>
+    {% if perms.AlphaAutos.add_coche %}
     <li>
         Crear coche
         <a href="{% url 'AlphaAutos:crear_coche' %}">Ir al formulario</a>
     </li>
+    {% endif %}
     <li>
         Buscar coches
         <a href="{% url 'AlphaAutos:buscar_coches' %}">Ir al formulario</a>

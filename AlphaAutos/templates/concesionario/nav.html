@@ -17,7 +17,18 @@
             <br>
             <li>|</li>
             <br>
-            <li><a href="{% url 'AlphaAutos:registrar_usuario' %}">Registrar Usuario</a></li>
+            <li>{% if not user.is_authenticated %}
+             <a href="{% url 'login' %}">Iniciar Sesión</a>
+            {% endif %}</li>
+            <li>{% if not user.is_authenticated %}
+             <a href="{% url 'AlphaAutos:registrar_usuario' %}">Registrarse</a>
+            {% endif %}</li>
+            <li>{% if request.user.is_authenticated %}
+            <form action="{% url 'logout' %}" role="search" method="post">
+                {% csrf_token %}
+                <button type="submit">Cerrar Sesión</button>
+            </form>
+            {% endif %}</li>
         </ul>
     </nav>
 </header>

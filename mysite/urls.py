@@ -20,6 +20,7 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('AlphaAutos.urls')),
+    path('accounts/', include('django.contrib.auth.urls')),
 ]
 handler404 = 'AlphaAutos.views.mi_error_404'
 handler400 = 'AlphaAutos.views.mi_error_400'

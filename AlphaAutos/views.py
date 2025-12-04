@@ -1,3 +1,4 @@
+from email.headerregistry import Group
 from django.contrib import messages
 from django.contrib.auth import login
 from django.shortcuts import redirect, render, get_object_or_404
@@ -689,9 +690,13 @@ def registrar_usuario(request):
             user = formulario.save()
             rol = int(formulario.cleaned_data.get('rol'))
             if (rol == Usuario.COMPRADOR):
+                grupo = Group.objects.get(name='Compradores')
+                user.groups.add(grupo)
                 comprador = Comprador.objects.create(usuario=user)
                 comprador.save()
             elif (rol == Usuario.GERENTE):
+                grupo = Group.objects.get(name='Gerentes')
+                user.groups.add(grupo)
                 gerente = Gerente.objects.create(usuario=user)
                 gerente.save()
             messages.success(request, "Usuario registrado correctamente.")

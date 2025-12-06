@@ -15,21 +15,22 @@
             <th>Nombre</th>
             <th>Email</th>
             <th>Teléfono</th>
-            <th>Fecha de Registro</th>
+            <th>Último acceso</th>
             <th>Acciones</th>
         </tr>
     </thead>
     <tbody>
         {% for cliente in clientes %}
         <tr>
-            <td>{{ cliente.id }}</td>
-            <td>{{ cliente.nombre }}</td>
-            <td>{{ cliente.email }}</td>
+            <td>{{ cliente.usuario.id }}</td>
+            <td>{{ cliente.usuario.username }}</td>
+            <td>{{ cliente.usuario.email }}</td>
             <td>{{ cliente.telefono }}</td>
-            <td>{{ cliente.fecha_registro }}</td>
+            <td>{{ cliente.usuario.last_login }}</td>
             <td>
                 <a class="btn btn-sm btn-outline-primary me-2 text-nowrap" href="{% url 'AlphaAutos:cliente_detail' cliente.id %}">Ver en detalle</a>
                 <a class="btn btn-sm btn-outline-secondary text-nowrap" href="{% url 'AlphaAutos:editar_cliente' cliente.id %}">Editar</a>
+                <a class="btn btn-sm btn-outline-warning text-nowrap" href="{% url 'AlphaAutos:cambiar_password_cliente' cliente.id %}">Cambiar contraseña</a>
                 <a class="btn btn-sm btn-outline-danger text-nowrap" href="{% url 'AlphaAutos:eliminar_cliente' cliente.id %}" onclick="return confirm('¿Estás seguro de que deseas eliminar?');">Eliminar</a>
             </td>
         </tr>

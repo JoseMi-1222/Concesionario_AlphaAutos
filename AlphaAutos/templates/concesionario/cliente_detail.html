@@ -11,14 +11,15 @@
 {% if cliente %}
     <div class="mb-3">
         <a class="btn btn-sm btn-outline-secondary" href="{% url 'AlphaAutos:editar_cliente' cliente.id %}">Editar</a>
+        <a class="btn btn-sm btn-outline-warning text-nowrap" href="{% url 'AlphaAutos:cambiar_password_cliente' cliente.id %}">Cambiar contraseña</a>
         <a class="btn btn-sm btn-outline-danger text-nowrap" href="{% url 'AlphaAutos:eliminar_cliente' cliente.id %}" onclick="return confirm('¿Estás seguro de que deseas eliminar?');">Eliminar</a>
     </div>
 
-    <p><strong>ID:</strong> {{ cliente.id }}</p>
-    <p><strong>Nombre:</strong> {{ cliente.nombre }}</p>
-    <p><strong>Email:</strong> {{ cliente.email }}</p>
+    <p><strong>ID:</strong> {{ cliente.usuario.id }}</p>
+    <p><strong>Nombre:</strong> {{ cliente.usuario.username }}</p>
+    <p><strong>Email:</strong> {{ cliente.usuario.email }}</p>
     <p><strong>Teléfono:</strong> {{ cliente.telefono }}</p>
-    <p><strong>Fecha de registro:</strong> {{ cliente.fecha_registro }}</p>
+    <p><strong>Último acceso:</strong> {{ cliente.usuario.last_login }}</p>
 {% else %}
     <p>No se encontró el cliente.</p>
 {% endif %}

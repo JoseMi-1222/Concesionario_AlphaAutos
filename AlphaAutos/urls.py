@@ -30,6 +30,7 @@ urlpatterns = [
     path('cliente/nuevo/', views.crear_cliente, name='crear_cliente'),
     path('cliente/<int:id_cliente>/', views.cliente_detail, name='cliente_detail'),
     path('cliente/editar/<int:id_cliente>/', views.editar_cliente, name='editar_cliente'),
+    path('cliente/<int:id_cliente>/cambiar_password/', views.cambiar_password_cliente, name='cambiar_password_cliente'),
     path('aseguradoras/', views.lista_aseguradoras, name='lista_aseguradoras'),
     path('aseguradora/nuevo/', views.crear_aseguradora, name='crear_aseguradora'),
     path('aseguradora/<int:id_aseguradora>/', views.aseguradora_detail, name='aseguradora_detail'),
@@ -48,6 +49,7 @@ urlpatterns = [
     path('empleado/eliminar/<int:id_empleado>/', views.eliminar_empleado, name='eliminar_empleado'),
     path('cliente/eliminar/<int:id_cliente>/', views.eliminar_cliente, name='eliminar_cliente'),
     path('aseguradora/eliminar/<int:id_aseguradora>/', views.eliminar_aseguradora, name='eliminar_aseguradora'),
+    path('registrar/', views.registrar_usuario, name='registrar_usuario'),
 ]
 
 # Añadir configuración para servir archivos de medios en modo desarrollo

@@ -1,6 +1,36 @@
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth.models import AbstractUser
 
+# Definicion de los tipos de usuairios
+class Usuario(AbstractUser):
+    ADMINISTRADOR = 1
+    GERENTE = 2
+    COMPRADOR = 3
+    ROLES = (
+        (ADMINISTRADOR, 'administrador'),
+        (GERENTE, 'gerente'),
+        (COMPRADOR, 'comprador'),
+    )
+    
+    rol = models.PositiveSmallIntegerField(
+        choices=ROLES, default=1
+    )
+    
+# Gerente (1:1 con Usuario)
+class Gerente(models.Model):
+    usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE, null=True)
+    
+    def __str__(self):
+        return self.usuario.username
+    
+ # Comprador (1:1 con Usuario)   
+class Comprador(models.Model):
+    usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE, null=True)
+    telefono = models.CharField(max_length=20, null=True)
+    
+    def __str__(self):
+        return self.usuario.username
 
 # Concesionario principal
 class Concesionario(models.Model):
@@ -66,38 +96,26 @@ class Coche(models.Model):
         return f"{self.marca.nombre} {self.modelo}"
 
 
-# Cliente (N:M con Coches)
-class Cliente(models.Model):
-    nombre = models.CharField(max_length=100)
-    email = models.EmailField(unique=True)
-    telefono = models.CharField(max_length=20)
-    fecha_registro = models.DateTimeField(default=timezone.now)
-
-    def __str__(self):
-        return self.nombre
-
-
-# Datos_Cliente (1:1 con Cliente)
+# Datos_Cliente (1:1 con Comprador)
 class Datos_Cliente(models.Model):
-    cliente = models.OneToOneField(Cliente, on_delete=models.CASCADE)
+    comprador = models.OneToOneField(Comprador, on_delete=models.CASCADE, null=True)
     direccion = models.TextField()
     dni = models.CharField(max_length=15, unique=True)
     puntos_fidelidad = models.FloatField(default=0.0)
 
     def __str__(self):
-        return f"Datos de {self.cliente.nombre}"
+        return f"Datos de {self.comprador.usuario.username}"
 
-
-# Venta (tabla intermedia N:M entre Cliente y Coche con atributos extras)
+# Venta (1:1 con Comprador, N:1 con Coche)
 class Venta(models.Model):
-    cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
+    comprador = models.OneToOneField(Comprador, on_delete=models.CASCADE, null=True)
     coche = models.ForeignKey(Coche, on_delete=models.CASCADE)
     fecha_venta = models.DateField(default=timezone.now)
     precio_final = models.DecimalField(max_digits=10, decimal_places=2)
     metodo_pago = models.CharField(max_length=50)
 
     def __str__(self):
-        return f"Venta de {self.coche} a {self.cliente.nombre}"
+        return f"Venta de {self.coche} a {self.comprador.usuario.username}"
 
 
 # Seguro (1:1 con Coche, N:M con Aseguradora)

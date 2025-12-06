@@ -1,0 +1,20 @@
+{% extends 'concesionario/base.html' %}
+{% load static %}
+{% load django_bootstrap5 %}
+{% load bootstrap_icons %}
+
+{% block title %}Iniciar Sesión - AlphaAutos{% endblock %}
+
+{% block cabecera %}
+<h1 class="text-center mt-3">Iniciar Sesión</h1>
+{% endblock %}
+
+{% block content %}
+<h3>Introduce tus credenciales para acceder a tu cuenta.</h3>
+<form method="post" action="{% url 'login' %}" class="mt-4">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    {% bootstrap_button "Iniciar Sesión" button_type="submit" button_class="btn-primary" %}
+</form>
+{% endblock %}
+

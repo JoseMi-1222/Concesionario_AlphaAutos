@@ -1,83 +1,78 @@
-/* Reset básico */
-body, h1, h2, p, ul, li, table, th, td {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-/* Fuente y fondo general */
+/* -----------------------------------------------------------
+   RESET Y ESTILOS GENERALES
+   ----------------------------------------------------------- */
 html, body {
-    height: 100%; /* para que flexbox funcione */
+    height: 100%; /* Necesario para el sticky footer */
     margin: 0;
 }
 
 body {
-    font-family: Arial, sans-serif;
+    font-family: Arial, sans-serif; /* Puedes cambiar a system-ui si prefieres la fuente nativa */
     background-color: #f5f5f5;
     color: #333;
     line-height: 1.6;
+    /* Configuración Flexbox para Sticky Footer */
     display: flex;
-    flex-direction: column; /* columna vertical */
-    min-height: 100vh;      /* altura mínima 100% de la ventana */
+    flex-direction: column;
+    min-height: 100vh;
 }
 
-/* Cabecera y navegación */
-header {
-    background-color: #969494;
+/* -----------------------------------------------------------
+   COLORES DE MARCA
+   ----------------------------------------------------------- */
+/* Usaremos esta clase para reemplazar 'bg-secondary' en tu HTML si quieres tu gris exacto */
+.bg-alpha-primary {
+    background-color: #969494 !important; /* Tu gris original */
     color: white;
-    padding: 10px 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
 }
 
-header .logo img {
-    height: 50px;
-}
-
-nav ul {
-    list-style: none;
-    display: flex;
-    gap: 15px;
-}
-
-nav ul li a {
-    color: white;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-nav ul li a:hover {
-    text-decoration: underline;
-}
-
-/* Main crece para ocupar espacio */
+/* -----------------------------------------------------------
+   CONTENIDO PRINCIPAL (MAIN)
+   ----------------------------------------------------------- */
 main {
-    flex: 1;
+    flex: 1; /* Esto empuja el footer hacia abajo */
+    padding: 20px; /* Un poco de aire para que el contenido no pegue con los bordes */
+    width: 100%;
+    max-width: 1200px; /* Opcional: para que no se estire demasiado en pantallas gigantes */
+    margin: 0 auto;    /* Centra el contenedor main */
 }
 
-/* Pie de página */
+/* -----------------------------------------------------------
+   PIE DE PÁGINA (FOOTER)
+   ----------------------------------------------------------- */
 footer {
-    background-color: #969494;
+    background-color: #969494; /* Coincide con tu marca */
     color: white;
     text-align: center;
-    padding: 10px;
+    padding: 15px;
+    margin-top: auto; /* Asegura que se pegue al fondo si flex falla */
 }
 
-/* Tablas */
+/* -----------------------------------------------------------
+   TABLAS (Estilos personalizados mantenidos)
+   ----------------------------------------------------------- */
+/* Nota: Si usas la clase .table de Bootstrap en el futuro, esto podría sobrescribirse */
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 10px;
+    margin-top: 20px;
     margin-bottom: 20px;
+    background-color: white; /* Añadido para mejor lectura sobre fondo gris */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05); /* Sutil sombra para estética */
 }
 
 th, td {
-    border: 1px solid #999;
-    padding: 8px;
+    border: 1px solid #ddd; /* Color de borde más suave */
+    padding: 12px; /* Un poco más de espacio */
     text-align: left;
 }
 
 th {
     background-color: #eee;
+    font-weight: bold;
+}
+
+/* Efecto hover para las filas (opcional, queda muy bien) */
+tr:hover {
+    background-color: #f9f9f9;
 }

@@ -9,8 +9,12 @@
 {% block content %}
 {% if empleado %}
     <div class="mb-3">
-        <a class="btn btn-sm btn-outline-secondary" href="{% url 'AlphaAutos:editar_empleado' empleado.id %}">Editar</a>
-        <a class="btn btn-sm btn-outline-danger text-nowrap" href="{% url 'AlphaAutos:eliminar_empleado' empleado.id %}" onclick="return confirm('¿Estás seguro de que deseas eliminar?');">Eliminar</a>
+        {% if perms.AlphaAutos.change_empleado %}
+            <a class="btn btn-sm btn-outline-secondary" href="{% url 'AlphaAutos:editar_empleado' empleado.id %}">Editar</a>
+        {% endif %}
+        {% if perms.AlphaAutos.delete_empleado %}
+            <a class="btn btn-sm btn-outline-danger text-nowrap" href="{% url 'AlphaAutos:eliminar_empleado' empleado.id %}" onclick="return confirm('¿Estás seguro de que deseas eliminar?');">Eliminar</a>
+        {% endif %}
     </div>
 
     <table border="1">

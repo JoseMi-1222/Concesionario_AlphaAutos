@@ -29,9 +29,15 @@
                     <td>{{ coche.precio }}</td>
                     <td>{{ coche.concesionario.nombre }}</td>
                     <td>
-                        <a class="btn btn-sm btn-outline-primary me-2 text-nowrap" href="{% url 'AlphaAutos:coche_detail' coche.id %}">Ver en detalle</a>
-                        <a class="btn btn-sm btn-outline-secondary text-nowrap" href="{% url 'AlphaAutos:editar_coche' coche.id %}">Editar</a>
-                        <a class="btn btn-sm btn-outline-danger ms-2 text-nowrap" href="{% url 'AlphaAutos:eliminar_coche' coche.id %}" onclick="return confirm('¿Estás seguro de que deseas eliminar este coche?');">Eliminar</a>
+                        {% if perms.AlphaAutos.view_coche %}
+                            <a class="btn btn-sm btn-outline-primary me-2 text-nowrap" href="{% url 'AlphaAutos:coche_detail' coche.id %}">Ver en detalle</a>
+                        {% endif %}
+                        {% if perms.AlphaAutos.change_coche %}
+                            <a class="btn btn-sm btn-outline-secondary text-nowrap" href="{% url 'AlphaAutos:editar_coche' coche.id %}">Editar</a>
+                        {% endif %}
+                        {% if perms.AlphaAutos.delete_coche %}
+                            <a class="btn btn-sm btn-outline-danger ms-2 text-nowrap" href="{% url 'AlphaAutos:eliminar_coche' coche.id %}" onclick="return confirm('¿Estás seguro de que deseas eliminar este coche?');">Eliminar</a>
+                        {% endif %}
                 </tr>
                 {% endfor %}
             </tbody>

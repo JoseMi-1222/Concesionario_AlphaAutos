@@ -18,8 +18,12 @@
 
 {% if coche %}
     <div class="mb-3">
-        <a class="btn btn-sm btn-outline-secondary" href="{% url 'AlphaAutos:editar_coche' coche.id %}">Editar</a>
-        <a class="btn btn-sm btn-outline-danger ms-2 text-nowrap" href="{% url 'AlphaAutos:eliminar_coche' coche.id %}" onclick="return confirm('¿Estás seguro de que deseas eliminar?');">Eliminar</a>
+        {% if perms.AlphaAutos.change_coche %}
+            <a class="btn btn-sm btn-outline-secondary" href="{% url 'AlphaAutos:editar_coche' coche.id %}">Editar</a>
+        {% endif %}
+        {% if perms.AlphaAutos.delete_coche %}
+            <a class="btn btn-sm btn-outline-danger ms-2 text-nowrap" href="{% url 'AlphaAutos:eliminar_coche' coche.id %}" onclick="return confirm('¿Estás seguro de que deseas eliminar?');">Eliminar</a>
+        {% endif %}
     </div>
     <table border="1">
         <tr>

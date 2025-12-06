@@ -13,7 +13,7 @@
         <th>Nombre</th>
         <th>Ciudad</th>
         <th>Teléfono</th>
-        <th>Detalles</th>
+        <th>Acciones</th>
     </tr>
     {% for concesionario in concesionarios %}
         <tr>
@@ -22,9 +22,15 @@
             <td>{{ concesionario.ciudad }}</td>
             <td>{{ concesionario.telefono }}</td>
             <td>
-                <a class="btn btn-sm btn-outline-primary text-nowrap" href="{% url 'AlphaAutos:concesionario_detail' concesionario.id %}">Ver detalle</a>
-                <a class="btn btn-sm btn-outline-secondary text-nowrap" href="{% url 'AlphaAutos:editar_concesionario' concesionario.id %}">Editar</a>
-                <a class="btn btn-sm btn-outline-danger text-nowrap" href="{% url 'AlphaAutos:eliminar_concesionario' concesionario.id %}" onclick="return confirm('¿Estás seguro de que deseas eliminar?');">Eliminar</a>
+                {% if perms.AlphaAutos.view_concesionario %}
+                    <a class="btn btn-sm btn-outline-primary text-nowrap" href="{% url 'AlphaAutos:concesionario_detail' concesionario.id %}">Ver detalle</a>
+                {% endif %}
+                {% if perms.AlphaAutos.change_concesionario %}
+                    <a class="btn btn-sm btn-outline-secondary text-nowrap" href="{% url 'AlphaAutos:editar_concesionario' concesionario.id %}">Editar</a>
+                {% endif %}
+                {% if perms.AlphaAutos.delete_concesionario %}
+                    <a class="btn btn-sm btn-outline-danger text-nowrap" href="{% url 'AlphaAutos:eliminar_concesionario' concesionario.id %}" onclick="return confirm('¿Estás seguro de que deseas eliminar?');">Eliminar</a>
+                {% endif %}
             </td>
         </tr>
     {% empty %}

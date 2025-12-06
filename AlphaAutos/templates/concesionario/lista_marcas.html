@@ -19,9 +19,15 @@
         <td>{{ marca.id }}</td>
         <td>{{ marca.nombre }}</td>
             <td>
-            <a class="btn btn-sm btn-outline-primary me-2 text-nowrap" href="{% url 'AlphaAutos:marca_detail' marca.id %}">Ver en detalle</a>
-            <a class="btn btn-sm btn-outline-secondary text-nowrap" href="{% url 'AlphaAutos:editar_marca' marca.id %}">Editar</a>
-            <a class="btn btn-sm btn-outline-danger text-nowrap" href="{% url 'AlphaAutos:eliminar_marca' marca.id %}" onclick="return confirm('¿Estás seguro de que deseas eliminar?');">Eliminar</a>
+                {% if perms.AlphaAutos.view_marca %}
+                    <a class="btn btn-sm btn-outline-primary me-2 text-nowrap" href="{% url 'AlphaAutos:marca_detail' marca.id %}">Ver en detalle</a>
+                {% endif %}
+                {% if perms.AlphaAutos.change_marca %}
+                    <a class="btn btn-sm btn-outline-secondary text-nowrap" href="{% url 'AlphaAutos:editar_marca' marca.id %}">Editar</a>
+                {% endif %}
+                {% if perms.AlphaAutos.delete_marca %}
+                    <a class="btn btn-sm btn-outline-danger text-nowrap" href="{% url 'AlphaAutos:eliminar_marca' marca.id %}" onclick="return confirm('¿Estás seguro de que deseas eliminar?');">Eliminar</a>
+                {% endif %}
         </td>
     </tr>
     {% empty %}

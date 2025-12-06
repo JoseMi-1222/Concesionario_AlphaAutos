@@ -31,9 +31,15 @@
                     <td>{{ venta.precio_final }}</td>
                     <td>{{ venta.metodo_pago }}</td>
                     <td>
-                        <a class="btn btn-sm btn-outline-primary me-2 text-nowrap" href="{% url 'AlphaAutos:venta_detail' venta.id %}">Ver en detalle</a>
-                        <a class="btn btn-sm btn-outline-secondary me-2 text-nowrap" href="{% url 'AlphaAutos:editar_venta' venta.id %}">Editar</a>
-                        <a class="btn btn-sm btn-outline-danger text-nowrap" href="{% url 'AlphaAutos:eliminar_venta' venta.id %}" onclick="return confirm('¿Estás seguro de que deseas eliminar?');">Eliminar</a>  
+                        {% if perms.AlphaAutos.view_venta %}
+                            <a class="btn btn-sm btn-outline-primary me-2 text-nowrap" href="{% url 'AlphaAutos:venta_detail' venta.id %}">Ver en detalle</a>
+                        {% endif %}
+                        {% if perms.AlphaAutos.change_venta %}
+                            <a class="btn btn-sm btn-outline-secondary me-2 text-nowrap" href="{% url 'AlphaAutos:editar_venta' venta.id %}">Editar</a>
+                        {% endif %}
+                        {% if perms.AlphaAutos.delete_venta %}
+                            <a class="btn btn-sm btn-outline-danger text-nowrap" href="{% url 'AlphaAutos:eliminar_venta' venta.id %}" onclick="return confirm('¿Estás seguro de que deseas eliminar?');">Eliminar</a>  
+                        {% endif %}
                     </td>
                 </tr>
                 {% endfor %}

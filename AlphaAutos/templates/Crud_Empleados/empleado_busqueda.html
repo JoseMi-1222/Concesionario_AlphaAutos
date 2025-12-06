@@ -27,9 +27,15 @@
                     <td>{{ empleado.puesto }}</td>
                     <td>{{ empleado.concesionario.nombre }}</td>
                     <td>
-                        <a class="btn btn-sm btn-outline-primary me-2 text-nowrap" href="{% url 'AlphaAutos:empleado_detail' empleado.id %}">Ver en detalle</a>
-                        <a class="btn btn-sm btn-outline-secondary text-nowrap" href="{% url 'AlphaAutos:editar_empleado' empleado.id %}">Editar</a>
-                        <a class="btn btn-sm btn-outline-danger ms-2 text-nowrap" href="{% url 'AlphaAutos:eliminar_empleado' empleado.id %}" onclick="return confirm('¿Estás seguro de que deseas eliminar este empleado?');">Eliminar</a>
+                        {% if perms.AlphaAutos.view_empleado %}
+                            <a class="btn btn-sm btn-outline-primary me-2 text-nowrap" href="{% url 'AlphaAutos:empleado_detail' empleado.id %}">Ver en detalle</a>
+                        {% endif %}
+                        {% if perms.AlphaAutos.change_empleado %}
+                            <a class="btn btn-sm btn-outline-secondary text-nowrap" href="{% url 'AlphaAutos:editar_empleado' empleado.id %}">Editar</a>
+                        {% endif %}
+                        {% if perms.AlphaAutos.delete_empleado %}
+                            <a class="btn btn-sm btn-outline-danger ms-2 text-nowrap" href="{% url 'AlphaAutos:eliminar_empleado' empleado.id %}" onclick="return confirm('¿Estás seguro de que deseas eliminar este empleado?');">Eliminar</a>
+                        {% endif %}
                     </td>
                 </tr>
                 {% endfor %}

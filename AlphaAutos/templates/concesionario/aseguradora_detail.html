@@ -9,8 +9,12 @@
 {% block content %}
 {% if aseguradora %}
     <div class="mb-3">
-        <a class="btn btn-sm btn-outline-secondary" href="{% url 'AlphaAutos:editar_aseguradora' aseguradora.id %}">Editar</a>
-        <a class="btn btn-sm btn-outline-danger text-nowrap" href="{% url 'AlphaAutos:eliminar_aseguradora' aseguradora.id %}" onclick="return confirm('¿Estás seguro de que deseas eliminar?');">Eliminar</a>
+        {% if perms.AlphaAutos.change_aseguradora %}
+            <a class="btn btn-sm btn-outline-secondary" href="{% url 'AlphaAutos:editar_aseguradora' aseguradora.id %}">Editar</a>
+        {% endif %}
+        {% if perms.AlphaAutos.delete_aseguradora %}
+            <a class="btn btn-sm btn-outline-danger text-nowrap" href="{% url 'AlphaAutos:eliminar_aseguradora' aseguradora.id %}" onclick="return confirm('¿Estás seguro de que deseas eliminar?');">Eliminar</a>
+        {% endif %}
     </div>
 
     <table border="1">

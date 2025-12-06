@@ -39,9 +39,10 @@
     </div>
 </div>
 
-<div class="row g-4"> <div class="col-md-6">
-        
-        <div class="card shadow-sm mb-4">
+<div class="row g-4"> 
+    
+    <div class="col-md-6">
+        <div class="card shadow-sm h-100">
             <div class="card-header bg-secondary text-white fw-bold">
                 Gestión de Coches
             </div>
@@ -52,54 +53,18 @@
                 </a>
                 {% endif %}
                 {% if perms.AlphaAutos.view_coche %}
-                <a href="{% url 'AlphaAutos:buscar_coches' %}" class="list-group-item list-group-item-action">Buscar coches</a>
-                {% else %}
-                <a>No tienes permiso para ver el contenido de coches.</a>
-                {% endif %}
-            </div>
-        </div>
-
-        <div class="card shadow-sm mb-4">
-            <div class="card-header bg-secondary text-white fw-bold">
-                Gestión de Marcas
-            </div>
-            <div class="list-group list-group-flush">
-                {% if perms.AlphaAutos.add_marca %}
-                <a href="{% url 'AlphaAutos:crear_marca' %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                    Crear marca <span class="badge bg-success rounded-pill">+</span>
+                <a href="{% url 'AlphaAutos:buscar_coches' %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                    Buscar coches <span class="badge bg-primary rounded-pill"><i class="bi bi-search"></i></span>
                 </a>
-                {% endif %}
-                {% if perms.AlphaAutos.view_marca %}
-                <a href="{% url 'AlphaAutos:buscar_marcas' %}" class="list-group-item list-group-item-action">Buscar marcas</a>
                 {% else %}
-                <a>No tienes permiso para ver el contenido de marcas.</a>
+                <div class="list-group-item text-muted">No tienes permiso para ver el contenido de coches.</div>
                 {% endif %}
             </div>
         </div>
-
-        <div class="card shadow-sm mb-4">
-            <div class="card-header bg-secondary text-white fw-bold">
-                Gestión de Concesionarios
-            </div>
-            <div class="list-group list-group-flush">
-                {% if perms.AlphaAutos.add_concesionario %}
-                <a href="{% url 'AlphaAutos:crear_concesionario' %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                    Crear concesionario <span class="badge bg-success rounded-pill">+</span>
-                </a>
-                {% endif %}
-                {% if perms.AlphaAutos.view_concesionario %}
-                <a href="{% url 'AlphaAutos:buscar_concesionarios' %}" class="list-group-item list-group-item-action">Buscar concesionarios</a>
-                {% else %}
-                <a>No tienes permiso para ver el contenido de concesionarios.</a>
-                {% endif %}
-            </div>
-        </div>
-
     </div>
 
     <div class="col-md-6">
-        
-        <div class="card shadow-sm mb-4">
+        <div class="card shadow-sm h-100">
             <div class="card-header bg-secondary text-white fw-bold">
                 Gestión de Empleados
             </div>
@@ -110,14 +75,40 @@
                 </a>
                 {% endif %}
                 {% if perms.AlphaAutos.view_empleado %}
-                <a href="{% url 'AlphaAutos:buscar_empleados' %}" class="list-group-item list-group-item-action">Buscar empleados</a>
+                <a href="{% url 'AlphaAutos:buscar_empleados' %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                    Buscar empleados <span class="badge bg-primary rounded-pill"><i class="bi bi-search"></i></span>
+                </a>
                 {% else %}
-                <a>No tienes permiso para ver el contenido de empleados.</a>
+                <div class="list-group-item text-muted">No tienes permiso para ver el contenido de empleados.</div>
                 {% endif %}
             </div>
         </div>
+    </div>
 
-        <div class="card shadow-sm mb-4">
+    <div class="col-md-6">
+        <div class="card shadow-sm h-100">
+            <div class="card-header bg-secondary text-white fw-bold">
+                Gestión de Marcas
+            </div>
+            <div class="list-group list-group-flush">
+                {% if perms.AlphaAutos.add_marca %}
+                <a href="{% url 'AlphaAutos:crear_marca' %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                    Crear marca <span class="badge bg-success rounded-pill">+</span>
+                </a>
+                {% endif %}
+                {% if perms.AlphaAutos.view_marca %}
+                <a href="{% url 'AlphaAutos:buscar_marcas' %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                    Buscar marcas <span class="badge bg-primary rounded-pill"><i class="bi bi-search"></i></span>
+                </a>
+                {% else %}
+                <div class="list-group-item text-muted">No tienes permiso para ver el contenido de marcas.</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card shadow-sm h-100">
             <div class="card-header bg-secondary text-white fw-bold">
                 Gestión de Clientes
             </div>
@@ -128,14 +119,40 @@
                 </a>
                 {% endif %}
                 {% if perms.AlphaAutos.view_cliente %}
-                <a href="{% url 'AlphaAutos:buscar_clientes' %}" class="list-group-item list-group-item-action">Buscar clientes</a>
+                <a href="{% url 'AlphaAutos:buscar_clientes' %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                    Buscar clientes <span class="badge bg-primary rounded-pill"><i class="bi bi-search"></i></span>
+                </a>
                 {% else %}
-                <a>No tienes permiso para ver el contenido de clientes.</a>
+                <div class="list-group-item text-muted">No tienes permiso para ver el contenido de clientes.</div>
                 {% endif %}
             </div>
         </div>
+    </div>
 
-        <div class="card shadow-sm mb-4">
+    <div class="col-md-6">
+        <div class="card shadow-sm h-100">
+            <div class="card-header bg-secondary text-white fw-bold">
+                Gestión de Concesionarios
+            </div>
+            <div class="list-group list-group-flush">
+                {% if perms.AlphaAutos.add_concesionario %}
+                <a href="{% url 'AlphaAutos:crear_concesionario' %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                    Crear concesionario <span class="badge bg-success rounded-pill">+</span>
+                </a>
+                {% endif %}
+                {% if perms.AlphaAutos.view_concesionario %}
+                <a href="{% url 'AlphaAutos:buscar_concesionarios' %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                    Buscar concesionarios <span class="badge bg-primary rounded-pill"><i class="bi bi-search"></i></span>
+                </a>
+                {% else %}
+                <div class="list-group-item text-muted">No tienes permiso para ver el contenido de concesionarios.</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card shadow-sm h-100">
             <div class="card-header bg-secondary text-white fw-bold">
                 Gestión de Aseguradoras
             </div>
@@ -146,14 +163,19 @@
                 </a>
                 {% endif %}
                 {% if perms.AlphaAutos.view_aseguradora %}
-                <a href="{% url 'AlphaAutos:buscar_aseguradoras' %}" class="list-group-item list-group-item-action">Buscar aseguradoras</a>
+                <a href="{% url 'AlphaAutos:buscar_aseguradoras' %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                    Buscar aseguradoras <span class="badge bg-primary rounded-pill"><i class="bi bi-search"></i></span>
+                </a>
                 {% else  %}
-                <a>No tienes permiso para ver el contenido de aseguradoras.</a>
+                <div class="list-group-item text-muted">No tienes permiso para ver el contenido de aseguradoras.</div>
                 {% endif %}
             </div>
         </div>
+    </div>
 
-        <div class="card shadow-sm mb-4">
+</div> <div class="row justify-content-center mt-4 mb-5">
+    <div class="col-md-6"> 
+        <div class="card shadow-sm h-100">
             <div class="card-header bg-secondary text-white fw-bold">
                 Gestión de Ventas
             </div>
@@ -164,9 +186,11 @@
                 </a>
                 {% endif %}
                 {% if perms.AlphaAutos.view_venta %}
-                <a href="{% url 'AlphaAutos:buscar_ventas' %}" class="list-group-item list-group-item-action">Buscar ventas</a>
+                <a href="{% url 'AlphaAutos:buscar_ventas' %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                    Buscar ventas <span class="badge bg-primary rounded-pill"><i class="bi bi-search"></i></span>
+                </a>
                 {% else %}
-                <a>No tienes permiso para ver el contenido de ventas.</a>
+                <div class="list-group-item text-muted">No tienes permiso para ver el contenido de ventas.</div>
                 {% endif %}
             </div>
         </div>

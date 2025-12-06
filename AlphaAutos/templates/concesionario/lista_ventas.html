@@ -32,9 +32,15 @@
             <td>{{ venta.precio_final }}</td>
             <td>{{ venta.metodo_pago }}</td>
             <td>
-                <a class="btn btn-sm btn-outline-primary" href="{% url 'AlphaAutos:venta_detail' venta.id %}">Ver Detalles</a>
-                <a class="btn btn-sm btn-outline-secondary" href="{% url 'AlphaAutos:editar_venta' venta.id %}">Editar</a>
-                <a class="btn btn-sm btn-outline-danger" href="{% url 'AlphaAutos:eliminar_venta' venta.id %}" onclick="return confirm('¿Estás seguro de que deseas eliminar esta venta?');">Eliminar</a>   
+                {% if perms.AlphaAutos.view_venta %}
+                    <a class="btn btn-sm btn-outline-primary" href="{% url 'AlphaAutos:venta_detail' venta.id %}">Ver Detalles</a>
+                {% endif %}
+                {% if perms.AlphaAutos.change_venta %}
+                    <a class="btn btn-sm btn-outline-secondary" href="{% url 'AlphaAutos:editar_venta' venta.id %}">Editar</a>
+                {% endif %}
+                {% if perms.AlphaAutos.delete_venta %}
+                    <a class="btn btn-sm btn-outline-danger" href="{% url 'AlphaAutos:eliminar_venta' venta.id %}" onclick="return confirm('¿Estás seguro de que deseas eliminar esta venta?');">Eliminar</a>   
+                {% endif %}
             </td>
         </tr>
     {% empty %}

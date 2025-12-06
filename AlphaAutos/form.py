@@ -1,6 +1,9 @@
 from datetime import datetime
 from django import forms
 from .models import *
+from datetime import datetime
+from django import forms
+from .models import *
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
 
@@ -13,6 +16,7 @@ class RegistroForm(UserCreationForm):
         (Usuario.COMPRADOR, 'Comprador'),
     )
     rol = forms.ChoiceField(choices=roles)
+    telefono = forms.CharField(label='Teléfono', max_length=20, required=True)
     class Meta:
         model = Usuario
         fields = ('username', 'email', 'password1', 'password2', 'rol')
@@ -272,66 +276,135 @@ class EmpleadoSearchForm(forms.Form):
     
     
 # -------------------------------------------------------------------
-# Crud_Cliente
-# VISTA: Crear un nuevo cliente (CRUD - Create)
+# Crud_Comprador
+# VISTA: Crear comprador (CRUD - Create)
 # -------------------------------------------------------------------
-class ClienteModelForm(ModelForm):
+# Este formulario se utiliza para crear un nuevo Comprador.
+# Permite seleccionar un usuario existente y asignarle un teléfono.
+# - usuario: campo de selección de usuarios existentes (OneToOne con Usuario)
+# - telefono: campo obligatorio, solo acepta números
+# Incluye validaciones para asegurar que se seleccione un usuario y que el teléfono sea numérico.
+class CompradorModelForm(ModelForm):
+    telefono = forms.CharField(label='Teléfono', max_length=20, required=True)
     class Meta:
-        model = Cliente
-        fields = ['nombre', 'email', 'telefono', 'fecha_registro']
+        model = Comprador
+        fields = ['usuario', 'telefono']
         widgets = {
-            'email': forms.EmailInput(attrs={'class': 'form-control'}),
-            'fecha_registro': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'})
+            'usuario': forms.Select(attrs={'class': 'form-select'}),
+            'telefono': forms.TextInput(attrs={'class': 'form-control'})
         }
-        
     def clean(self):
-        email = self.cleaned_data.get('email')
+        usuario = self.cleaned_data.get('usuario')
         telefono = self.cleaned_data.get('telefono')
-        
-        # Validar que el email tenga un formato adecuado (ejemplo simple)
-        if email and "@" not in email:
-            self.add_error('email', 'El email no tiene un formato válido.')
-            
-        # Validar que el teléfono tenga un formato adecuado (ejemplo simple)
+        # Validar que se seleccione un usuario
+        if usuario is None:
+            self.add_error('usuario', 'Debes seleccionar un usuario.')
+        # Validar que el teléfono contenga solo números
         if telefono and not telefono.isdigit():
             self.add_error('telefono', 'El teléfono debe contener solo números.')
-            
         return self.cleaned_data
     
 # -------------------------------------------------------------------
-# Crud_Cliente
-# VISTA: Buscar un cliente (CRUD - Create)
+# Crud_Comprador
+# VISTA: Editar un comprador (CRUD - Update)
+# Formulario exclusivo para modificar Comprador y Usuario
 # -------------------------------------------------------------------
-class ClienteSearchForm(forms.Form):
-    nombre = forms.CharField(required=False, label="Nombre")
-    email = forms.CharField(required=False, label="Email")
-    telefono = forms.CharField(required=False, label="Teléfono")
+# Este formulario se utiliza para editar un Comprador y su usuario asociado.
+# Permite modificar los campos principales del usuario (username, email, rol)
+# y el teléfono del Comprador en un solo formulario.
+# - username: nombre de usuario editable
+# - email: email editable
+# - rol: tipo de usuario editable (Administrador, Gerente, Comprador)
+# - telefono: campo obligatorio, solo acepta números
+# Al guardar, actualiza tanto el modelo Usuario como el modelo Comprador.
+class CompradorEditForm(forms.ModelForm):
+    username = forms.CharField(label='Nombre de usuario', max_length=150, required=True)
+    email = forms.EmailField(label='Email', required=True)
+    rol = forms.ChoiceField(choices=[(1, 'Administrador'), (2, 'Gerente'), (3, 'Comprador')], label='Rol', required=True)
+    telefono = forms.CharField(label='Teléfono', max_length=20, required=True)
 
+    class Meta:
+        model = Comprador
+        fields = ['username', 'email', 'telefono', 'rol']
+
+    def __init__(self, *args, **kwargs):
+        instance = kwargs.get('instance')
+        initial = kwargs.get('initial', {})
+        # Si hay instancia, precargar los datos del usuario asociado
+        if instance and instance.usuario:
+            initial.update({
+                'username': instance.usuario.username,
+                'email': instance.usuario.email,
+                'rol': instance.usuario.rol,
+                'telefono': instance.telefono,
+            })
+            kwargs['initial'] = initial
+        super().__init__(*args, **kwargs)
+
+    def save(self, commit=True):
+        # Al guardar, actualiza tanto el usuario como el comprador
+        comprador = super().save(commit=False)
+        usuario = comprador.usuario
+        usuario.username = self.cleaned_data['username']
+        usuario.email = self.cleaned_data['email']
+        usuario.rol = self.cleaned_data['rol']
+        if commit:
+            usuario.save()
+            comprador.telefono = self.cleaned_data['telefono']
+            comprador.save()
+        return comprador
+    
+# -------------------------------------------------------------------
+# Crud_Comprador
+# VISTA: Buscar un comprador (CRUD - Search)
+# -------------------------------------------------------------------
+# Este formulario permite buscar compradores por usuario, teléfono o email.
+# - usuario: campo de texto para buscar por nombre de usuario
+# - telefono: campo de texto para buscar por teléfono
+# - email: campo de texto para buscar por email
+# Valida que al menos uno de los campos tenga valor y que el teléfono sea numérico si se proporciona.
+class CompradorSearchForm(forms.Form):
+    usuario = forms.CharField(required=False, label="Usuario")
+    telefono = forms.CharField(required=False, label="Teléfono")
+    email = forms.CharField(required=False, label="Email")
     def clean(self):
         cleaned = super().clean()
-        nombre = cleaned.get('nombre')
-        email = cleaned.get('email')
+        usuario = cleaned.get('usuario')
         telefono = cleaned.get('telefono')
+        email = cleaned.get('email')
 
-        # Al menos un criterio: marcar campos cuando no hay ninguno
-        if not any([v for v in (nombre, email, telefono) if v]):
-            self.add_error('nombre', 'Introduce al menos un criterio de búsqueda.')
-            self.add_error('email', 'Introduce al menos un criterio de búsqueda.')
+        # Validar que al menos un campo tenga valor
+        if not any([usuario, telefono, email]):
+            self.add_error('usuario', 'Introduce al menos un criterio de búsqueda.')
             self.add_error('telefono', 'Introduce al menos un criterio de búsqueda.')
+            self.add_error('email', 'Introduce al menos un criterio de búsqueda.')
         else:
-            # Validaciones adicionales
-            if email and '@' not in email:
-                self.add_error('email', 'El email no tiene un formato válido.')
-            if telefono and not telefono.isdigit():
+            # Validar longitud mínima de usuario
+            if usuario and len(usuario.strip()) < 2:
+                self.add_error('usuario', 'Introduce al menos 2 caracteres para el usuario.')
+            # Validar que el teléfono sea numérico
+            if telefono and telefono and not telefono.isdigit():
                 self.add_error('telefono', 'El teléfono debe contener solo números.')
-            # Validación extra 1: nombre mínimo 2 caracteres
-            if nombre and len(nombre.strip()) < 2:
-                self.add_error('nombre', 'Introduce al menos 2 caracteres para el nombre.')
-            # Validación extra 2: teléfono razonable
-            if telefono and len(telefono.strip()) < 7:
-                self.add_error('telefono', 'El teléfono es demasiado corto para ser válido.')
-
         return cleaned
+
+# -------------------------------------------------------------------
+# Crud_Cliente
+# VISTA: Cambiar la contraseña de un cliente (CRUD - Update)
+# Formulario para cambiar la contraseña de un cliente (usuario)
+# -------------------------------------------------------------------
+class CambiarPasswordForm(forms.Form):
+    password1 = forms.CharField(label='Nueva contraseña', widget=forms.PasswordInput, required=True)
+    password2 = forms.CharField(label='Confirmar nueva contraseña', widget=forms.PasswordInput, required=True)
+
+    def clean(self):
+        cleaned_data = super().clean()
+        password1 = cleaned_data.get('password1')
+        password2 = cleaned_data.get('password2')
+        if password1 != password2:
+            self.add_error('password2', 'Las contraseñas no coinciden.')
+        if password1 and len(password1) < 8:
+            self.add_error('password1', 'La contraseña debe tener al menos 8 caracteres.')
+        return cleaned_data
     
 # -------------------------------------------------------------------
 # Crud_Aseguradora

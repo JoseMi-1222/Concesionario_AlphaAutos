@@ -14,6 +14,6 @@
 <form method="post" action="{% url 'AlphaAutos:registrar_usuario' %}" class="mt-4">
     {% csrf_token %}
     {% bootstrap_form formulario %}
-    {% bootstrap_button "Registrar Usuario" button_type="submit" button_class="btn-primary" %}
+    <button type="submit" class="btn btn-primary">Registrar Usuario</button>
 </form>
 {% endblock %}

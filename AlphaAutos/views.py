@@ -1,4 +1,4 @@
-from email.headerregistry import Group
+from django.contrib.auth.models import Group
 from django.contrib import messages
 from django.contrib.auth import login
 from django.shortcuts import redirect, render, get_object_or_404
@@ -107,7 +107,7 @@ def coches_concesionario_texto(request, id_concesionario, texto):
 # -------------------------------------------------------------------
 def ultimo_cliente_coche(request, id_coche):
     ultima_venta = Venta.objects.filter(coche_id=id_coche).order_by('-fecha_venta').first()
-    ultimo_cliente = ultima_venta.cliente if ultima_venta else None
+    ultimo_cliente = ultima_venta.comprador if ultima_venta else None
 
     contexto = {
         'venta': ultima_venta,
@@ -180,7 +180,7 @@ def lista_empleados(request):
 # VISTA: Listar todos los clientes
 # -------------------------------------------------------------------
 def lista_clientes(request):
-    clientes = Cliente.objects.all()  # Obtiene todos los clientes
+    clientes = Comprador.objects.select_related('usuario').all()
     context = {'clientes': clientes}
     return render(request, 'concesionario/lista_clientes.html', context)
 
@@ -493,14 +493,13 @@ def eliminar_empleado(request, id_empleado):
 # -------------------------------------------------------------------
 def crear_cliente(request):
     if request.method == 'POST':
-        form = ClienteModelForm(request.POST)
+        form = CompradorModelForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request, "Cliente creado correctamente.")
+            messages.success(request, "Comprador creado correctamente.")
             return redirect('AlphaAutos:lista_clientes')
     else:
-        form = ClienteModelForm()
-    
+        form = CompradorModelForm()
     contexto = {'form': form}
     return render(request, 'Crud_Clientes/crear_cliente.html', contexto)
 
@@ -508,27 +507,41 @@ def crear_cliente(request):
 # Vista: Formulario para buscar un cliente con 3 posibles filtros
 # -------------------------------------------------------------------
 def buscar_clientes(request):
-    form = ClienteSearchForm(request.GET or None)
+    form = CompradorSearchForm(request.GET or None)
 
     if len(request.GET) > 0:
         if form.is_valid():
-            qs = Cliente.objects.all()
-            nombre = form.cleaned_data.get("nombre")
-            email = form.cleaned_data.get("email")
-            telefono = form.cleaned_data.get("telefono")
+            qs = Comprador.objects.select_related('usuario').all()
+            usuario = form.cleaned_data.get("usuario")
 
-            if nombre:
-                qs = qs.filter(nombre__icontains=nombre)
-            if email:
-                qs = qs.filter(email__icontains=email)
-            if telefono:
-                qs = qs.filter(telefono__icontains=telefono)
+            if usuario:
+                qs = qs.filter(usuario__username__icontains=usuario)
 
             contexto = {"form": form, "clientes": qs}
             return render(request, "Crud_Clientes/cliente_busqueda.html", contexto)
 
     contexto = {"form": form}
     return render(request, "Crud_Clientes/buscar_clientes.html", contexto)
+
+# -------------------------------------------------------------------
+# Vista para cambiar la contraseña de un cliente
+# -------------------------------------------------------------------
+from django.contrib.auth.hashers import make_password
+def cambiar_password_cliente(request, id_cliente):
+    comprador = get_object_or_404(Comprador, id=id_cliente)
+    from .form import CambiarPasswordForm
+    if request.method == 'POST':
+        formulario = CambiarPasswordForm(request.POST)
+        if formulario.is_valid():
+            password = formulario.cleaned_data['password1']
+            comprador.usuario.password = make_password(password)
+            comprador.usuario.save()
+            messages.success(request, 'Contraseña cambiada correctamente.')
+            return redirect('login')
+    else:
+        formulario = CambiarPasswordForm()
+    contexto = {'formulario': formulario, 'cliente': comprador}
+    return render(request, 'Crud_Clientes/cambiar_password_cliente.html', contexto)
 
 # -------------------------------------------------------------------
 # Vista: Formulario para crear una nueva aseguradora
@@ -605,27 +618,26 @@ def editar_empleado(request, id_empleado):
 # VISTA: Mostrar detalle de cliente y editar
 # -------------------------------------------------------------------
 def cliente_detail(request, id_cliente):
-    cliente = get_object_or_404(Cliente, id=id_cliente)
+    cliente = get_object_or_404(Comprador, id=id_cliente)
     contexto = {'cliente': cliente}
     return render(request, 'concesionario/cliente_detail.html', contexto)
 
 
 def editar_cliente(request, id_cliente):
-    cliente = get_object_or_404(Cliente, id=id_cliente)
-
+    comprador = get_object_or_404(Comprador, id=id_cliente)
+    from .form import CompradorEditForm
     if request.method == 'POST':
-        formulario = ClienteModelForm(request.POST, instance=cliente)
+        formulario = CompradorEditForm(request.POST, instance=comprador)
         if formulario.is_valid():
             try:
                 formulario.save()
-                messages.success(request, "Cliente editado correctamente.")
+                messages.success(request, "Comprador editado correctamente.")
                 return redirect('AlphaAutos:lista_clientes')
             except Exception as e:
-                messages.error(request, f"Error al guardar el cliente: {e}")
+                messages.error(request, f"Error al guardar el comprador: {e}")
     else:
-        formulario = ClienteModelForm(instance=cliente)
-
-    contexto = {'formulario': formulario, 'cliente': cliente}
+        formulario = CompradorEditForm(instance=comprador)
+    contexto = {'formulario': formulario, 'cliente': comprador}
     return render(request, 'Crud_Clientes/editar_cliente.html', contexto)
 
 
@@ -660,11 +672,11 @@ def editar_aseguradora(request, id_aseguradora):
 # VISTA: Eliminar un cliente existente
 # -------------------------------------------------------------------
 def eliminar_cliente(request, id_cliente):
-    cliente = Cliente.objects.get(id=id_cliente)
+    comprador = get_object_or_404(Comprador, id=id_cliente)
     try:
-        cliente.delete()
-        messages.success(request, "Cliente eliminado correctamente.")
-    except :
+        comprador.delete()
+        messages.success(request, "Comprador eliminado correctamente.")
+    except:
         pass
     return redirect('AlphaAutos:lista_clientes')
 
@@ -689,10 +701,11 @@ def registrar_usuario(request):
         if formulario.is_valid():
             user = formulario.save()
             rol = int(formulario.cleaned_data.get('rol'))
+            telefono = formulario.cleaned_data.get('telefono')
             if (rol == Usuario.COMPRADOR):
                 grupo = Group.objects.get(name='Compradores')
                 user.groups.add(grupo)
-                comprador = Comprador.objects.create(usuario=user)
+                comprador = Comprador.objects.create(usuario=user, telefono=telefono)
                 comprador.save()
             elif (rol == Usuario.GERENTE):
                 grupo = Group.objects.get(name='Gerentes')
@@ -700,11 +713,9 @@ def registrar_usuario(request):
                 gerente = Gerente.objects.create(usuario=user)
                 gerente.save()
             messages.success(request, "Usuario registrado correctamente.")
-            
             login(request, user)
             return redirect('AlphaAutos:index')
     else:
         formulario = RegistroForm()
-        
     contexto = {'formulario': formulario}
     return render(request, 'registration/signup.html', contexto)

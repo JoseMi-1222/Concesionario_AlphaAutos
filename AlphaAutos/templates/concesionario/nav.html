@@ -32,13 +32,27 @@
       
       <ul class="navbar-nav me-auto mb-2 mb-lg-0 align-items-center">
         <li class="nav-item"><a class="nav-link active" href="{% url 'AlphaAutos:index' %}">Inicio</a></li>
-        <li class="nav-item"><a class="nav-link" href="{% url 'AlphaAutos:coche_list' %}">Coches</a></li>
-        <li class="nav-item"><a class="nav-link" href="{% url 'AlphaAutos:lista_concesionarios' %}">Concesionarios</a></li>
-        <li class="nav-item"><a class="nav-link" href="{% url 'AlphaAutos:lista_marcas' %}">Marcas</a></li>
-        <li class="nav-item"><a class="nav-link" href="{% url 'AlphaAutos:lista_empleados' %}">Empleados</a></li>
-        <li class="nav-item"><a class="nav-link" href="{% url 'AlphaAutos:lista_clientes' %}">Clientes</a></li>
-        <li class="nav-item"><a class="nav-link" href="{% url 'AlphaAutos:lista_aseguradoras' %}">Aseguradoras</a></li>
-        <li class="nav-item"><a class="nav-link" href="{% url 'AlphaAutos:resumen_ventas' %}">Resumen Ventas</a></li>
+        {% if perms.AlphaAutos.view_coche %}
+            <li class="nav-item"><a class="nav-link" href="{% url 'AlphaAutos:coche_list' %}">Coches</a></li>
+        {% endif %}
+        {% if perms.AlphaAutos.view_concesionario %}
+            <li class="nav-item"><a class="nav-link" href="{% url 'AlphaAutos:lista_concesionarios' %}">Concesionarios</a></li>
+        {% endif %}
+        {% if perms.AlphaAutos.view_marca %}
+            <li class="nav-item"><a class="nav-link" href="{% url 'AlphaAutos:lista_marcas' %}">Marcas</a></li>
+        {% endif %}
+        {% if perms.AlphaAutos.view_empleado %}
+            <li class="nav-item"><a class="nav-link" href="{% url 'AlphaAutos:lista_empleados' %}">Empleados</a></li>
+        {% endif %}
+        {% if perms.AlphaAutos.view_cliente %}
+            <li class="nav-item"><a class="nav-link" href="{% url 'AlphaAutos:lista_clientes' %}">Clientes</a></li>
+        {% endif %}
+        {% if perms.AlphaAutos.view_aseguradora %}
+            <li class="nav-item"><a class="nav-link" href="{% url 'AlphaAutos:lista_aseguradoras' %}">Aseguradoras</a></li>
+        {% endif %}
+        {% if user.is_authenticated and user.rol == 2 or user.is_authenticated and user.rol == 1 %}
+                    <li class="nav-item"><a class="nav-link" href="{% url 'AlphaAutos:resumen_ventas' %}">Resumen Ventas</a></li>
+                {% endif %}
       </ul>
 
       <ul class="navbar-nav ms-auto align-items-center">

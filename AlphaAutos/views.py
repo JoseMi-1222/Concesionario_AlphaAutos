@@ -719,3 +719,94 @@ def registrar_usuario(request):
         formulario = RegistroForm()
     contexto = {'formulario': formulario}
     return render(request, 'registration/signup.html', contexto)
+
+# -------------------------------------------------------------------
+# VISTA: Listar todas las ventas
+# -------------------------------------------------------------------
+def lista_ventas(request):
+    ventas = Venta.objects.select_related('coche', 'comprador').all()
+    contexto = {'ventas': ventas}
+    return render(request, 'concesionario/lista_ventas.html', contexto)
+
+# -------------------------------------------------------------------
+# VISTA: Mostrar detalle de una venta
+# -------------------------------------------------------------------
+def venta_detail(request, id_venta):
+    venta = get_object_or_404(Venta, id=id_venta)
+    contexto = {'venta': venta}
+    return render(request, 'concesionario/venta_detail.html', contexto)
+
+# -------------------------------------------------------------------
+# VISTA: Formulario para crear una nueva venta
+# -------------------------------------------------------------------
+def crear_venta(request):
+    if request.method == 'POST':
+        form = VentaModelForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Venta creada correctamente.")
+            return redirect('AlphaAutos:lista_ventas')
+    else:
+        form = VentaModelForm()
+    
+    contexto = {'form': form}
+    return render(request, 'Crud_Venta/crear_venta.html', contexto)
+
+# -------------------------------------------------------------------
+# VISTA: Formulario para buscar ventas con 3 posibles filtros
+# -------------------------------------------------------------------
+def buscar_ventas(request):
+    form = VentaSearchForm(request.GET or None)
+
+    if len(request.GET) > 0:
+        if form.is_valid():
+            qs = Venta.objects.select_related('coche', 'comprador').all()
+            coche_modelo = form.cleaned_data.get("coche_modelo")
+            comprador_nombre = form.cleaned_data.get("comprador_nombre")
+            metodo_pago = form.cleaned_data.get("metodo_pago")
+
+            if coche_modelo:
+                qs = qs.filter(coche__modelo__icontains=coche_modelo)
+            if comprador_nombre:
+                qs = qs.filter(comprador__usuario__username__icontains=comprador_nombre)
+            if metodo_pago:
+                qs = qs.filter(metodo_pago__icontains=metodo_pago)
+
+            contexto = {"form": form, "ventas": qs}
+            return render(request, "Crud_Venta/venta_busqueda.html", contexto)
+
+    contexto = {"form": form}
+    return render(request, "Crud_Venta/buscar_ventas.html", contexto)
+
+# -------------------------------------------------------------------
+# VISTA: Formulario para editar una venta existente
+# -------------------------------------------------------------------
+def editar_venta(request, id_venta):
+    venta = get_object_or_404(Venta, id=id_venta)
+
+    if request.method == 'POST':
+        form = VentaModelForm(request.POST, instance=venta)
+        if form.is_valid():
+            try:
+                form.save()
+                messages.success(request, "Venta editada correctamente.")
+                return redirect('AlphaAutos:lista_ventas')
+            except Exception as e:
+                messages.error(request, f"Error al guardar la venta: {e}")
+    else:
+        form = VentaModelForm(instance=venta)
+
+    contexto = {'form': form, 'venta': venta}
+    return render(request, 'Crud_Venta/editar_venta.html', contexto)
+
+# -------------------------------------------------------------------
+# VISTA: Eliminar una venta existente
+# -------------------------------------------------------------------
+def eliminar_venta(request, id_venta):
+    venta = Venta.objects.get(id=id_venta)
+    try:
+        venta.delete()
+        messages.success(request, "Venta eliminada correctamente.")
+    except :
+        pass
+    return redirect('AlphaAutos:lista_ventas')

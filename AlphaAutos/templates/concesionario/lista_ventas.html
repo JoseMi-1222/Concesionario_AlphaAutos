@@ -1,0 +1,47 @@
+{% extends 'concesionario/base.html' %}
+
+{% block title %}Lista de Ventas{% endblock %}
+
+{% block cabecera %}
+<h1>Lista de Ventas</h1>
+{% endblock %}
+
+{% block content %}
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Comprador</th>
+        <th>Coche</th>
+        <th>Fecha de la Venta</th>
+        <th>Precio</th>
+        <th>Metodo de Pago</th>
+        <th>Acciones</th>
+    </tr>
+    {% for venta in ventas %}
+        <tr>
+            <td>{{ venta.id }}</td>
+            <td>
+                {% if venta.comprador and venta.comprador.usuario %}
+                    {{ venta.comprador.usuario.username }}
+                {% else %}
+                    <span>Sin comprador</span>
+                {% endif %}
+            </td>
+            <td>{{ venta.coche.marca }} | {{ venta.coche.modelo }}</td>
+            <td>{{ venta.fecha_venta }}</td>
+            <td>{{ venta.precio_final }}</td>
+            <td>{{ venta.metodo_pago }}</td>
+            <td>
+                <a class="btn btn-sm btn-outline-primary" href="{% url 'AlphaAutos:venta_detail' venta.id %}">Ver Detalles</a>
+                <a class="btn btn-sm btn-outline-secondary" href="{% url 'AlphaAutos:editar_venta' venta.id %}">Editar</a>
+                <a class="btn btn-sm btn-outline-danger" href="{% url 'AlphaAutos:eliminar_venta' venta.id %}" onclick="return confirm('¿Estás seguro de que deseas eliminar esta venta?');">Eliminar</a>   
+            </td>
+        </tr>
+    {% empty %}
+        <tr><td colspan="7">No hay ventas registradas.</td></tr>
+    {% endfor %}
+</table>
+<br>
+<p><a href="{% url 'AlphaAutos:index' %}" class="btn btn-secondary">Volver al inicio</a></p>
+<br>
+{% endblock %}

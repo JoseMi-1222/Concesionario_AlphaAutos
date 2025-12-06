@@ -1,0 +1,18 @@
+{% extends 'concesionario/base.html' %}
+{% load static %}
+{% load django_bootstrap5 %}
+
+{% block title %}Editar Venta - AlphaAutos{% endblock %}
+
+{% block cabecera %}
+<h1 class="text-center mt-3">Editar Venta</h1>
+{% endblock %}
+
+{% block content %}
+<h3>Rellena el formulario para editar la venta.</h3>
+<form method="post" action="{% url 'AlphaAutos:editar_venta' venta.id %}" class="mt-4">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    <button type="submit" class="btn btn-primary">Guardar Venta</button>
+</form>
+{% endblock %}

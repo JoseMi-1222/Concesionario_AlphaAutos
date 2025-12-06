@@ -22,10 +22,10 @@ class RegistroForm(UserCreationForm):
         fields = ('username', 'email', 'password1', 'password2', 'rol')
 
 # -------------------------------------------------------------------
-# Crud_Coche
-# VISTA: Crear un nuevo coche (CRUD - Create)
-# -------------------------------------------------------------------
- 
+        def __init__(self, *args, **kwargs):
+            user = kwargs.pop('user', None)
+            self._user = user
+            super(VentaModelForm, self).__init__(*args, **kwargs)
 class CocheModelForm(ModelForm):
     class Meta:
         model = Coche
@@ -458,4 +458,63 @@ class AseguradoraSearchForm(forms.Form):
 
         return cleaned
 
+# -------------------------------------------------------------------
+# Crud_Ventas
+# VISTA: Crear una nueva venta (CRUD - Create)
+# -------------------------------------------------------------------
+class VentaModelForm(ModelForm):
+    class Meta:
+        model = Venta
+        fields = ['comprador', 'coche', 'fecha_venta', 'precio_final', 'metodo_pago']
+        widgets = {
+             'fecha_venta': forms.SelectDateWidget(
+                years=range(2000, datetime.now().year + 1),
+                attrs={'class': 'form-select d-inline w-auto'}
+            ),
+            'precio_final': forms.NumberInput(attrs={'class': 'form-control', 'step': '0.01'}),
+            'metodo_pago': forms.TextInput(attrs={'class': 'form-control'})
+        }
+        
+    def clean(self):
+        precio_final = self.cleaned_data.get('precio_final')
+        fecha_venta = self.cleaned_data.get('fecha_venta')
+        
+        # Validar que el precio final no sea negativo ni 0
+        if precio_final is not None and precio_final <= 0:
+            self.add_error('precio_final', 'El precio final no puede ser negativo o 0.')
+    
+        # Validar que la fecha de venta no sea futura
+        if fecha_venta is not None and fecha_venta > datetime.now().date():
+            self.add_error('fecha_venta', 'La fecha de venta no puede ser futura.')
+            
+        return self.cleaned_data
+    
+# -------------------------------------------------------------------
+# Crud_Ventas
+# VISTA: Buscar una venta (CRUD - Create)
+# -------------------------------------------------------------------
+class VentaSearchForm(forms.Form):
+    comprador = forms.CharField(required=False, label="Comprador")
+    coche = forms.CharField(required=False, label="Coche")
+    metodo_pago = forms.CharField(required=False, label="Método de Pago")
+
+    def clean(self):
+        cleaned = super().clean()
+        comprador = cleaned.get('comprador')
+        coche = cleaned.get('coche')
+        metodo_pago = cleaned.get('metodo_pago')
+
+        # Al menos un criterio: marcar campos cuando no hay ninguno
+        if not any([v for v in (comprador, coche, metodo_pago) if v]):
+            self.add_error('comprador', 'Introduce al menos un criterio de búsqueda.')
+            self.add_error('coche', 'Introduce al menos un criterio de búsqueda.')
+            self.add_error('metodo_pago', 'Introduce al menos un criterio de búsqueda.')
+        else:
+            # Validaciones adicionales
+            if comprador and len(comprador.strip()) < 2:
+                self.add_error('comprador', 'Introduce al menos 2 caracteres para el comprador.')
+            if coche and len(coche.strip()) < 2:
+                self.add_error('coche', 'Introduce al menos 2 caracteres para el coche.')
+
+        return cleaned
         

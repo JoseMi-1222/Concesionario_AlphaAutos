@@ -50,6 +50,7 @@
         {% if perms.AlphaAutos.view_aseguradora %}
             <li class="nav-item"><a class="nav-link" href="{% url 'AlphaAutos:lista_aseguradoras' %}">Aseguradoras</a></li>
         {% endif %}
+        <li class="nav-item"><a class="nav-link" href="{% url 'AlphaAutos:lista_ventas' %}">Ventas</a></li>
         {% if user.is_authenticated and user.rol == 2 or user.is_authenticated and user.rol == 1 %}
                     <li class="nav-item"><a class="nav-link" href="{% url 'AlphaAutos:resumen_ventas' %}">Resumen Ventas</a></li>
                 {% endif %}

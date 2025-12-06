@@ -13,18 +13,41 @@
         <a class="btn btn-sm btn-outline-danger text-nowrap" href="{% url 'AlphaAutos:eliminar_aseguradora' aseguradora.id %}" onclick="return confirm('¿Estás seguro de que deseas eliminar?');">Eliminar</a>
     </div>
 
-    <p><strong>ID:</strong> {{ aseguradora.id }}</p>
-    <p><strong>Nombre:</strong> {{ aseguradora.nombre }}</p>
-    <p><strong>País:</strong> {{ aseguradora.pais }}</p>
-    <p><strong>Teléfono:</strong> {{ aseguradora.telefono }}</p>
-    <p><strong>Web:</strong> <a href="{{ aseguradora.web }}" target="_blank">{{ aseguradora.web }}</a></p>
-    <p><strong>Seguros:</strong>
-        {% for seguro in aseguradora.seguros.all %}
-            {{ seguro.tipo_seguro }}{% if not forloop.last %}, {% endif %}
-        {% empty %}
-            Ninguno
-        {% endfor %}
-    </p>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <td>{{ aseguradora.id }}</td>
+        </tr>
+        <tr>
+            <th>Nombre</th>
+            <td>{{ aseguradora.nombre }}</td>
+        </tr>
+        <tr>
+            <th>País</th>
+            <td>{{ aseguradora.pais }}</td>
+        </tr>
+        <tr>
+            <th>Teléfono</th>
+            <td>{{ aseguradora.telefono }}</td>
+        </tr>
+        <tr>
+            <th>Web</th>
+            <td><a href="{{ aseguradora.web }}" target="_blank">{{ aseguradora.web }}</a></td>
+        </tr>
+        <tr>
+            <th>Seguros</th>
+            <td>
+                {% for seguro in aseguradora.seguros.all %}
+                    {{ seguro.tipo_seguro }}{% if not forloop.last %}, {% endif %}
+                {% empty %}
+                    Ninguno
+                {% endfor %}
+            </td>
+        </tr>
+    </table>
+    <br>
+    <a href="{% url 'AlphaAutos:lista_aseguradoras' %}" class="btn btn-secondary">Volver a la lista de aseguradoras</a>
+    <br>
 
 {% else %}
     <p>No se encontró la aseguradora.</p>

@@ -50,6 +50,12 @@ urlpatterns = [
     path('cliente/eliminar/<int:id_cliente>/', views.eliminar_cliente, name='eliminar_cliente'),
     path('aseguradora/eliminar/<int:id_aseguradora>/', views.eliminar_aseguradora, name='eliminar_aseguradora'),
     path('registrar/', views.registrar_usuario, name='registrar_usuario'),
+    path('ventas/', views.lista_ventas, name='lista_ventas'),
+    path('venta/<int:id_venta>/', views.venta_detail, name='venta_detail'),
+    path('venta/nueva/', views.crear_venta, name='crear_venta'),
+    path('venta/buscar/', views.buscar_ventas, name='buscar_ventas'),
+    path('venta/editar/<int:id_venta>/', views.editar_venta, name='editar_venta'),
+    path('venta/eliminar/<int:id_venta>/', views.eliminar_venta, name='eliminar_venta'),
 ]
 
 # Añadir configuración para servir archivos de medios en modo desarrollo

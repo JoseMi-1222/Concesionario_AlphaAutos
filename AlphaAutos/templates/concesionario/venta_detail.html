@@ -1,0 +1,49 @@
+{% extends 'concesionario/base.html' %}
+
+{% block title %}Detalle Venta{% endblock %}
+
+{% block cabecera %}
+<h1>Detalle de la Venta</h1>
+{% endblock %}
+
+{% block content %}
+<div class="mb-3">
+    <a class="btn btn-sm btn-outline-secondary" href="{% url 'AlphaAutos:editar_venta' venta.id %}">Editar</a>
+    <a class="btn btn-sm btn-outline-danger text-nowrap" href="{% url 'AlphaAutos:eliminar_venta' venta.id %}" onclick="return confirm('¿Estás seguro de que deseas eliminar?');">Eliminar</a>
+</div>
+<table border="1">
+    <tr>
+        <th>ID de la Venta</th>
+        <td>{{ venta.id }}</td>
+    </tr>
+    <tr>
+        <th>Comprador</th>
+        <td>
+            {% if venta.comprador and venta.comprador.usuario %}
+                {{ venta.comprador.usuario.username }}
+            {% else %}
+                <span>Sin comprador</span>
+            {% endif %}
+        </td>
+    </tr>
+    <tr>        
+        <th>Coche</th>
+        <td>{{ venta.coche.marca }} | {{ venta.coche.modelo }}</td>
+    </tr>
+    <tr>
+        <th>Fecha de la Venta</th>
+        <td>{{ venta.fecha_venta }}</td>
+    </tr>
+    <tr>
+        <th>Precio Final</th>
+        <td>{{ venta.precio_final }}</td>
+    </tr>
+    <tr>
+        <th>Método de Pago</th>
+        <td>{{ venta.metodo_pago }}</td>
+    </tr>
+</table>
+<br>
+<a href="{% url 'AlphaAutos:lista_ventas' %}" class="btn btn-secondary">Volver a la lista de ventas</a>
+<br>
+{% endblock %}  

@@ -15,11 +15,31 @@
         <a class="btn btn-sm btn-outline-danger text-nowrap" href="{% url 'AlphaAutos:eliminar_cliente' cliente.id %}" onclick="return confirm('¿Estás seguro de que deseas eliminar?');">Eliminar</a>
     </div>
 
-    <p><strong>ID:</strong> {{ cliente.usuario.id }}</p>
-    <p><strong>Nombre:</strong> {{ cliente.usuario.username }}</p>
-    <p><strong>Email:</strong> {{ cliente.usuario.email }}</p>
-    <p><strong>Teléfono:</strong> {{ cliente.telefono }}</p>
-    <p><strong>Último acceso:</strong> {{ cliente.usuario.last_login }}</p>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <td>{{ cliente.usuario.id }}</td>
+        </tr>
+        <tr>
+            <th>Nombre</th>
+            <td>{{ cliente.usuario.username }}</td>
+        </tr>
+        <tr>
+            <th>Email</th>
+            <td>{{ cliente.usuario.email }}</td>
+        </tr>
+        <tr>
+            <th>Teléfono</th>
+            <td>{{ cliente.telefono }}</td>
+        </tr>
+        <tr>
+            <th>Último acceso</th>
+            <td>{{ cliente.usuario.last_login }}</td>
+        </tr>
+    </table>
+    <br>
+    <a href="{% url 'AlphaAutos:lista_clientes' %}" class="btn btn-secondary">Volver a la lista de clientes</a>
+    <br>
 {% else %}
     <p>No se encontró el cliente.</p>
 {% endif %}

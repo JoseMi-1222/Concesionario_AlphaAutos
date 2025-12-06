@@ -13,11 +13,31 @@
         <a class="btn btn-sm btn-outline-danger text-nowrap" href="{% url 'AlphaAutos:eliminar_marca' marca.id %}" onclick="return confirm('¿Estás seguro de que deseas eliminar?');">Eliminar</a>
     </div>
 
-    <p><strong>ID:</strong> {{ marca.id }}</p>
-    <p><strong>Nombre:</strong> {{ marca.nombre }}</p>
-    <p><strong>País de origen:</strong> {{ marca.pais_origen }}</p>
-    <p><strong>Año de fundación:</strong> {{ marca.año_fundacion }}</p>
-    <p><strong>Descripción:</strong> {{ marca.descripcion }}</p>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <td>{{ marca.id }}</td>
+        </tr>
+        <tr>
+            <th>Nombre</th>
+            <td>{{ marca.nombre }}</td>
+        </tr>
+        <tr>
+            <th>País de origen</th>
+            <td>{{ marca.pais_origen }}</td>
+        </tr>
+        <tr>
+            <th>Año de fundación</th>
+            <td>{{ marca.anio_fundacion }}</td>
+        </tr>
+        <tr>
+            <th>Descripción</th>
+            <td>{{ marca.descripcion }}</td>
+        </tr>
+    </table>
+    <br>
+    <a href="{% url 'AlphaAutos:lista_marcas' %}" class="btn btn-secondary">Volver a la lista de marcas</a>
+    <br>
 
     <h3 class="mt-4">Coches de esta marca</h3>
     {% if coches %}
@@ -41,6 +61,7 @@
                     <td>
                         <a class="btn btn-sm btn-outline-primary me-2" href="{% url 'AlphaAutos:coche_detail' coche.id %}">Ver en detalle</a>
                         <a class="btn btn-sm btn-outline-secondary" href="{% url 'AlphaAutos:editar_coche' coche.id %}">Editar</a>
+                        <a class="btn btn-sm btn-outline-danger ms-2" href="{% url 'AlphaAutos:eliminar_coche' coche.id %}" onclick="return confirm('¿Estás seguro de que deseas eliminar?');">Eliminar</a>
                     </td>
                 </tr>
                 {% endfor %}

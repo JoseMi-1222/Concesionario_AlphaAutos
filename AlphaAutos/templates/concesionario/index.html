@@ -153,6 +153,23 @@
             </div>
         </div>
 
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-secondary text-white fw-bold">
+                Gestión de Ventas
+            </div>
+            <div class="list-group list-group-flush">
+                {% if perms.AlphaAutos.add_venta %}
+                <a href="{% url 'AlphaAutos:crear_venta' %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                    Registrar venta <span class="badge bg-success rounded-pill">+</span>
+                </a>
+                {% endif %}
+                {% if perms.AlphaAutos.view_venta %}
+                <a href="{% url 'AlphaAutos:buscar_ventas' %}" class="list-group-item list-group-item-action">Buscar ventas</a>
+                {% else %}
+                <a>No tienes permiso para ver el contenido de ventas.</a>
+                {% endif %}
+            </div>
+        </div>
     </div>
 </div>
 

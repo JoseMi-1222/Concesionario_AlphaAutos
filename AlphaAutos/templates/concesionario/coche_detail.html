@@ -21,13 +21,36 @@
         <a class="btn btn-sm btn-outline-secondary" href="{% url 'AlphaAutos:editar_coche' coche.id %}">Editar</a>
         <a class="btn btn-sm btn-outline-danger ms-2 text-nowrap" href="{% url 'AlphaAutos:eliminar_coche' coche.id %}" onclick="return confirm('¿Estás seguro de que deseas eliminar?');">Eliminar</a>
     </div>
-    <p><strong>ID:</strong> {{ coche.id }}</p>
-    <p><strong>Marca:</strong> {{ coche.marca.nombre|upper }}</p>
-    <p><strong>Modelo:</strong> {{ coche.modelo|title }}</p>
-    <p><strong>Transmisión:</strong> {{ coche.get_transmision_display }}</p>
-    <p><strong>Precio:</strong> {{ coche.precio|floatformat:2 }} €</p>
-    <p><strong>Concesionario:</strong> {{ coche.concesionario.nombre }}</p>
-    <p><strong>Fecha de fabricación:</strong> {{ coche.fecha_fabricacion|date:"d/m/Y" }}</p>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <td>{{ coche.id }}</td>
+        </tr>
+        <tr>
+            <th>Marca</th>
+            <td>{{ coche.marca.nombre|upper }}</td>
+        </tr>
+        <tr>
+            <th>Modelo</th>
+            <td>{{ coche.modelo|title }}</td>
+        </tr>
+        <tr>
+            <th>Transmisión</th>
+            <td>{{ coche.get_transmision_display }}</td>
+        </tr>
+        <tr>
+            <th>Precio</th>
+            <td>{{ coche.precio|floatformat:2 }} €</td>
+        </tr>
+        <tr>
+            <th>Concesionario</th>
+            <td>{{ coche.concesionario.nombre }}</td>
+        </tr>
+        <tr>
+            <th>Fecha de fabricación</th>
+            <td>{{ coche.fecha_fabricacion|date:"d/m/Y" }}</td>
+        </tr>
+    </table>
 
     {% if coche.precio > 30000 %}
         <p style="color:red;">Este coche es considerado caro.</p>
@@ -36,6 +59,9 @@
     {% else %}
         <p>Este coche tiene un precio estándar.</p>
     {% endif %}
+    <br>
+    <a href="{% url 'AlphaAutos:coche_list' %}" class="btn btn-secondary">Volver a la lista de coches</a>
+    <br>
 
 {% else %}
     <p>No se encontró el coche.</p>

@@ -13,12 +13,35 @@
         <a class="btn btn-sm btn-outline-danger text-nowrap" href="{% url 'AlphaAutos:eliminar_empleado' empleado.id %}" onclick="return confirm('¿Estás seguro de que deseas eliminar?');">Eliminar</a>
     </div>
 
-    <p><strong>ID:</strong> {{ empleado.id }}</p>
-    <p><strong>Nombre:</strong> {{ empleado.nombre }}</p>
-    <p><strong>Puesto:</strong> {{ empleado.puesto }}</p>
-    <p><strong>Salario:</strong> {{ empleado.salario }}</p>
-    <p><strong>Fecha de contratación:</strong> {{ empleado.fecha_contratacion }}</p>
-    <p><strong>Concesionario:</strong> {{ empleado.concesionario.nombre }}</p>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <td>{{ empleado.id }}</td>
+        </tr>
+        <tr>
+            <th>Nombre</th>
+            <td>{{ empleado.nombre }}</td>
+        </tr>
+        <tr>
+            <th>Puesto</th>
+            <td>{{ empleado.puesto }}</td>
+        </tr>
+        <tr>
+            <th>Salario</th>
+            <td>{{ empleado.salario }}</td>
+        </tr>
+        <tr>
+            <th>Fecha de contratación</th>
+            <td>{{ empleado.fecha_contratacion }}</td>
+        </tr>
+        <tr>
+            <th>Concesionario</th>
+            <td>{{ empleado.concesionario.nombre }}</td>
+        </tr>
+    </table>
+    <br>
+    <a href="{% url 'AlphaAutos:lista_empleados' %}" class="btn btn-secondary">Volver a la lista de empleados</a>
+    <br>
 {% else %}
     <p>No se encontró el empleado.</p>
 {% endif %}

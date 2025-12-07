@@ -465,28 +465,37 @@ class AseguradoraSearchForm(forms.Form):
 class VentaModelForm(ModelForm):
     class Meta:
         model = Venta
-        fields = ['comprador', 'coche', 'fecha_venta', 'precio_final', 'metodo_pago']
+        # Definimos los campos (recordamos que 'comprador' lo gestionamos dinámicamente abajo)
+        fields = ['comprador', 'coche', 'fecha_venta', 'metodo_pago'] 
         widgets = {
              'fecha_venta': forms.SelectDateWidget(
                 years=range(2000, datetime.now().year + 1),
                 attrs={'class': 'form-select d-inline w-auto'}
             ),
-            'precio_final': forms.NumberInput(attrs={'class': 'form-control', 'step': '0.01'}),
             'metodo_pago': forms.TextInput(attrs={'class': 'form-control'})
         }
-        
-    def clean(self):
-        precio_final = self.cleaned_data.get('precio_final')
-        fecha_venta = self.cleaned_data.get('fecha_venta')
-        
-        # Validar que el precio final no sea negativo ni 0
-        if precio_final is not None and precio_final <= 0:
-            self.add_error('precio_final', 'El precio final no puede ser negativo o 0.')
     
-        # Validar que la fecha de venta no sea futura
+    def __init__(self, *args, **kwargs):
+        # Extraemos el usuario que pasamos desde la vista
+        self.user = kwargs.pop('user', None)
+        super(VentaModelForm, self).__init__(*args, **kwargs)
+        
+        if self.user and self.user.is_superuser:
+            # Si es ADMIN: Puede ver TODOS los coches en el select (Vendido o no)
+            self.fields['coche'].queryset = Coche.objects.all()
+        else:
+            # Si es USUARIO NORMAL: Solo ve coches DISPONIBLES (venta__isnull=True)
+            self.fields['coche'].queryset = Coche.objects.filter(venta__isnull=True)
+
+        # LSi es COMPRADOR, borramos el campo 'comprador' para que no pueda elegir
+        if self.user and self.user.rol == Usuario.COMPRADOR:
+            if 'comprador' in self.fields:
+                del self.fields['comprador'] 
+    
+    def clean(self):
+        fecha_venta = self.cleaned_data.get('fecha_venta')
         if fecha_venta is not None and fecha_venta > datetime.now().date():
             self.add_error('fecha_venta', 'La fecha de venta no puede ser futura.')
-            
         return self.cleaned_data
     
 # -------------------------------------------------------------------

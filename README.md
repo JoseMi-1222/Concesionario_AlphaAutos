@@ -373,5 +373,90 @@ Notas:
 - Si el servidor de producción gestiona archivos estáticos/media de forma distinta, configura `MEDIA_ROOT` y el servidor web (nginx, etc.) para servir las imágenes.
 - Las imágenes incluidas en `media/coches/` son de ejemplo para desarrollo/testing; puedes eliminarlas o reemplazarlas según tus necesidades.
 
+---
 
+| URL                          | Vista                | Descripción                                                                         |
+| ---------------------------- | -------------------- | ----------------------------------------------------------------------------------- |
+| `/index`                     | Página de inicio     | Gestiona variables de sesión y contadores.                                          |
+| `/accounts/login/`           | `login`              | Inicio de sesión de usuarios.                                                       |
+| `/accounts/logout/`          | `logout`             | Cierre de sesión y limpieza de variables.                                           |
+| `/registrar/`                | `registrar_usuario`  | Registro de nuevos usuarios con asignación automática de roles (Gerente/Comprador). |
+| `/accounts/password_change/` | `PasswordChangeView` | Cambio de contraseña para usuarios logueados.                                       |
+| `/accounts/password_reset/`  | `PasswordResetView`  | Inicio del flujo de recuperación de contraseña (vía consola).                       |
+| `/coches/`                   | `coche_list`         | Lista todos los coches (protegido).                                                 |
+| `/coche/<id_coche>/`         | `coche_detail`       | Muestra detalle de un coche concreto.                                               |
+| `/ventas/lista_ventas`       | `lista_ventas`       | Lista de ventas. Filtrada por usuario si es Comprador.                              |
+| `/venta/nueva/`              | `crear_venta`        | Formulario dinámico para registrar ventas.                                          |
+| `/cliente/<id>/`             | `cliente_detail`     | Perfil del usuario/cliente logueado.                                                |
+| (Resto de URLs CRUD)         | CRUD Vistas          | Vistas de creación, edición y eliminación protegidas por permisos.                  |
+
+---
+
+## Ampliación: Gestión de Usuarios, Seguridad y Lógica Avanzada
+
+En esta fase del proyecto, he implementado un sistema robusto de autenticación, autorización y lógica de negocio adaptativa basada en el rol del usuario. A continuación se detallan las características desarrolladas:
+
+### 1. Tipos de Usuarios y Roles
+
+He definido una arquitectura de usuarios diferenciada que va más allá del administrador de Django. Se han creado dos perfiles principales mediante relaciones OneToOne con el modelo User:
+
+- **Gerente**: Usuario con capacidad de gestión sobre empleados y concesionarios.
+- **Comprador**: Cliente final que puede realizar compras y consultar su historial.
+
+El sistema de registro (`registrar_usuario`) asigna automáticamente al usuario al Grupo de permisos correspondiente (Gerentes o Compradores) basándose en su elección en el formulario de registro.
+
+### 2. Gestión de Sesiones y Variables
+
+He implementado lógica en la vista `index` para almacenar y persistir información clave en la sesión del usuario (`request.session`). Estas variables se muestran dinámicamente en la cabecera (`nav.html`) dentro del menú de usuario:
+
+- `fecha_inicio`: Marca de tiempo del inicio de la sesión.
+- `id_usuario`: Identificador interno del usuario logueado.
+- `rol_texto`: Representación legible del rol ("Gerente" o "Comprador").
+- `visitas_home`: Contador incremental que rastrea cuántas veces el usuario visita la página de inicio durante la sesión actual.
+
+Estas variables se eliminan automáticamente al ejecutar el logout.
+
+### 3. Control de Permisos y Seguridad (Backend y Frontend)
+
+He asegurado la aplicación en ambos niveles:
+
+- **En las Vistas (`views.py`)**:
+	- Uso del decorador `@login_required` en todas las vistas de listado y detalle para impedir acceso anónimo.
+	- Uso del decorador `@permission_required` en todas las operaciones críticas (Crear, Editar, Eliminar). Ejemplo: Solo un usuario con `AlphaAutos.delete_coche` puede acceder a la vista de eliminación.
+- **En los Templates (.html)**:
+	- Renderizado condicional mediante `{% if perms.AlphaAutos.add_coche %}`. Los botones de "Editar", "Eliminar" o "Crear" no se generan en el HTML si el usuario no tiene los permisos adecuados, mejorando la seguridad y la UX.
+
+### 4. Lógica de Formularios Dinámicos (Select dependiente del usuario)
+
+He implementado lógica avanzada en `VentaModelForm` para cumplir con requisitos de negocio específicos:
+
+- Sobrescritura de `__init__`: El formulario recibe el usuario logueado (`self.user`).
+- Filtrado de QuerySet (Select Dinámico):
+	- Si el usuario es Superusuario, el desplegable de coches muestra todos los vehículos (vendidos y libres).
+	- Si es un Usuario Normal, el desplegable varía y muestra únicamente los coches disponibles (`venta__isnull=True`), evitando errores de integridad.
+
+### 5. Automatización en Vistas (Usuario en Create)
+
+En la vista `crear_venta`, he eliminado la necesidad de que el usuario se seleccione a sí mismo:
+
+- Si el usuario logueado es un Comprador, el formulario oculta el campo de selección de cliente.
+- En el backend (`views.py`), asigno automáticamente la venta al comprador actual (`venta.comprador = request.user.comprador`) antes de guardar.
+- También se asigna automáticamente el precio del coche seleccionado al campo `precio_final` de la venta, garantizando la integridad de los datos.
+
+### 6. Búsquedas y Listados Filtrados
+
+He modificado las vistas de listado (`lista_ventas`) y búsqueda (`buscar_ventas`) para aplicar filtros de privacidad:
+
+- Si el usuario es Gerente/Admin, ve todas las ventas del sistema.
+- Si el usuario es Comprador, el QuerySet se filtra automáticamente (`filter(comprador__usuario=request.user)`), de modo que solo puede ver su propio historial de compras.
+
+### 7. Recuperación de Contraseña y Autoservicio
+
+He implementado el flujo completo de gestión de credenciales:
+
+- **Cambio de contraseña**: Opción disponible en el menú de usuario para usuarios logueados (`PasswordChangeView`).
+- **Recuperación de contraseña (Olvidé mi contraseña)**: Configuración completa de las 4 vistas de Django (`PasswordResetView`, Done, Confirm, Complete).
+- **Entorno Local**: Configuración de `EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'` en `settings.py` para simular el envío de correos mostrando el enlace de recuperación directamente en la consola del servidor.
+
+---
 

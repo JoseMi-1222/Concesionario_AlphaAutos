@@ -93,7 +93,7 @@ class Coche(models.Model):
     imagen = models.ImageField(upload_to='coches/', null=True, blank=True)
 
     def __str__(self):
-        return f"{self.marca.nombre} {self.modelo}"
+        return f"{self.marca.nombre} {self.modelo} - {self.precio} €"
 
 
 # Datos_Cliente (1:1 con Comprador)
@@ -108,14 +108,15 @@ class Datos_Cliente(models.Model):
 
 # Venta (1:1 con Comprador, N:1 con Coche)
 class Venta(models.Model):
-    comprador = models.OneToOneField(Comprador, on_delete=models.CASCADE, null=True)
+    comprador = models.ForeignKey(Comprador, on_delete=models.CASCADE, null=True)
     coche = models.ForeignKey(Coche, on_delete=models.CASCADE)
     fecha_venta = models.DateField(default=timezone.now)
     precio_final = models.DecimalField(max_digits=10, decimal_places=2)
     metodo_pago = models.CharField(max_length=50)
 
     def __str__(self):
-        return f"Venta de {self.coche} a {self.comprador.usuario.username}"
+        nombre_comprador = self.comprador.usuario.username if self.comprador else "Anónimo"
+        return f"Venta de {self.coche} a {nombre_comprador}"
 
 
 # Seguro (1:1 con Coche, N:M con Aseguradora)

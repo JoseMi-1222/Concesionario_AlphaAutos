@@ -113,11 +113,6 @@
                 Gestión de Clientes
             </div>
             <div class="list-group list-group-flush">
-                {% if perms.AlphaAutos.add_cliente %}
-                <a href="{% url 'AlphaAutos:crear_cliente' %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                    Registrar cliente <span class="badge bg-success rounded-pill">+</span>
-                </a>
-                {% endif %}
                 {% if perms.AlphaAutos.view_cliente %}
                 <a href="{% url 'AlphaAutos:buscar_clientes' %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                     Buscar clientes <span class="badge bg-primary rounded-pill"><i class="bi bi-search"></i></span>

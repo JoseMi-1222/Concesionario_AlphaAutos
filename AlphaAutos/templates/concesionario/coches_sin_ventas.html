@@ -14,11 +14,12 @@
         <th>Modelo</th>
         <th>Precio (€)</th>
         <th>Concesionario</th>
+        <th>Acciones</th>
     </tr>
     {% for coche in coches %}
         {% include 'concesionario/for_row_coche.html' with coche=coche %}
     {% empty %}
-        <tr><td colspan="5">No hay coches sin ventas.</td></tr>
+        <tr><td colspan="6">No hay coches sin ventas.</td></tr>
     {% endfor %}
 </table>
 {% endblock %}

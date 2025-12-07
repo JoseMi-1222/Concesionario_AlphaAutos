@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from django.contrib.auth import views as auth_views
 
 app_name = "AlphaAutos"
 
@@ -56,6 +57,8 @@ urlpatterns = [
     path('venta/buscar/', views.buscar_ventas, name='buscar_ventas'),
     path('venta/editar/<int:id_venta>/', views.editar_venta, name='editar_venta'),
     path('venta/eliminar/<int:id_venta>/', views.eliminar_venta, name='eliminar_venta'),
+    path('password_change/', auth_views.PasswordChangeView.as_view(), name='password_change'),
+    path('password_change/done/', auth_views.PasswordChangeDoneView.as_view(), name='password_change_done'),
 ]
 
 # Añadir configuración para servir archivos de medios en modo desarrollo

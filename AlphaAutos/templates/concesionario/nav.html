@@ -101,6 +101,16 @@
                             </button>
                         </form>
                     </li>
+
+                    <li><hr class="dropdown-divider"></li>
+
+                        <li><h6 class="dropdown-header">Datos de Sesión</h6></li>
+                        <li><span class="dropdown-item-text small text-muted">ID: {{ request.session.id_usuario }}</span></li>
+                        <li><span class="dropdown-item-text small text-muted">Rol: {{ request.session.rol_texto }}</span></li>
+                        <li><span class="dropdown-item-text small text-muted">Inicio: {{ request.session.fecha_inicio }}</span></li>
+                        <li><span class="dropdown-item-text small text-muted">Visitas Home: {{ request.session.visitas_home }}</span></li>
+
+                    <li><hr class="dropdown-divider"></li>
                 </ul>
             </li>
         {% endif %}

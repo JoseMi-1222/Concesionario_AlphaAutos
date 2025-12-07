@@ -32,6 +32,16 @@ def index(request):
     if(not "fecha_inicio" in request.session):
         request.session["fecha_inicio"] = datetime.now().strftime("%Y-%m-%d %H:%M")
         
+    if request.user.is_authenticated:
+        
+        if "id_usuario" not in request.session:
+            request.session["id_usuario"] = request.user.id
+            
+        if "rol_texto" not in request.session:
+            request.session["rol_texto"] = request.user.get_rol_display()
+            
+        request.session["visitas_home"] = request.session.get("visitas_home", 0) + 1
+        
     return render(request, 'concesionario/index.html')
 
 # --------------------------------------------------

@@ -139,3 +139,6 @@ AUTH_USER_MODEL = 'AlphaAutos.Usuario'
 # Authentication redirects
 LOGIN_REDIRECT_URL = 'AlphaAutos:index'
 LOGOUT_REDIRECT_URL = 'AlphaAutos:index'
+
+# Esto imprime los correos en la terminal en lugar de enviarlos
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

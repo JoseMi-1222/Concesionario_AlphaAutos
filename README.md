@@ -394,69 +394,90 @@ Notas:
 
 ## Ampliación: Gestión de Usuarios, Seguridad y Lógica Avanzada
 
-En esta fase del proyecto, he implementado un sistema robusto de autenticación, autorización y lógica de negocio adaptativa basada en el rol del usuario. A continuación se detallan las características desarrolladas:
+### 1. Tipos de usuarios diferenciados
 
-### 1. Tipos de Usuarios y Roles
+En la aplicación se incluyen dos tipos de usuarios claramente diferenciados (además del administrador):
 
-He definido una arquitectura de usuarios diferenciada que va más allá del administrador de Django. Se han creado dos perfiles principales mediante relaciones OneToOne con el modelo User:
+- **Gerente**: Encargado de la gestión del concesionario.
+- **Comprador**: Cliente final que realiza compras.
 
-- **Gerente**: Usuario con capacidad de gestión sobre empleados y concesionarios.
-- **Comprador**: Cliente final que puede realizar compras y consultar su historial.
+Ambos roles tienen grupos de permisos distintos (Gerentes y Compradores) que se asignan automáticamente al registrarse. Se implementa mediante modelos adicionales vinculados al usuario estándar de Django con una relación OneToOne.
 
-El sistema de registro (`registrar_usuario`) asigna automáticamente al usuario al Grupo de permisos correspondiente (Gerentes o Compradores) basándose en su elección en el formulario de registro.
+### 2. Control de permisos en Vistas
 
-### 2. Gestión de Sesiones y Variables
+Todas las vistas están protegidas usando decoradores de Django:
 
-He implementado lógica en la vista `index` para almacenar y persistir información clave en la sesión del usuario (`request.session`). Estas variables se muestran dinámicamente en la cabecera (`nav.html`) dentro del menú de usuario:
+- `@login_required`: Aplicado a todas las vistas de listado y detalle para evitar acceso anónimo.
+- `@permission_required('AlphaAutos.add_coche', ...)`: Aplicado a cada vista de creación, edición y eliminación para asegurar que solo los usuarios con el permiso exacto puedan ejecutar la acción.
 
-- `fecha_inicio`: Marca de tiempo del inicio de la sesión.
-- `id_usuario`: Identificador interno del usuario logueado.
-- `rol_texto`: Representación legible del rol ("Gerente" o "Comprador").
-- `visitas_home`: Contador incremental que rastrea cuántas veces el usuario visita la página de inicio durante la sesión actual.
+### 3. Control de permisos en Templates
 
-Estas variables se eliminan automáticamente al ejecutar el logout.
+En cada template de vista y formulario se controlan los permisos y si el usuario está logueado:
 
-### 3. Control de Permisos y Seguridad (Backend y Frontend)
+- En la barra de navegación (`nav.html`): Los enlaces a las secciones de administración solo aparecen si el usuario tiene permisos.
+- En las tablas de resultados (ej. `coche_busqueda.html`): Los botones de "Editar" y "Eliminar" están envueltos en bloques `{% if perms.AlphaAutos.change_coche %}...{% endif %}`, ocultándolos a usuarios no autorizados.
 
-He asegurado la aplicación en ambos niveles:
+### 4. Variables de Sesión en cabecera
 
-- **En las Vistas (`views.py`)**:
-	- Uso del decorador `@login_required` en todas las vistas de listado y detalle para impedir acceso anónimo.
-	- Uso del decorador `@permission_required` en todas las operaciones críticas (Crear, Editar, Eliminar). Ejemplo: Solo un usuario con `AlphaAutos.delete_coche` puede acceder a la vista de eliminación.
-- **En los Templates (.html)**:
-	- Renderizado condicional mediante `{% if perms.AlphaAutos.add_coche %}`. Los botones de "Editar", "Eliminar" o "Crear" no se generan en el HTML si el usuario no tiene los permisos adecuados, mejorando la seguridad y la UX.
+Se guardan al menos 4 variables en la sesión y aparecen siempre en la cabecera de la página. Se eliminan al desloguear el usuario:
 
-### 4. Lógica de Formularios Dinámicos (Select dependiente del usuario)
+- `id_usuario`: ID interno del usuario.
+- `rol_texto`: Nombre del rol ("Gerente" o "Comprador").
+- `fecha_inicio`: Momento del login.
+- `visitas_home`: Contador de veces que el usuario visita la página de inicio en la sesión actual.
 
-He implementado lógica avanzada en `VentaModelForm` para cumplir con requisitos de negocio específicos:
+### 5. Registro de usuarios con validaciones
 
-- Sobrescritura de `__init__`: El formulario recibe el usuario logueado (`self.user`).
-- Filtrado de QuerySet (Select Dinámico):
-	- Si el usuario es Superusuario, el desplegable de coches muestra todos los vehículos (vendidos y libres).
-	- Si es un Usuario Normal, el desplegable varía y muestra únicamente los coches disponibles (`venta__isnull=True`), evitando errores de integridad.
+El registro de usuarios (excepto el administrador) incluye validaciones y asigna valores según el tipo de usuario:
 
-### 5. Automatización en Vistas (Usuario en Create)
+- Vista `registrar_usuario` y formulario `RegistroForm`.
+- El usuario selecciona su rol en el formulario.
+- Según la selección, el sistema crea automáticamente el objeto relacionado (Gerente o Comprador) y asigna el usuario al grupo de Django correspondiente (`Groups`).
 
-En la vista `crear_venta`, he eliminado la necesidad de que el usuario se seleccione a sí mismo:
+### 6. Login y Logout
 
-- Si el usuario logueado es un Comprador, el formulario oculta el campo de selección de cliente.
-- En el backend (`views.py`), asigno automáticamente la venta al comprador actual (`venta.comprador = request.user.comprador`) antes de guardar.
-- También se asigna automáticamente el precio del coche seleccionado al campo `precio_final` de la venta, garantizando la integridad de los datos.
+Se utiliza el sistema de autenticación de Django (`django.contrib.auth`) con URLs estándar, un template personalizado para el login (`login.html`) y la funcionalidad de logout integrada en la barra de navegación.
 
-### 6. Búsquedas y Listados Filtrados
+### 7. Select Dinámico (contenido variable según usuario)
 
-He modificado las vistas de listado (`lista_ventas`) y búsqueda (`buscar_ventas`) para aplicar filtros de privacidad:
+En el formulario de ventas (`VentaModelForm` en `form.py`), el método `__init__` se sobrescribe para filtrar el campo coche (`ForeignKey`):
 
-- Si el usuario es Gerente/Admin, ve todas las ventas del sistema.
-- Si el usuario es Comprador, el QuerySet se filtra automáticamente (`filter(comprador__usuario=request.user)`), de modo que solo puede ver su propio historial de compras.
+- Si el usuario es Administrador/Superusuario: El select muestra todos los coches (vendidos y libres).
+- Si el usuario es Normal: El select muestra únicamente los coches disponibles (`venta__isnull=True`), evitando errores de integridad.
 
-### 7. Recuperación de Contraseña y Autoservicio
+### 8. Usuario en Create (asignación automática)
 
-He implementado el flujo completo de gestión de credenciales:
+En los formularios de creación se incluye siempre el usuario que crea el registro por la sesión:
 
-- **Cambio de contraseña**: Opción disponible en el menú de usuario para usuarios logueados (`PasswordChangeView`).
-- **Recuperación de contraseña (Olvidé mi contraseña)**: Configuración completa de las 4 vistas de Django (`PasswordResetView`, Done, Confirm, Complete).
-- **Entorno Local**: Configuración de `EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'` en `settings.py` para simular el envío de correos mostrando el enlace de recuperación directamente en la consola del servidor.
+- En la vista `crear_venta`, si el usuario logueado es un Comprador, se oculta el campo "Comprador" en el formulario.
+- En el backend, se asigna automáticamente:
 
----
+```python
+venta.comprador = request.user.comprador
+```
 
+antes de guardar el registro.
+
+### 9. Búsqueda filtrada por usuario
+
+En los formularios de búsqueda, el contenido se filtra por el usuario logueado:
+
+- En las vistas `lista_ventas` y `buscar_ventas`, si el usuario tiene el rol de Comprador, el QuerySet se filtra automáticamente:
+
+```python
+filter(comprador__usuario=request.user)
+```
+
+Esto garantiza que cada cliente solo pueda ver su propio historial de compras y no el de otros clientes.
+
+### 10. Reinicio de contraseña
+
+Se implementa la funcionalidad de reinicio de contraseña usando las vistas genéricas de Django (`PasswordResetView`, etc.).
+
+- En entorno local, se configura en `settings.py`:
+
+```python
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+```
+
+Esto permite obtener el enlace de recuperación directamente en la consola del servidor al solicitar el reseteo.

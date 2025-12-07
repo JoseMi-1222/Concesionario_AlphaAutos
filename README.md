@@ -481,3 +481,13 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 ```
 
 Esto permite obtener el enlace de recuperación directamente en la consola del servidor al solicitar el reseteo.
+
+### Comando para Fixtures
+
+Comando para fixture completo incluyendo permisos
+
+- python manage.py dumpdata auth.group auth.permission contenttypes AlphaAutos --indent 4 > datos_iniciales.json
+
+Comando para los datos de bbdd
+
+- python manage.py dumpdata AlphaAutos --indent 4 > datos_clases.json

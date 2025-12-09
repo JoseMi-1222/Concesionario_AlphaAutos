@@ -477,7 +477,7 @@ class VentaModelForm(ModelForm):
     
     def __init__(self, *args, **kwargs):
         # Extraemos el usuario que pasamos desde la vista
-        self.user = kwargs.pop('user', None)
+        self.user = kwargs.pop('request')
         super(VentaModelForm, self).__init__(*args, **kwargs)
         
         if self.user and self.user.is_superuser:
@@ -524,7 +524,7 @@ class VentaSearchForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         # 1. Extraemos el usuario que pasaremos desde la vista
-        self.user = kwargs.pop('user', None)
+        self.user = kwargs.pop('request', None)
         super(VentaSearchForm, self).__init__(*args, **kwargs)
         
         # 2. Si es COMPRADOR, eliminamos el campo 'comprador' del buscador

@@ -551,7 +551,7 @@ def venta_detail(request, id_venta):
 def crear_venta(request):
     if request.method == 'POST':
         # IMPORTANTE: Pasamos user=request.user al formulario
-        form = VentaModelForm(request.POST, user=request.user)
+        form = VentaModelForm(request.POST, request=request.user)
         
         if form.is_valid():
             venta = form.save(commit=False)
@@ -568,7 +568,7 @@ def crear_venta(request):
             return redirect('AlphaAutos:lista_ventas')
     else:
         #También pasamos el usuario aquí para que se oculte el campo al entrar
-        form = VentaModelForm(user=request.user)
+        form = VentaModelForm(request=request.user)
     
     return render(request, 'Crud_Venta/crear_venta.html', {'form': form})
 
@@ -597,7 +597,7 @@ def eliminar_venta(request, id_venta):
 @login_required
 def buscar_ventas(request):
     # 1. Pasamos 'user=request.user' al formulario
-    form = VentaSearchForm(request.GET or None, user=request.user)
+    form = VentaSearchForm(request.GET or None, request=request.user)
     qs = Venta.objects.select_related('coche', 'comprador').all()
 
     # 2. FILTRO DE SEGURIDAD: Si es Comprador, SOLO ve sus ventas (Backend)

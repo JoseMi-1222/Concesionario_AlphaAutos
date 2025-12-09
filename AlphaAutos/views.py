@@ -594,21 +594,36 @@ def eliminar_venta(request, id_venta):
     return redirect('AlphaAutos:lista_ventas')
 
 @login_required
+@login_required
 def buscar_ventas(request):
-    form = VentaSearchForm(request.GET or None)
-    if len(request.GET) > 0 and form.is_valid():
-        qs = Venta.objects.select_related('coche', 'comprador').all()
-        # REQUISITO: Filtrado también en búsqueda
-        if request.user.rol == Usuario.COMPRADOR:
-            qs = qs.filter(comprador__usuario=request.user)
+    # 1. Pasamos 'user=request.user' al formulario
+    form = VentaSearchForm(request.GET or None, user=request.user)
+    qs = Venta.objects.select_related('coche', 'comprador').all()
 
+    # 2. FILTRO DE SEGURIDAD: Si es Comprador, SOLO ve sus ventas (Backend)
+    if request.user.rol == Usuario.COMPRADOR:
+        qs = qs.filter(comprador__usuario=request.user)
+
+    # 3. Lógica de búsqueda del formulario
+    if len(request.GET) > 0 and form.is_valid():
         coche = form.cleaned_data.get("coche")
-        comprador = form.cleaned_data.get("comprador")
         pago = form.cleaned_data.get("metodo_pago")
-        if coche: qs = qs.filter(coche__modelo__icontains=coche)
-        if comprador: qs = qs.filter(comprador__usuario__username__icontains=comprador)
-        if pago: qs = qs.filter(metodo_pago__icontains=pago)
+        
+        # Solo intentamos filtrar por comprador si el campo existe (es decir, si NO es comprador)
+        comprador = form.cleaned_data.get("comprador")
+        
+        if coche: 
+            qs = qs.filter(coche__modelo__icontains=coche)
+        
+        if pago: 
+            qs = qs.filter(metodo_pago__icontains=pago)
+            
+        # Solo aplicamos este filtro si el usuario es Gerente/Admin (porque el Comprador no ve este campo)
+        if comprador and request.user.rol != Usuario.COMPRADOR:
+            qs = qs.filter(comprador__usuario__username__icontains=comprador)
+
         return render(request, "Crud_Venta/venta_busqueda.html", {"form": form, "ventas": qs.all()})
+        
     return render(request, "Crud_Venta/buscar_ventas.html", {"form": form})
 
 # -------------------------------------------------------------------

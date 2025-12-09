@@ -479,3 +479,62 @@ Comando para fixture completo incluyendo permisos
 Comando para los datos de bbdd
 
 - python manage.py dumpdata AlphaAutos --indent 4 > datos_clases.json
+
+Gestión Avanzada de Contraseñas y Seguridad
+Para cumplir con los requisitos de seguridad y usabilidad, he implementado un sistema completo de autogestión de credenciales que permite a los usuarios cambiar su contraseña y recuperarla en caso de olvido.
+
+A diferencia de la implementación por defecto de Django, he desarrollado Vistas Personalizadas (Custom Views) para controlar el flujo de redirección, los mensajes de feedback (django.contrib.messages) y la gestión de la sesión.
+
+1. Cambio de Contraseña (Password Change)
+Esta funcionalidad permite a un usuario autenticado modificar su clave actual desde su menú de perfil.
+
+Implementación Técnica:
+
+He creado la vista CustomPasswordChangeView en views.py, que hereda de la clase genérica PasswordChangeView.
+
+Lógica de Seguridad: Al cambiar la contraseña, el sistema cierra la sesión del usuario automáticamente (logout(self.request)). Esto fuerza al usuario a volver a loguearse con las nuevas credenciales, una buena práctica de seguridad.
+
+Feedback: Se envía un mensaje Flash de éxito ("Tu contraseña ha sido cambiada...") y se redirige directamente al formulario de Login, evitando pantallas intermedias innecesarias.
+
+Template: concesionario/registration/password_change_form.html.
+
+2. Recuperación de Contraseña (Password Reset)
+He implementado el flujo estándar de recuperación de contraseña de Django pero adaptado para funcionar en un entorno de desarrollo local y con un diseño personalizado.
+
+Configuración del Backend de Email (Investigación):
+
+Dado que en local no disponemos de un servidor SMTP real, he configurado Django para simular el envío de correos imprimiéndolos en la consola del servidor.
+
+Archivo settings.py:
+
+Python
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+Esto genera el enlace de recuperación (con el token uidb64) en la terminal, permitiendo probar el flujo completo sin enviar emails reales.
+
+Flujo de Vistas y Templates:
+
+Solicitud (PasswordResetView): El usuario introduce su email. Usa el template password_reset_form.html y una plantilla de correo personalizada password_reset_email.html que incluye el enlace generado dinámicamente con el namespace AlphaAutos:.
+
+Confirmación de Envío (PasswordResetDoneView): Informa al usuario de que revise su correo (o consola).
+
+Restablecimiento (CustomPasswordResetConfirmView):
+
+Vista personalizada en views.py que hereda de PasswordResetConfirmView.
+
+Acción: Valida el token, fuerza el guardado de la nueva contraseña (form.save()) y redirige directamente al Login con un mensaje de éxito, omitiendo la pantalla genérica de "Completado".
+
+3. Arquitectura de Plantillas (Namespacing)
+Para evitar conflictos con las plantillas de administración de Django (que también usa una carpeta registration), he estructurado los archivos HTML dentro de un subdirectorio propio de la aplicación:
+
+Plaintext
+
+templates/
+└── concesionario/
+    └── registration/
+        ├── password_change_form.html  (Formulario cambio)
+        ├── password_reset_form.html   (Solicitud email)
+        ├── password_reset_email.html  (Cuerpo del correo)
+        ├── password_reset_done.html   (Aviso enviado)
+        └── password_reset_confirm.html (Nueva contraseña)
+Todas las plantillas heredan de base.html, manteniendo la coherencia visual (Logo, Navbar, Footer) con el resto de la aplicación AlphaAutos.

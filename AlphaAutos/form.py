@@ -503,27 +503,32 @@ class VentaModelForm(ModelForm):
 # VISTA: Buscar una venta (CRUD - Create)
 # -------------------------------------------------------------------
 class VentaSearchForm(forms.Form):
-    comprador = forms.CharField(required=False, label="Comprador")
-    coche = forms.CharField(required=False, label="Coche")
-    metodo_pago = forms.CharField(required=False, label="Método de Pago")
+    coche = forms.CharField(
+        required=False, 
+        label="Modelo de coche", 
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ej: Corolla'})
+    )
+    
+    # Este campo lo ocultaremos dinámicamente
+    comprador = forms.CharField(
+        required=False, 
+        label="Nombre del comprador", 
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ej: Juan'})
+    )
+    
+    metodo_pago = forms.CharField(
+        required=False, 
+        label="Método de pago", 
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ej: Efectivo'})
+    )
 
-    def clean(self):
-        cleaned = super().clean()
-        comprador = cleaned.get('comprador')
-        coche = cleaned.get('coche')
-        metodo_pago = cleaned.get('metodo_pago')
-
-        # Al menos un criterio: marcar campos cuando no hay ninguno
-        if not any([v for v in (comprador, coche, metodo_pago) if v]):
-            self.add_error('comprador', 'Introduce al menos un criterio de búsqueda.')
-            self.add_error('coche', 'Introduce al menos un criterio de búsqueda.')
-            self.add_error('metodo_pago', 'Introduce al menos un criterio de búsqueda.')
-        else:
-            # Validaciones adicionales
-            if comprador and len(comprador.strip()) < 2:
-                self.add_error('comprador', 'Introduce al menos 2 caracteres para el comprador.')
-            if coche and len(coche.strip()) < 2:
-                self.add_error('coche', 'Introduce al menos 2 caracteres para el coche.')
-
-        return cleaned
+    def __init__(self, *args, **kwargs):
+        # 1. Extraemos el usuario que pasaremos desde la vista
+        self.user = kwargs.pop('user', None)
+        super(VentaSearchForm, self).__init__(*args, **kwargs)
+        
+        # 2. Si es COMPRADOR, eliminamos el campo 'comprador' del buscador
+        if self.user and hasattr(self.user, 'rol') and self.user.rol == Usuario.COMPRADOR:
+            if 'comprador' in self.fields:
+                del self.fields['comprador']
         

@@ -540,7 +540,7 @@ def lista_ventas(request):
     if request.user.is_authenticated and request.user.rol == Usuario.COMPRADOR:
         qs = qs.filter(comprador__usuario=request.user)
         
-    return render(request, 'concesionario/lista_ventas.html', {'ventas': qs})
+    return render(request, 'concesionario/lista_ventas.html', {'ventas': qs.all()})
 
 @login_required
 def venta_detail(request, id_venta):

@@ -235,7 +235,7 @@ def buscar_coches(request):
         if marca: qs = qs.filter(marca__nombre__icontains=marca)
         if modelo: qs = qs.filter(modelo__icontains=modelo)
         if precio_max: qs = qs.filter(precio__lte=precio_max)
-        return render(request, "Crud_Coche/coche_busqueda.html", {"form": form, "coches": qs})
+        return render(request, "Crud_Coche/coche_busqueda.html", {"form": form, "coches": qs.all() })
     return render(request, "Crud_Coche/buscar_coches.html", {"form": form})
 
 # ===================================================================
@@ -285,7 +285,7 @@ def buscar_concesionarios(request):
         if nombre: qs = qs.filter(nombre__icontains=nombre)
         if ciudad: qs = qs.filter(ciudad__icontains=ciudad)
         if telefono: qs = qs.filter(telefono__icontains=telefono)
-        return render(request, "Crud_Concesionario/concesionario_busqueda.html", {"form": form, "concesionarios": qs})
+        return render(request, "Crud_Concesionario/concesionario_busqueda.html", {"form": form, "concesionarios": qs.all()})
     return render(request, "Crud_Concesionario/buscar_concesionarios.html", {"form": form})
 
 # ===================================================================
@@ -341,7 +341,7 @@ def buscar_marcas(request):
         if nombre: qs = qs.filter(nombre__icontains=nombre)
         if pais: qs = qs.filter(pais_origen__icontains=pais)
         if anio: qs = qs.filter(anio_fundacion=anio)
-        return render(request, "Crud_Marca/marca_busqueda.html", {"form": form, "marcas": qs})
+        return render(request, "Crud_Marca/marca_busqueda.html", {"form": form, "marcas": qs.all()})
     return render(request, "Crud_Marca/buscar_marcas.html", {"form": form})
 
 # ===================================================================
@@ -396,7 +396,7 @@ def buscar_empleados(request):
         if nombre: qs = qs.filter(nombre__icontains=nombre)
         if puesto: qs = qs.filter(puesto__icontains=puesto)
         if concesionario: qs = qs.filter(concesionario=concesionario)
-        return render(request, "Crud_Empleados/empleado_busqueda.html", {"form": form, "empleados": qs})
+        return render(request, "Crud_Empleados/empleado_busqueda.html", {"form": form, "empleados": qs.all()})
     return render(request, "Crud_Empleados/buscar_empleados.html", {"form": form})
 
 # ===================================================================
@@ -449,7 +449,7 @@ def buscar_clientes(request):
         qs = Comprador.objects.select_related('usuario').all()
         usuario = form.cleaned_data.get("usuario")
         if usuario: qs = qs.filter(usuario__username__icontains=usuario)
-        return render(request, "Crud_Clientes/cliente_busqueda.html", {"form": form, "clientes": qs})
+        return render(request, "Crud_Clientes/cliente_busqueda.html", {"form": form, "clientes": qs.all()})
     return render(request, "Crud_Clientes/buscar_clientes.html", {"form": form})
 
 @permission_required('AlphaAutos.change_comprador')
@@ -520,7 +520,7 @@ def buscar_aseguradoras(request):
         if nombre: qs = qs.filter(nombre__icontains=nombre)
         if pais: qs = qs.filter(pais__icontains=pais)
         if telefono: qs = qs.filter(telefono__icontains=telefono)
-        return render(request, "Crud_Aseguradora/aseguradora_busqueda.html", {"form": form, "aseguradoras": qs})
+        return render(request, "Crud_Aseguradora/aseguradora_busqueda.html", {"form": form, "aseguradoras": qs.all()})
     return render(request, "Crud_Aseguradora/buscar_aseguradoras.html", {"form": form})
 
 # ===================================================================
@@ -604,7 +604,7 @@ def buscar_ventas(request):
         if coche: qs = qs.filter(coche__modelo__icontains=coche)
         if comprador: qs = qs.filter(comprador__usuario__username__icontains=comprador)
         if pago: qs = qs.filter(metodo_pago__icontains=pago)
-        return render(request, "Crud_Venta/venta_busqueda.html", {"form": form, "ventas": qs})
+        return render(request, "Crud_Venta/venta_busqueda.html", {"form": form, "ventas": qs.all()})
     return render(request, "Crud_Venta/buscar_ventas.html", {"form": form})
 
 # -------------------------------------------------------------------

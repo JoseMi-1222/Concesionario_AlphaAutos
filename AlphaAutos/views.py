@@ -9,6 +9,10 @@ from datetime import datetime
 from .models import *
 from .form import *
 import AlphaAutos.form as form_module 
+from django.contrib.auth.views import PasswordChangeView, PasswordResetConfirmView
+from django.urls import reverse_lazy
+from django.contrib import messages
+from django.contrib.auth import logout
 
 # -------------------------------
 # VISTA: Errores
@@ -633,3 +637,34 @@ def registrar_usuario(request):
     else:
         formulario = RegistroForm()
     return render(request, 'registration/signup.html', {'formulario': formulario})
+
+# ---------------------------------------------------
+# VISTAS PERSONALIZADAS PARA CONTRASEÑAS
+# ---------------------------------------------------
+
+class CustomPasswordChangeView(PasswordChangeView):
+    template_name = 'concesionario/registration/password_change_form.html'
+    success_url = reverse_lazy('login')
+
+    def form_valid(self, form):
+        # 1. Guardamos la nueva contraseña
+        form.save()
+        
+        # 2. CERRAMOS LA SESIÓN (Logout) explícitamente
+        logout(self.request)
+        
+        # 3. Mandamos el mensaje y redirigimos
+        messages.success(self.request, "Tu contraseña ha sido cambiada correctamente. Por favor, inicia sesión de nuevo.")
+        return redirect(self.success_url)
+
+class CustomPasswordResetConfirmView(PasswordResetConfirmView):
+    template_name = 'concesionario/registration/password_reset_confirm.html'
+    success_url = reverse_lazy('login')
+
+    def form_valid(self, form):
+        # 1. Guarda la nueva contraseña explícitamente
+        form.save()
+        
+        # 2. Mensaje y redirección al login
+        messages.success(self.request, "Contraseña restablecida correctamente. Ya puedes iniciar sesión.")
+        return redirect(self.success_url)

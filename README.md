@@ -452,10 +452,6 @@ En los formularios de creación se incluye siempre el usuario que crea el regist
 - En la vista `crear_venta`, si el usuario logueado es un Comprador, se oculta el campo "Comprador" en el formulario.
 - En el backend, se asigna automáticamente:
 
-```python
-venta.comprador = request.user.comprador
-```
-
 antes de guardar el registro.
 
 ### 9. Búsqueda filtrada por usuario
@@ -464,10 +460,6 @@ En los formularios de búsqueda, el contenido se filtra por el usuario logueado:
 
 - En las vistas `lista_ventas` y `buscar_ventas`, si el usuario tiene el rol de Comprador, el QuerySet se filtra automáticamente:
 
-```python
-filter(comprador__usuario=request.user)
-```
-
 Esto garantiza que cada cliente solo pueda ver su propio historial de compras y no el de otros clientes.
 
 ### 10. Reinicio de contraseña
@@ -475,10 +467,6 @@ Esto garantiza que cada cliente solo pueda ver su propio historial de compras y 
 Se implementa la funcionalidad de reinicio de contraseña usando las vistas genéricas de Django (`PasswordResetView`, etc.).
 
 - En entorno local, se configura en `settings.py`:
-
-```python
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-```
 
 Esto permite obtener el enlace de recuperación directamente en la consola del servidor al solicitar el reseteo.
 

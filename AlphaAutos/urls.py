@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views
 from django.contrib.auth import views as auth_views
+from django.urls import reverse_lazy
 
 app_name = "AlphaAutos"
 
@@ -57,12 +58,16 @@ urlpatterns = [
     path('venta/buscar/', views.buscar_ventas, name='buscar_ventas'),
     path('venta/editar/<int:id_venta>/', views.editar_venta, name='editar_venta'),
     path('venta/eliminar/<int:id_venta>/', views.eliminar_venta, name='eliminar_venta'),
-    path('password_change/', auth_views.PasswordChangeView.as_view(), name='password_change'),
-    path('password_change/done/', auth_views.PasswordChangeDoneView.as_view(), name='password_change_done'),
-    path('password_reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),
-    path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
-    path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
-    path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
+    path('password_change/', views.CustomPasswordChangeView.as_view(), name='password_change'),
+    path('password_reset/', auth_views.PasswordResetView.as_view(
+        template_name='concesionario/registration/password_reset_form.html',
+        email_template_name='concesionario/registration/password_reset_email.html',
+        success_url=reverse_lazy('AlphaAutos:password_reset_done')
+    ), name='password_reset'),
+    path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(
+        template_name='concesionario/registration/password_reset_done.html'
+    ), name='password_reset_done'),
+    path('reset/<uidb64>/<token>/', views.CustomPasswordResetConfirmView.as_view(), name='password_reset_confirm'),
 ]
 
 # Añadir configuración para servir archivos de medios en modo desarrollo
